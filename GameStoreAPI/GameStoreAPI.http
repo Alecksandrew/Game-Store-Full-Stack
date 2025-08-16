@@ -1,6 +1,17 @@
-@GameStoreAPI_HostAddress = http://localhost:5126
+@GameStoreAPI_HostAddress = https://localhost:7205
 
 GET {{GameStoreAPI_HostAddress}}/weatherforecast/
 Accept: application/json
+
+###
+
+POST {{GameStoreAPI_HostAddress}}/api/account/register
+Content-Type: application/json
+
+{
+  "username": "test",
+  "email": "jogador1@email.com",
+  "password": "SenhaForte123!"
+}
 
 ###
