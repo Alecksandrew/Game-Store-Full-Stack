@@ -10,8 +10,9 @@ Content-Type: application/json
 
 {
   "username": "test",
-  "email": "jogador1@email.com",
-  "password": "SenhaForte123!"
+  "email": "mrmundi12@gmail.com",
+  "password": "SenhaForte123!",
+  "ConfirmPassword": "SenhaForte123!"
 }
 
 ###

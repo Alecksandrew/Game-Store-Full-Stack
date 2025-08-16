@@ -10,14 +10,12 @@ namespace GameStoreAPI.Data
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            // CRIAR ROLES PRIMEIRO
             if (!await roleManager.RoleExistsAsync("Admin"))
                 await roleManager.CreateAsync(new IdentityRole("Admin"));
 
             if (!await roleManager.RoleExistsAsync("User"))
                 await roleManager.CreateAsync(new IdentityRole("User"));
 
-            // RESTO DO CÓDIGO IGUAL
             var adminEmail = configuration["Admin:Email"];
             var adminPassword = configuration["Admin:Password"];
             var existingAdmin = await userManager.FindByEmailAsync(adminEmail);

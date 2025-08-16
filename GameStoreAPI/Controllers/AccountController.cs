@@ -1,8 +1,10 @@
 ﻿using GameStoreAPI.Data;
 using GameStoreAPI.Dtos;
 using GameStoreAPI.Dtos.CreateUser;
+using GameStoreAPI.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -46,7 +48,7 @@ namespace GameStoreAPI.Controllers
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddHours(1),
+                expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: credentials
             );
 
@@ -85,7 +87,52 @@ namespace GameStoreAPI.Controllers
             if (!result) return Unauthorized("Email or password are invalid");
 
             var token = await GenerateJwtToken(user);
-            return Ok(new { token });
+
+            var refreshToken = new RefreshToken
+            {
+                Token = Guid.NewGuid().ToString(),
+                UserId = user.Id,
+                ExpiryDate = DateTime.UtcNow.AddDays(1) 
+            };
+
+            await _dbContext.RefreshTokens.AddAsync(refreshToken);
+            await _dbContext.SaveChangesAsync();
+
+
+
+            return Ok(new { token, refreshToken = refreshToken.Token });
+        }
+
+
+        [HttpPost("refresh")]
+        public async Task<IActionResult> RefreshToken([FromBody] string refreshTokenReq)
+        {
+            var refreshToken = await _dbContext.RefreshTokens.FirstOrDefaultAsync(r => r.Token == refreshTokenReq);
+            if (refreshToken == null
+                || refreshToken.ExpiryDate < DateTime.Now
+                || refreshToken.IsRevoked) 
+            {
+                return Unauthorized("Invalid refresh token");
+            }
+
+            var user = await _userManager.FindByIdAsync(refreshToken.UserId);
+            if (user == null) return Unauthorized();
+
+            refreshToken.IsRevoked = true;
+            _dbContext.RefreshTokens.Update(refreshToken);
+
+            var token = await GenerateJwtToken(user);
+            var newRefreshToken = new RefreshToken
+            {
+                Token = Guid.NewGuid().ToString(),
+                UserId = user.Id,
+                ExpiryDate = DateTime.UtcNow.AddDays(1)
+            };
+
+            await _dbContext.RefreshTokens.AddAsync(newRefreshToken);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(new { token, refreshToken = newRefreshToken.Token });
         }
 
 
