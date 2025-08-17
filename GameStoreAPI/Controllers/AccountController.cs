@@ -142,11 +142,24 @@ namespace GameStoreAPI.Controllers
         public async Task<IActionResult> RefreshToken([FromBody] string refreshTokenReq)
         {
             var refreshToken = await _dbContext.RefreshTokens.FirstOrDefaultAsync(r => r.Token == refreshTokenReq);
-            if (refreshToken == null
-                || refreshToken.ExpiryDate < DateTime.Now
-                || refreshToken.IsRevoked) 
+            if (refreshToken == null || refreshToken.ExpiryDate < DateTime.Now) 
             {
                 return Unauthorized("Invalid refresh token");
+            }
+
+            //If someone steal a refresh token and try to use
+            if (refreshToken.IsRevoked)
+            {
+                var userId = refreshToken.UserId;
+                List<RefreshToken> userRefreshTokens = await _dbContext.RefreshTokens.Where(rT => rT.UserId == userId && rT.IsRevoked == false).ToListAsync();
+                foreach (var userRefreshToken in  userRefreshTokens)
+                {
+                    userRefreshToken.IsRevoked = true;
+                }
+
+                await _dbContext.SaveChangesAsync();
+
+                return Unauthorized("Session compromised. Please log in again");
             }
 
             var user = await _userManager.FindByIdAsync(refreshToken.UserId);
