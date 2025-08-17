@@ -21,6 +21,7 @@ namespace GameStoreAPI.Controllers
         private readonly AppDbContext _dbContext;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly ITokenBlacklistService _tokenBlacklistService;
 
@@ -28,7 +29,8 @@ namespace GameStoreAPI.Controllers
         public AccountController(
             AppDbContext dbContext, 
             UserManager<IdentityUser> userManager, 
-            RoleManager<IdentityRole> roleManager, 
+            RoleManager<IdentityRole> roleManager,
+            SignInManager<IdentityUser> signInManager,
             IConfiguration configuration,
             ITokenBlacklistService tokenBlacklistService
             ) {
@@ -37,6 +39,7 @@ namespace GameStoreAPI.Controllers
             _roleManager = roleManager;
             _configuration = configuration;
             _tokenBlacklistService = tokenBlacklistService;
+            _signInManager = signInManager;
         }
 
         private async Task<string> GenerateJwtToken(IdentityUser user)
@@ -80,6 +83,9 @@ namespace GameStoreAPI.Controllers
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(newUser, "User");
+                var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+                string BACKEND_URL = _configuration.GetValue<string>("ApplicationSettings:BackendUrl");
+                string confirmationURL = $"{BACKEND_URL}/api/account/confirm-email?emailToken={emailToken}&userId={newUser.Id}";
                 return Ok("Account was created successfully!");
             }
             else
@@ -94,8 +100,9 @@ namespace GameStoreAPI.Controllers
             var user = await _userManager.FindByEmailAsync(req.Email);
             if (user == null) return Unauthorized("Email or password are invalid");
 
-            var result = await _userManager.CheckPasswordAsync(user, req.Password);
-            if (!result) return Unauthorized("Email or password are invalid");
+            var result = await _signInManager.CheckPasswordSignInAsync(user, req.Password, false); // This gonna check password and all of validations in dependency injection
+            if (result.IsNotAllowed) return Unauthorized("You need to confirm your email!");
+            if (!result.Succeeded) return Unauthorized("Email or password are invalid");
 
             var token = await GenerateJwtToken(user);
 
@@ -179,5 +186,26 @@ namespace GameStoreAPI.Controllers
 
         }
 
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail( string emailToken, string userId)
+        {
+            if (userId == null) return BadRequest("This user doesnt exist");
+            var user = await _userManager.FindByIdAsync(userId);
+            if(user == null) return NotFound();
+         
+            var result = await _userManager.ConfirmEmailAsync(user, emailToken);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+            else
+            {
+                return Ok("Your email has been sucessfully confirmed");
+            }
+            
+
+
+        }
     }
 }
