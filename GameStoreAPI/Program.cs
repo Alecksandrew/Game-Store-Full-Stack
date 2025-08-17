@@ -1,5 +1,6 @@
 using GameStoreAPI.Data;
 using GameStoreAPI.Services;
+using GameStoreAPI.Services.EmailService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -54,8 +55,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+//Blacklist JWT token
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped<ITokenBlacklistService, MemoryCacheTokenBlacklistService>();
+
+
+builder.Services.AddScoped<IEmailService, SendGridEmailService>();
 
 builder.Services.AddControllers();
 

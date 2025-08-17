@@ -9,10 +9,19 @@ POST {{GameStoreAPI_HostAddress}}/api/account/register
 Content-Type: application/json
 
 {
-  "username": "test",
-  "email": "mrmundi12@gmail.com",
+  "username": "testt",
+  "email": "trongamerytb@gmail.com",
   "password": "SenhaForte123!",
   "ConfirmPassword": "SenhaForte123!"
+}
+
+###
+
+POST {{GameStoreAPI_HostAddress}}/api/account/register
+Content-Type: application/json
+
+{
+  //RegisterAccountRequestDto
 }
 
 ###

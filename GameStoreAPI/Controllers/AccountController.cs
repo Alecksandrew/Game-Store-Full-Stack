@@ -3,6 +3,7 @@ using GameStoreAPI.Dtos;
 using GameStoreAPI.Dtos.CreateUser;
 using GameStoreAPI.Models;
 using GameStoreAPI.Services;
+using GameStoreAPI.Services.EmailService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,7 @@ namespace GameStoreAPI.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly ITokenBlacklistService _tokenBlacklistService;
+        private readonly IEmailService _emailService;
 
 
         public AccountController(
@@ -32,7 +34,8 @@ namespace GameStoreAPI.Controllers
             RoleManager<IdentityRole> roleManager,
             SignInManager<IdentityUser> signInManager,
             IConfiguration configuration,
-            ITokenBlacklistService tokenBlacklistService
+            ITokenBlacklistService tokenBlacklistService,
+            IEmailService emailService
             ) {
             _dbContext = dbContext;
             _userManager = userManager;
@@ -40,6 +43,7 @@ namespace GameStoreAPI.Controllers
             _configuration = configuration;
             _tokenBlacklistService = tokenBlacklistService;
             _signInManager = signInManager;
+            _emailService = emailService;
         }
 
         private async Task<string> GenerateJwtToken(IdentityUser user)
@@ -80,13 +84,24 @@ namespace GameStoreAPI.Controllers
 
             var result = await _userManager.CreateAsync(newUser, req.Password);
 
+
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(newUser, "User");
+                
                 var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
                 string BACKEND_URL = _configuration.GetValue<string>("ApplicationSettings:BackendUrl");
                 string confirmationURL = $"{BACKEND_URL}/api/account/confirm-email?emailToken={emailToken}&userId={newUser.Id}";
-                return Ok("Account was created successfully!");
+
+                //Data to send in the confirmation email
+                string userEmail = newUser.Email;
+                string subject = "Confirmation email - Game Store";
+                string htmlContext = $"<h1>Welcome to GameStore!</h1><p>Please, confirm your account by clicking on the link:</p><a href='{confirmationURL}'>Confirm your email</a>"; ;
+
+                await _emailService.SendEmailAsync(userEmail, subject, htmlContext);
+
+                
+                return Ok("A confirmation email was sent to your account! Please, verify, then you will be able to login. DONT FORGET TO VERIFY YOUR SPAM BOX!");
             }
             else
             {
