@@ -1,5 +1,6 @@
 using GameStoreAPI.Data;
 using GameStoreAPI.Services;
+using GameStoreAPI.Services.AuthService;
 using GameStoreAPI.Services.EmailService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -61,6 +62,8 @@ builder.Services.AddScoped<ITokenBlacklistService, MemoryCacheTokenBlacklistServ
 
 
 builder.Services.AddScoped<IEmailService, SendGridEmailService>();
+
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddControllers();
 

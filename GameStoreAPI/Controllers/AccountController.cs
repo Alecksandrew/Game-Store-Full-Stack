@@ -10,7 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
@@ -22,9 +24,8 @@ namespace GameStoreAPI.Controllers
     {
         private readonly IAuthService _authService;
         private readonly AppDbContext _dbContext;
-        private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+
         private readonly IConfiguration _configuration;
         private readonly ITokenBlacklistService _tokenBlacklistService;
         private readonly IEmailService _emailService;
@@ -49,7 +50,7 @@ namespace GameStoreAPI.Controllers
 
             if (success)
             {
-                return Ok(message);
+                return Ok(new { message });
             }
             else
             {
@@ -61,23 +62,16 @@ namespace GameStoreAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginAccount(LoginAccountResquestDto req)
         {
-            var user = await _userManager.FindByEmailAsync(req.Email);
-            if (user == null) return Unauthorized("Email or password are invalid");
+            var (Success, Message, JwtToken, refreshToken) = await _authService.LoginAccountAsync(req);
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, req.Password, false); // This gonna check password and all of validations in dependency injection
-            if (result.IsNotAllowed) return Unauthorized("You need to confirm your email!");
-            if (!result.Succeeded) return Unauthorized("Email or password are invalid");
-
-            var token = await GenerateJwtToken(user);
-
-            var refreshToken = GenerateRefreshToken(user.Id);
-
-            await _dbContext.RefreshTokens.AddAsync(refreshToken);
-            await _dbContext.SaveChangesAsync();
-
-
-
-            return Ok(new { token, refreshToken = refreshToken.Token });
+            if (!Success) 
+            {
+                return Unauthorized(new { Message });
+            }
+            else
+            {
+                return Ok(new {Message, JwtToken, refreshToken });
+            }      
         }
 
 

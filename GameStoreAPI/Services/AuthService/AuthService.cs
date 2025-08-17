@@ -1,4 +1,5 @@
 ﻿using GameStoreAPI.Data;
+using GameStoreAPI.Dtos;
 using GameStoreAPI.Dtos.CreateUser;
 using GameStoreAPI.Models;
 using GameStoreAPI.Services.EmailService;
@@ -115,6 +116,24 @@ namespace GameStoreAPI.Services.AuthService
                     "User register has failed",
                     result.Errors);
             }
+        }
+
+        public async Task<(bool Success, string Message, string? JwtToken, string? RefreshToken)> LoginAccountAsync(LoginAccountResquestDto req)
+        {
+            var user = await _userManager.FindByEmailAsync(req.Email);
+            if (user == null) return (false, "Email or password are invalid", null, null);
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, req.Password, false); // This gonna check password and all of validations in dependency injection
+            if (result.IsNotAllowed) return (false, "You need to confirm your email!", null, null);
+            if (!result.Succeeded) return (false, "Email or password are invalid", null, null);
+
+            var jwtToken = await GenerateJwtToken(user);
+            var refreshToken = GenerateRefreshToken(user.Id);
+
+            await _dbContext.RefreshTokens.AddAsync(refreshToken);
+            await _dbContext.SaveChangesAsync();
+
+            return (true, "You login in your account successfully", jwtToken, refreshToken.Token);
         }
     }
 }
