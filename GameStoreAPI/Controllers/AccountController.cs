@@ -3,6 +3,7 @@ using GameStoreAPI.Dtos;
 using GameStoreAPI.Dtos.CreateUser;
 using GameStoreAPI.Models;
 using GameStoreAPI.Services;
+using GameStoreAPI.Services.AuthService;
 using GameStoreAPI.Services.EmailService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -19,6 +20,7 @@ namespace GameStoreAPI.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
+        private readonly IAuthService _authService;
         private readonly AppDbContext _dbContext;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -29,84 +31,31 @@ namespace GameStoreAPI.Controllers
 
 
         public AccountController(
-            AppDbContext dbContext, 
-            UserManager<IdentityUser> userManager, 
-            RoleManager<IdentityRole> roleManager,
-            SignInManager<IdentityUser> signInManager,
-            IConfiguration configuration,
-            ITokenBlacklistService tokenBlacklistService,
-            IEmailService emailService
+            IAuthService authService,
+            RoleManager<IdentityRole> roleManager
+
             ) {
-            _dbContext = dbContext;
-            _userManager = userManager;
+            _authService = authService;
             _roleManager = roleManager;
-            _configuration = configuration;
-            _tokenBlacklistService = tokenBlacklistService;
-            _signInManager = signInManager;
-            _emailService = emailService;
         }
 
-        private async Task<string> GenerateJwtToken(IdentityUser user)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var roles = await _userManager.GetRolesAsync(user);
-            var userRole = roles.FirstOrDefault();
-
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Role, userRole),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
-
-            var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(15),
-                signingCredentials: credentials
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+       
+       
 
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAccount(RegisterAccountRequestDto req)
         {
-            var newUser = new IdentityUser
+            var (success, message, errors) = await _authService.RegisterAccountAsync(req);
+
+            if (success)
             {
-                UserName = req.Username,
-                Email = req.Email,
-            };
-
-            var result = await _userManager.CreateAsync(newUser, req.Password);
-
-
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(newUser, "User");
-                
-                var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
-                string BACKEND_URL = _configuration.GetValue<string>("ApplicationSettings:BackendUrl");
-                string confirmationURL = $"{BACKEND_URL}/api/account/confirm-email?emailToken={emailToken}&userId={newUser.Id}";
-
-                //Data to send in the confirmation email
-                string userEmail = newUser.Email;
-                string subject = "Confirmation email - Game Store";
-                string htmlContext = $"<h1>Welcome to GameStore!</h1><p>Please, confirm your account by clicking on the link:</p><a href='{confirmationURL}'>Confirm your email</a>"; ;
-
-                await _emailService.SendEmailAsync(userEmail, subject, htmlContext);
-
-                
-                return Ok("A confirmation email was sent to your account! Please, verify, then you will be able to login. DONT FORGET TO VERIFY YOUR SPAM BOX!");
+                return Ok(message);
             }
             else
             {
-                return BadRequest(result.Errors);
+                return BadRequest(new { message, errors });
             }
+             
         }
 
         [HttpPost("login")]
@@ -121,12 +70,7 @@ namespace GameStoreAPI.Controllers
 
             var token = await GenerateJwtToken(user);
 
-            var refreshToken = new RefreshToken
-            {
-                Token = Guid.NewGuid().ToString(),
-                UserId = user.Id,
-                ExpiryDate = DateTime.UtcNow.AddDays(1) 
-            };
+            var refreshToken = GenerateRefreshToken(user.Id);
 
             await _dbContext.RefreshTokens.AddAsync(refreshToken);
             await _dbContext.SaveChangesAsync();
@@ -169,12 +113,7 @@ namespace GameStoreAPI.Controllers
             _dbContext.RefreshTokens.Update(refreshToken);
 
             var token = await GenerateJwtToken(user);
-            var newRefreshToken = new RefreshToken
-            {
-                Token = Guid.NewGuid().ToString(),
-                UserId = user.Id,
-                ExpiryDate = DateTime.UtcNow.AddDays(1)
-            };
+            var newRefreshToken = GenerateRefreshToken(user.Id);
 
             await _dbContext.RefreshTokens.AddAsync(newRefreshToken);
             await _dbContext.SaveChangesAsync();
@@ -184,7 +123,7 @@ namespace GameStoreAPI.Controllers
 
         [HttpPost("logout")]
         [Authorize]
-        public async Task<IActionResult> Logout()
+        public async Task<IActionResult> LogoutAccount()
         {
             //Revoke refresh tokens
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
