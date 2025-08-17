@@ -2,6 +2,8 @@
 using GameStoreAPI.Dtos;
 using GameStoreAPI.Dtos.CreateUser;
 using GameStoreAPI.Models;
+using GameStoreAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,13 +22,21 @@ namespace GameStoreAPI.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
+        private readonly ITokenBlacklistService _tokenBlacklistService;
 
 
-        public AccountController(AppDbContext dbContext, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration) {
+        public AccountController(
+            AppDbContext dbContext, 
+            UserManager<IdentityUser> userManager, 
+            RoleManager<IdentityRole> roleManager, 
+            IConfiguration configuration,
+            ITokenBlacklistService tokenBlacklistService
+            ) {
             _dbContext = dbContext;
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
+            _tokenBlacklistService = tokenBlacklistService;
         }
 
         private async Task<string> GenerateJwtToken(IdentityUser user)
@@ -41,7 +51,8 @@ namespace GameStoreAPI.Controllers
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Role, userRole)
+                new Claim(ClaimTypes.Role, userRole),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
             var token = new JwtSecurityToken(
@@ -105,6 +116,7 @@ namespace GameStoreAPI.Controllers
 
 
         [HttpPost("refresh")]
+        [Authorize]
         public async Task<IActionResult> RefreshToken([FromBody] string refreshTokenReq)
         {
             var refreshToken = await _dbContext.RefreshTokens.FirstOrDefaultAsync(r => r.Token == refreshTokenReq);
@@ -135,6 +147,37 @@ namespace GameStoreAPI.Controllers
             return Ok(new { token, refreshToken = newRefreshToken.Token });
         }
 
+        [HttpPost("logout")]
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            //Revoke refresh tokens
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var refreshedToken = await _dbContext.RefreshTokens.FirstOrDefaultAsync(token => 
+                 token.UserId == userId && !token.IsRevoked
+                );
+
+            if (refreshedToken == null) return Ok("User is already disconnected!");
+
+            refreshedToken.IsRevoked = true;
+
+            //Revoke JWT token
+            var jti = User.FindFirstValue(JwtRegisteredClaimNames.Jti);
+
+            var expClaim = User.FindFirstValue(JwtRegisteredClaimNames.Exp);
+            if (!long.TryParse(expClaim, out var expValue)) return BadRequest("Invalid Error Format.");
+            var expTime = DateTimeOffset.FromUnixTimeSeconds(expValue).UtcDateTime;
+
+            await _tokenBlacklistService.BlacklistTokenAsync(jti, expTime);
+
+            //
+            await _dbContext.SaveChangesAsync();
+
+            return Ok("User has been disconnected sucessfully.");
+
+
+        }
 
     }
 }
