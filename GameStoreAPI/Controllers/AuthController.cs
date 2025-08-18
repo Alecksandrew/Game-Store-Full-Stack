@@ -12,41 +12,22 @@ using GameStoreAPI.Services.EmailService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
 
 namespace GameStoreAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AccountController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-        private readonly AppDbContext _dbContext;
-        private readonly RoleManager<IdentityRole> _roleManager;
 
-        private readonly IConfiguration _configuration;
-        private readonly ITokenBlacklistService _tokenBlacklistService;
-        private readonly IEmailService _emailService;
-
-
-        public AccountController(
-            IAuthService authService,
-            RoleManager<IdentityRole> roleManager
-
-            ) {
+        public AuthController(IAuthService authService) {
             _authService = authService;
-            _roleManager = roleManager;
         }
 
        
-       
-
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAccount(RegisterAccountRequestDto req)
         {
@@ -76,7 +57,6 @@ namespace GameStoreAPI.Controllers
 
             return Success ? Ok(response) : Unauthorized(response);
         }
-
 
         [HttpPost("refresh")]
         [Authorize]
@@ -162,5 +142,6 @@ namespace GameStoreAPI.Controllers
             }
             ;    
         }
+
     }
 }
