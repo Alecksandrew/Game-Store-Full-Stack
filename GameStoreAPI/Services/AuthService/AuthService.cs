@@ -174,5 +174,31 @@ namespace GameStoreAPI.Services.AuthService
 
             return (true, "You refreshed your token successfully", token, newRefreshToken.Token);
         }
+
+        public async Task<(bool success, string message)> LogoutAccountAsync(string userId, string jti, string exp)
+        {
+            //Revoke refresh tokens
+            var refreshToken = await _dbContext.RefreshTokens.FirstOrDefaultAsync(token =>
+                token.UserId == userId && !token.IsRevoked
+            );
+
+            if (refreshToken == null) return (true, "User is already disconnected!");
+
+            refreshToken.IsRevoked = true;
+
+            //Revoke JWT token
+            if (!long.TryParse(exp, out var expValue))
+            {
+                return (false, "Invalid token expiration format.");
+            }
+            var expTime = DateTimeOffset.FromUnixTimeSeconds(expValue).UtcDateTime;
+
+            await _tokenBlacklistService.BlacklistTokenAsync(jti, expTime);
+
+            //
+            await _dbContext.SaveChangesAsync();
+
+            return (true, "User has been disconnected successfully.");
+        }
     }
 }

@@ -2,6 +2,7 @@
 using GameStoreAPI.Dtos.CreateAccount;
 using GameStoreAPI.Dtos.CreateUser;
 using GameStoreAPI.Dtos.LoginAccount;
+using GameStoreAPI.Dtos.LogoutAccount;
 using GameStoreAPI.Dtos.RefreshToken;
 using GameStoreAPI.Models;
 using GameStoreAPI.Services;
@@ -97,32 +98,26 @@ namespace GameStoreAPI.Controllers
         [Authorize]
         public async Task<IActionResult> LogoutAccount()
         {
-            //Revoke refresh tokens
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var refreshedToken = await _dbContext.RefreshTokens.FirstOrDefaultAsync(token => 
-                 token.UserId == userId && !token.IsRevoked
-                );
-
-            if (refreshedToken == null) return Ok("User is already disconnected!");
-
-            refreshedToken.IsRevoked = true;
-
-            //Revoke JWT token
             var jti = User.FindFirstValue(JwtRegisteredClaimNames.Jti);
-
             var expClaim = User.FindFirstValue(JwtRegisteredClaimNames.Exp);
-            if (!long.TryParse(expClaim, out var expValue)) return BadRequest("Invalid Error Format.");
-            var expTime = DateTimeOffset.FromUnixTimeSeconds(expValue).UtcDateTime;
 
-            await _tokenBlacklistService.BlacklistTokenAsync(jti, expTime);
+            LogoutAccountResponseDto response = new LogoutAccountResponseDto
+            {
+                message = ""
+            };
 
-            //
-            await _dbContext.SaveChangesAsync();
+            if ( userId == null || jti == null || expClaim == null)
+            {
+                response.message = "Invalid Token";
+                return Unauthorized(response);
+            }
 
-            return Ok("User has been disconnected sucessfully.");
+            var (success, message) = await _authService.LogoutAccountAsync(userId, jti, expClaim);
 
+            response.message = message;
 
+            return success ? Ok(response) : BadRequest(response);
         }
 
         [HttpGet("confirm-email")]
