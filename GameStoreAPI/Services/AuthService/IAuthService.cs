@@ -1,5 +1,5 @@
-﻿using GameStoreAPI.Dtos;
-using GameStoreAPI.Dtos.CreateUser;
+﻿using GameStoreAPI.Dtos.CreateUser;
+using GameStoreAPI.Dtos.LoginAccount;
 using GameStoreAPI.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

@@ -1,6 +1,6 @@
 ﻿using GameStoreAPI.Data;
-using GameStoreAPI.Dtos;
 using GameStoreAPI.Dtos.CreateUser;
+using GameStoreAPI.Dtos.LoginAccount;
 using GameStoreAPI.Models;
 using GameStoreAPI.Services.EmailService;
 using Microsoft.AspNetCore.Identity;
@@ -114,7 +114,7 @@ namespace GameStoreAPI.Services.AuthService
             {
                 return (
                     false,
-                    "User register has failed",
+                    "One or more validation errors occurred when registering user.",
                     result.Errors);
             }
         }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GameStoreAPI.Dtos
+namespace GameStoreAPI.Dtos.LoginAccount
 {
     public class LoginAccountResquestDto
     {

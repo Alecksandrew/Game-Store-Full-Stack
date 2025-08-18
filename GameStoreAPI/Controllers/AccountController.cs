@@ -1,6 +1,7 @@
 ﻿using GameStoreAPI.Data;
-using GameStoreAPI.Dtos;
+using GameStoreAPI.Dtos.CreateAccount;
 using GameStoreAPI.Dtos.CreateUser;
+using GameStoreAPI.Dtos.LoginAccount;
 using GameStoreAPI.Dtos.RefreshToken;
 using GameStoreAPI.Models;
 using GameStoreAPI.Services;
@@ -49,15 +50,14 @@ namespace GameStoreAPI.Controllers
         {
             var (success, message, errors) = await _authService.RegisterAccountAsync(req);
 
-            if (success)
+            RegisterAccountResponseDto response = new RegisterAccountResponseDto
             {
-                return Ok(new { message });
-            }
-            else
-            {
-                return BadRequest(new { message, errors });
-            }
-             
+                message = message,
+                errors = errors
+            };
+
+            return success ? Ok(response) : BadRequest(response);
+                
         }
 
         [HttpPost("login")]
@@ -65,14 +65,14 @@ namespace GameStoreAPI.Controllers
         {
             var (Success, Message, JwtToken, refreshToken) = await _authService.LoginAccountAsync(req);
 
-            if (!Success) 
+            LoginAccountResponseDto response = new LoginAccountResponseDto
             {
-                return Unauthorized(new { Message });
-            }
-            else
-            {
-                return Ok(new {Message, JwtToken, refreshToken });
-            }      
+                message = Message,
+                jwtTokenRes = JwtToken,//null, if fails
+                refreshTokenRes = refreshToken, //null, if fails
+            };
+
+            return Success ? Ok(response) : Unauthorized(response);
         }
 
 
@@ -83,8 +83,7 @@ namespace GameStoreAPI.Controllers
 
             var (success, message, jwtToken, refreshToken) = await _authService.RefreshTokenAsync(req.refreshTokenReq);
 
-            RefreshTokenResponseDto response = new RefreshTokenResponseDto { 
-                success = success, 
+            RefreshTokenResponseDto response = new RefreshTokenResponseDto {  
                 message = message, 
                 jwtTokenRes = jwtToken, //null, if fails
                 refreshTokenRes = refreshToken //null, if fails
