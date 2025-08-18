@@ -1,6 +1,7 @@
 ﻿using GameStoreAPI.Data;
 using GameStoreAPI.Dtos.DeleteAccount;
 using GameStoreAPI.Dtos.GetAccount;
+using GameStoreAPI.Dtos.UpdateAccount;
 using GameStoreAPI.Services.AccountService;
 using GameStoreAPI.Services.AuthService;
 using Microsoft.AspNetCore.Authorization;
@@ -44,6 +45,23 @@ namespace GameStoreAPI.Controllers
         }
 
 
+        [HttpPatch]
+        [Authorize]
+        public async Task<IActionResult> UpdatePassword(UpdatePasswordRequestDto req)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized();
+
+            var (success, message, errors) = await _accountService.UpdatePasswordAsync(userId, req);
+
+            UpdatePasswordResponseDto response = new UpdatePasswordResponseDto
+            {
+                message = message,
+                errors = errors
+            };
+
+            return success ? Ok(response) :BadRequest(response);
+        }
 
 
         [HttpDelete]
