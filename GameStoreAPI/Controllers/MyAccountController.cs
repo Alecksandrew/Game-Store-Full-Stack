@@ -1,5 +1,6 @@
 ﻿using GameStoreAPI.Data;
 using GameStoreAPI.Dtos.DeleteAccount;
+using GameStoreAPI.Dtos.GetAccount;
 using GameStoreAPI.Services.AccountService;
 using GameStoreAPI.Services.AuthService;
 using Microsoft.AspNetCore.Authorization;
@@ -23,6 +24,26 @@ namespace GameStoreAPI.Controllers
             _userManager = userManager;
             _accountService = accountService;
         }
+
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetAccount()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized();
+
+            var (success, userName, email) = await _accountService.GetAccountAsync(userId);
+
+            GetAccountResponseDto response = new GetAccountResponseDto
+            {
+                userName = userName,
+                email = email,
+            };
+            return success ? Ok(response) : NotFound(response);
+        }
+
+
 
 
         [HttpDelete]

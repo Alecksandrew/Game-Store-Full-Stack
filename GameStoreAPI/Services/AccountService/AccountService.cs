@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using GameStoreAPI.Dtos.GetAccount;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameStoreAPI.Services.AccountService
 {
@@ -9,6 +12,14 @@ namespace GameStoreAPI.Services.AccountService
         public AccountService(UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
+        }
+
+        public async Task<(bool success, string? userName, string? email)> GetAccountAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return (false, null, null);
+
+            return (true, user.UserName, user.Email);
         }
         public async Task<(bool success, string message, IEnumerable<IdentityError>? errors)> DeleteAccountAsync(string userId)
         {
