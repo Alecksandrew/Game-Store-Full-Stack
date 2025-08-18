@@ -1,4 +1,5 @@
 ﻿using GameStoreAPI.Data;
+using GameStoreAPI.Dtos.ConfirmEmail;
 using GameStoreAPI.Dtos.CreateAccount;
 using GameStoreAPI.Dtos.CreateUser;
 using GameStoreAPI.Dtos.LoginAccount;
@@ -121,25 +122,45 @@ namespace GameStoreAPI.Controllers
         }
 
         [HttpGet("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail( string emailToken, string userId)
+        public async Task<IActionResult> ConfirmEmail(string emailToken, string userId /*they come from params*/ )
         {
-            if (userId == null) return BadRequest("This user doesnt exist");
-            var user = await _userManager.FindByIdAsync(userId);
-            if(user == null) return NotFound();
-         
-            var result = await _userManager.ConfirmEmailAsync(user, emailToken);
+            var (status, errors) = await _authService.ConfirmEmailAsync(userId, emailToken);
 
-            if (!result.Succeeded)
+            ConfirmEmailResponseDto response = new ConfirmEmailResponseDto
             {
-                return BadRequest(result.Errors);
-            }
-            else
+                message = "",
+                errors = errors
+            };
+
+            switch (status)
             {
-                return Ok("Your email has been sucessfully confirmed");
+                case EmailConfirmationStatus.UserNotFound:
+                    {
+                        response.message = "User not found";
+                        return NotFound(response);
+                    }
+                case EmailConfirmationStatus.InvalidToken: 
+                    {
+                        response.message = "This is a invalid token";
+                        return BadRequest(response);
+                    }
+                case EmailConfirmationStatus.Failure:
+                    {
+                        response.message = "Request has failed. Verify the parameters!";
+                        return BadRequest(response);
+                    }   
+                case EmailConfirmationStatus.Success:
+                    {
+                        response.message = "Your email has been confirmed successfully";
+                        return Ok(response);
+                    }
+                default:
+                    {
+                        response.message = "An unexpected error occurred when trying to confirm user email.";
+                        return StatusCode(500, response);
+                    }      
             }
-            
-
-
+            ;    
         }
     }
 }

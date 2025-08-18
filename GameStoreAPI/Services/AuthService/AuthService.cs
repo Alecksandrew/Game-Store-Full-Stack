@@ -3,6 +3,7 @@ using GameStoreAPI.Dtos.CreateUser;
 using GameStoreAPI.Dtos.LoginAccount;
 using GameStoreAPI.Models;
 using GameStoreAPI.Services.EmailService;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -199,6 +200,25 @@ namespace GameStoreAPI.Services.AuthService
             await _dbContext.SaveChangesAsync();
 
             return (true, "User has been disconnected successfully.");
+        }
+
+        public async Task<(EmailConfirmationStatus status, IEnumerable<IdentityError>? errors)> ConfirmEmailAsync(string userId, string emailToken)
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(emailToken))
+            {
+                return (EmailConfirmationStatus.Failure, null);
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return (EmailConfirmationStatus.UserNotFound, null);
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, emailToken);
+
+            return result.Succeeded ? (EmailConfirmationStatus.Success, null) : (EmailConfirmationStatus.InvalidToken, result.Errors);
         }
     }
 }

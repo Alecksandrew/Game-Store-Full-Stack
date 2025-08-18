@@ -14,6 +14,6 @@ namespace GameStoreAPI.Services.AuthService
         Task<(bool Success, string Message, string? JwtToken, string? RefreshToken)> LoginAccountAsync(LoginAccountResquestDto req);
         Task<(bool Success, string Message, string? JwtToken, string? RefreshToken)> RefreshTokenAsync(string refreshTokenReq);
         Task<(bool success, string message)> LogoutAccountAsync(string userId, string jti, string expClaim);
-        Task<IActionResult> ConfirmEmail(string emailToken, string userId);
+        Task<(EmailConfirmationStatus status, IEnumerable<IdentityError>? errors)> ConfirmEmailAsync(string userId, string emailToken);
     }
 }
