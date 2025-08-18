@@ -12,7 +12,7 @@ namespace GameStoreAPI.Services.AuthService
         RefreshToken GenerateRefreshToken(string userId);
         Task<(bool success, string message, IEnumerable<IdentityError>? errors)> RegisterAccountAsync(RegisterAccountRequestDto req);
         Task<(bool Success, string Message, string? JwtToken, string? RefreshToken)> LoginAccountAsync(LoginAccountResquestDto req);
-        Task<IActionResult> RefreshToken(string refreshTokenReq);
+        Task<(bool Success, string Message, string? JwtToken, string? RefreshToken)> RefreshTokenAsync(string refreshTokenReq);
         Task<IActionResult> LogoutAccount(string userId, string jti, string expClaim);
         Task<IActionResult> ConfirmEmail(string emailToken, string userId);
     }

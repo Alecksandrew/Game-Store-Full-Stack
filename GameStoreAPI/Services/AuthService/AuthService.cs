@@ -5,6 +5,7 @@ using GameStoreAPI.Models;
 using GameStoreAPI.Services.EmailService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -134,6 +135,44 @@ namespace GameStoreAPI.Services.AuthService
             await _dbContext.SaveChangesAsync();
 
             return (true, "You login in your account successfully", jwtToken, refreshToken.Token);
+        }
+
+        public async Task<(bool Success, string Message, string? JwtToken, string? RefreshToken)> RefreshTokenAsync(string refreshTokenReq)
+        {
+            var refreshToken = await _dbContext.RefreshTokens.FirstOrDefaultAsync(r => r.Token == refreshTokenReq);
+            if (refreshToken == null || refreshToken.ExpiryDate < DateTime.Now)
+            {
+                return (false, "Invalid refresh token", null, null);
+            }
+
+            //If someone steal a refresh token and try to use
+            if (refreshToken.IsRevoked)
+            {
+                var userId = refreshToken.UserId;
+                List<RefreshToken> userRefreshTokens = await _dbContext.RefreshTokens.Where(rT => rT.UserId == userId && rT.IsRevoked == false).ToListAsync();
+                foreach (var userRefreshToken in userRefreshTokens)
+                {
+                    userRefreshToken.IsRevoked = true;
+                }
+
+                await _dbContext.SaveChangesAsync();
+
+                return (false, "Session compromised. Please log in again", null, null);
+            }
+
+            var user = await _userManager.FindByIdAsync(refreshToken.UserId);
+            if (user == null) return (false, "User not found", null, null);
+
+            refreshToken.IsRevoked = true;
+            _dbContext.RefreshTokens.Update(refreshToken);
+
+            var token = await GenerateJwtToken(user);
+            var newRefreshToken = GenerateRefreshToken(user.Id);
+
+            await _dbContext.RefreshTokens.AddAsync(newRefreshToken);
+            await _dbContext.SaveChangesAsync();
+
+            return (true, "You refreshed your token successfully", token, newRefreshToken.Token);
         }
     }
 }

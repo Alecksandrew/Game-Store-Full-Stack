@@ -1,6 +1,7 @@
 ﻿using GameStoreAPI.Data;
 using GameStoreAPI.Dtos;
 using GameStoreAPI.Dtos.CreateUser;
+using GameStoreAPI.Dtos.RefreshToken;
 using GameStoreAPI.Models;
 using GameStoreAPI.Services;
 using GameStoreAPI.Services.AuthService;
@@ -77,42 +78,20 @@ namespace GameStoreAPI.Controllers
 
         [HttpPost("refresh")]
         [Authorize]
-        public async Task<IActionResult> RefreshToken([FromBody] string refreshTokenReq)
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestDto req)
         {
-            var refreshToken = await _dbContext.RefreshTokens.FirstOrDefaultAsync(r => r.Token == refreshTokenReq);
-            if (refreshToken == null || refreshToken.ExpiryDate < DateTime.Now) 
-            {
-                return Unauthorized("Invalid refresh token");
-            }
 
-            //If someone steal a refresh token and try to use
-            if (refreshToken.IsRevoked)
-            {
-                var userId = refreshToken.UserId;
-                List<RefreshToken> userRefreshTokens = await _dbContext.RefreshTokens.Where(rT => rT.UserId == userId && rT.IsRevoked == false).ToListAsync();
-                foreach (var userRefreshToken in  userRefreshTokens)
-                {
-                    userRefreshToken.IsRevoked = true;
-                }
+            var (success, message, jwtToken, refreshToken) = await _authService.RefreshTokenAsync(req.refreshTokenReq);
 
-                await _dbContext.SaveChangesAsync();
+            RefreshTokenResponseDto response = new RefreshTokenResponseDto { 
+                success = success, 
+                message = message, 
+                jwtTokenRes = jwtToken, //null, if fails
+                refreshTokenRes = refreshToken //null, if fails
+            };
 
-                return Unauthorized("Session compromised. Please log in again");
-            }
-
-            var user = await _userManager.FindByIdAsync(refreshToken.UserId);
-            if (user == null) return Unauthorized();
-
-            refreshToken.IsRevoked = true;
-            _dbContext.RefreshTokens.Update(refreshToken);
-
-            var token = await GenerateJwtToken(user);
-            var newRefreshToken = GenerateRefreshToken(user.Id);
-
-            await _dbContext.RefreshTokens.AddAsync(newRefreshToken);
-            await _dbContext.SaveChangesAsync();
-
-            return Ok(new { token, refreshToken = newRefreshToken.Token });
+            return success ? Ok(response) : Unauthorized(response);
+   
         }
 
         [HttpPost("logout")]
