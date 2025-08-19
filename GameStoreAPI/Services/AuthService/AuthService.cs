@@ -1,17 +1,16 @@
 ﻿using GameStoreAPI.Data;
 using GameStoreAPI.Dtos.CreateUser;
 using GameStoreAPI.Dtos.LoginAccount;
+using GameStoreAPI.Dtos.ResetPassword;
 using GameStoreAPI.Models;
 using GameStoreAPI.Services.EmailService;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace GameStoreAPI.Services.AuthService
 {
@@ -87,6 +86,20 @@ namespace GameStoreAPI.Services.AuthService
             string htmlContext = $"<h1>Welcome to GameStore!</h1><p>Please, confirm your account by clicking on the link:</p><a href='{confirmationURL}'>Confirm your email</a>";
 
             await _emailService.SendEmailAsync(user.Email, subject, htmlContext);
+        }
+        private async Task SendPasswordResetEmailAsync(IdentityUser user)
+        {
+            string origin = _configuration["ApplicationSettings:FrontendUrl"];
+            if (string.IsNullOrEmpty(origin))throw new Exception("FrontendUrl não está configurado no servidor.");
+
+            var resetPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            var resetUrl = $"{origin}/reset-password?token={Uri.EscapeDataString(resetPasswordToken)}&email={Uri.EscapeDataString(user.Email)}";//url to get back to front end
+
+            string subject = "Update Password - Game Store";
+            string htmlContent = $"<h1>Update your password</h1><p>Please, click on the link to change your password</p><a href='{resetUrl}'>Change Password</a>";
+
+            await _emailService.SendEmailAsync(user.Email, subject, htmlContent);
         }
 
         public async Task<(bool success, string message, IEnumerable<IdentityError>? errors)> RegisterAccountAsync(RegisterAccountRequestDto req)
@@ -219,6 +232,35 @@ namespace GameStoreAPI.Services.AuthService
             var result = await _userManager.ConfirmEmailAsync(user, emailToken);
 
             return result.Succeeded ? (EmailConfirmationStatus.Success, null) : (EmailConfirmationStatus.InvalidToken, result.Errors);
+        }
+
+        public async Task<string> ForgotPasswordAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null) return "A link to reset your password was sent to your email!"; //Message in order to improve security
+            
+            await SendPasswordResetEmailAsync(user);
+
+            return "A link to reset your password was sent to your email!";
+        }
+        public async Task<(bool success, string message, IEnumerable<IdentityError>? errors)> ResetPasswordAsync(ResetPasswordRequestDto dto)
+        {
+            var user = await _userManager.FindByEmailAsync(dto.Email);
+
+            if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
+            {
+                return (false, "Fail when updating password", null);
+            };
+
+            var result = await _userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
+
+            return (
+                result.Succeeded 
+                ? (true, "Your password was updated successfully", null) 
+                : (false, "Fail when updating password", result.Errors)
+            );
+
         }
     }
 }

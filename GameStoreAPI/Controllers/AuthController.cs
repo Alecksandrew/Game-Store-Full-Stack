@@ -2,9 +2,11 @@
 using GameStoreAPI.Dtos.ConfirmEmail;
 using GameStoreAPI.Dtos.CreateAccount;
 using GameStoreAPI.Dtos.CreateUser;
+using GameStoreAPI.Dtos.ForgotPassword;
 using GameStoreAPI.Dtos.LoginAccount;
 using GameStoreAPI.Dtos.LogoutAccount;
 using GameStoreAPI.Dtos.RefreshToken;
+using GameStoreAPI.Dtos.ResetPassword;
 using GameStoreAPI.Models;
 using GameStoreAPI.Services;
 using GameStoreAPI.Services.AuthService;
@@ -141,6 +143,36 @@ namespace GameStoreAPI.Controllers
                     }      
             }
             ;    
+        }
+
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordRequestDto req)
+        {
+            string message = await _authService.ForgotPasswordAsync(req.Email);
+
+            ForgotPasswordResponseDto response = new ForgotPasswordResponseDto
+            {
+                message = message
+            };
+
+            return Ok(response);
+        }
+
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordRequestDto req)
+        {
+            var (success, message, errors) = await _authService.ResetPasswordAsync(req);
+
+            ResetPasswordResponseDto response = new ResetPasswordResponseDto
+            {
+                message = message,
+                errors = errors
+            };
+
+            return success ? Ok(response) : BadRequest(response);
+        
         }
 
     }
