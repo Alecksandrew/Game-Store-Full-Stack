@@ -68,6 +68,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<IAccountService, AccountService>();
 
+builder.Services.AddSwaggerGen();
+
 builder.Services.AddControllers();
 
 
@@ -77,6 +79,12 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     await DatabaseSeeder.SeedAsync(scope.ServiceProvider, app.Configuration);
+}
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();           
+    app.UseSwaggerUI();  
 }
 
 

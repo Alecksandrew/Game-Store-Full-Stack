@@ -1,10 +1,11 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Press+Start+2P&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import "tailwindcss";
+
 
 @theme {
-  --color-bg-primary: #0f0f23;
-  --color-bg-secondary: #1a1a2e;
+  --color-bg-primary: #05080f;
+  --color-bg-secondary: #10131c;
   
   /* Brand/Interactive */
   --color-primary: #4169e1;
