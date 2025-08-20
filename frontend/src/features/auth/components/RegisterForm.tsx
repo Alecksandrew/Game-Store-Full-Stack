@@ -18,7 +18,11 @@ const emptyWarningState:warningState = {
   type: "success",
 };
 
-export default function RegisterForm() {
+type RegisterFormProps = {
+  className: string
+};
+
+export default function RegisterForm({className}:RegisterFormProps) {
   const { register, handleSubmit, formState, getValues } =
     useForm<RegisterFormData>();
   const [warning, setWarning] = useState<warningState>(emptyWarningState);
@@ -84,8 +88,9 @@ export default function RegisterForm() {
      }
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col justify-center items-center gap-4 p-6 
-        bg-bg-secondary min-w-[325px] w-1/2 max-w-[600px] aspect-[10/12] max-h-[600px] rounded border-1 border-primary"
+        className={`flex flex-col justify-center items-center gap-4 p-6 
+        bg-bg-secondary min-w-[325px] w-1/2 max-w-[600px] aspect-[10/12] 
+        max-h-[600px] rounded border-1 border-primary ${className}`}
       >
         <div className="text-text-primary text-center mb-4">
           <h1 className="font-orbitron font-semibold text-4xl lg:text-5xl">
