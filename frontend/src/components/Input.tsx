@@ -8,8 +8,8 @@ export const Input = forwardRef<HTMLInputElement, inputProps>(
     const inputId = props.name || title;
 
     return (
-      <label htmlFor={inputId} className=" flex flex-col gap-0.5">
-        <span className="font-inter font-bold text-text-primary">{title}</span>
+      <label htmlFor={inputId} className=" flex flex-col gap-0.5 w-full">
+        <span className="font-inter font-bold text-text-primary md:text-lg">{title}</span>
         <div 
           className={`
             bg-bg-primary rounded flex items-center p-1 placeholder:text-text-secondary text-text-primary ring-text-secondary ring-1

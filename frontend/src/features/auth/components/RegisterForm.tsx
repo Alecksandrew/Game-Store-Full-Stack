@@ -83,13 +83,14 @@ export default function RegisterForm() {
      }
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 p-6 bg-bg-secondary max-w-[450px] rounded"
+        className="flex flex-col justify-center items-center gap-4 p-6 
+        bg-bg-secondary min-w-[325px] w-1/2 max-w-[600px] aspect-[10/12] max-h-[600px] rounded border-1 border-primary"
       >
         <div className="text-text-primary text-center mb-4">
-          <h1 className="font-orbitron font-semibold text-4xl">
+          <h1 className="font-orbitron font-semibold text-4xl lg:text-5xl">
             Create account
           </h1>
-          <p className="font-inter font-light">
+          <p className="font-inter font-light lg:text-2xl">
             Sign up to start your gaming journey
           </p>
         </div>
