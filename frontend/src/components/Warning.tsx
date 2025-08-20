@@ -18,18 +18,18 @@ export const Warning: FC<WarningProps> = ({ message, type, onClose }) => {
       >
         <div className={`
          bg-bg-secondary border-t-4 p-4 rounded-lg
-          font-inter text-text-primary w-xs h-fit
-          flex flex-col items-center text-center min-h-60 justify-around
+          font-inter text-text-primary min-w-[325px] w-1/2 max-w-xl min-h-60 h-1/3 max-h-100
+          flex flex-col items-center text-center justify-around
           ${borderColorClass}`}>
           <div>
-            <p className={`font-orbitron font-bold text-xl ${textColorClass}`}>
+            <p className={`font-orbitron font-bold text-2xl md:text-3xl xl:text-4xl mb-2 ${textColorClass}`}>
               {isSuccess ? "Success!" : "An error has happened!"}
             </p>
-            <p className="text-sm font-inter font-light">{message}</p>
+            <p className="font-inter font-light text-sm md:text-shadow-md xl:text-xl">{message}</p>
           </div>
           <button
             onClick={onClose}
-            className={`ml-4 px-3 py-1 text-sm font-semibold rounded font-orbitron
+            className={`ml-4 px-3 py-1 text-md font-semibold rounded font-orbitron
             hover:bg-opacity-80 transition-colors ${buttonColorClass}`}
           >
             Fechar
