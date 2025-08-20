@@ -1,87 +1,27 @@
 import { useForm } from "react-hook-form";
 import { Input } from "../../../components/Input";
-import { AUTH_URL } from "../../../BACKEND_URL";
 import { Warning } from "../../../components/Warning";
 import Button from "../../../components/Button";
+import { useAuthForm } from "../hooks/useAuth";
 
 import { type RegisterFormProps } from "../types/RegisterFormType";
-import { type warningState } from "../../../types/warningType";
-import { type errorResponseApi } from "../../../types/responseApiType";
 import { type RegisterFormData } from "../types/RegisterFormType";
-import { useState } from "react";
 
-
-const emptyWarningState:warningState = {
-  message: "",
-  type: "success",
-};
-
-
-
-export default function RegisterForm({className}:RegisterFormProps) {
+export default function RegisterForm({ className }: RegisterFormProps) {
   const { register, handleSubmit, formState, getValues } =
     useForm<RegisterFormData>();
-  const [warning, setWarning] = useState<warningState>(emptyWarningState);
-
-  async function createAccount(formData: RegisterFormData) {
-    const response = await fetch(`${AUTH_URL}/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-
-    const responseData = await response.json();
-
-    if (!response.ok) {
-      let errorMessage =
-        responseData.message || "An unexpected error occurred.";
-
-      if (responseData.errors) {
-        errorMessage = responseData.errors
-          .map((err: errorResponseApi) => err.description)
-          .join("\n");
-      } else if (responseData.message) {
-        errorMessage = responseData.message;
-      }
-
-      throw new Error(errorMessage);
-    }
-
-    return responseData.message;
-  }
-
-  async function onSubmit(data: RegisterFormData) {
-    console.log(data);
-    try {
-      const successMessage = await createAccount(data);
-      const successObj: warningState = {
-        message: successMessage,
-        type: "success",
-      };
-      setWarning(successObj);
-    } catch (error) {
-      const errorObj: warningState = {
-        message: "",
-        type: "error",
-      };
-
-      if (error instanceof Error) {
-        const errorMessage = error?.message;
-        errorObj.message = errorMessage;
-        setWarning(errorObj);
-      } else {
-        errorObj.message = "An unknown error occurred."
-        setWarning(errorObj); 
-      }
-    }
-  }
+  const { warning, onSubmit, emptyWarningState, setWarning } =
+    useAuthForm<RegisterFormData>("/register");
 
   return (
     <>
-     {warning.message !== "" ? <Warning message={warning.message} type={warning.type} onClose={() =>setWarning(emptyWarningState)}/> : null
-     }
+      {warning.message !== "" ? (
+        <Warning
+          message={warning.message}
+          type={warning.type}
+          onClose={() => setWarning(emptyWarningState)}
+        />
+      ) : null}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className={`flex flex-col justify-center items-center gap-4 p-6 
@@ -140,7 +80,7 @@ export default function RegisterForm({className}:RegisterFormProps) {
           })}
           errorMessage={formState.errors.confirmPassword?.message}
         />
-        <Button title="Create account" type="submit"/>
+        <Button title="Create account" type="submit" />
       </form>
     </>
   );

@@ -1,73 +1,17 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "../../../components/Input";
 import { Warning } from "../../../components/Warning";
 import Button from "../../../components/Button";
-import { type LoginFormData } from "../types/LoginFormType";
-import { AUTH_URL } from "../../../BACKEND_URL";
-import { type warningState } from "../../../types/warningType";
-import { type LoginFormProps } from "../types/LoginFormType";
+import { useAuthForm } from "../hooks/useAuth";
 
-const emptyWarningState: warningState = {
-  message: "",
-  type: "success",
-};
+import { type LoginFormData } from "../types/LoginFormType";
+import { type LoginFormProps } from "../types/LoginFormType";
 
 export default function LoginForm({ className }: LoginFormProps) {
   const { register, handleSubmit, formState } = useForm<LoginFormData>();
 
-  const [warning, setWarning] = useState<warningState>(emptyWarningState);
-
-  async function loginAccount(formData: LoginFormData) {
-    const response = await fetch(`${AUTH_URL}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-
-    const responseData = await response.json();
-
-    if (!response.ok) {
-      let errorMessage =
-        responseData.message || "An unexpected error occurred.";
-
-      if (responseData.message) {
-        errorMessage = responseData.message;
-      }
-
-      throw new Error(errorMessage);
-    }
-
-    return responseData.message;
-  }
-
-  async function onSubmit(data: LoginFormData) {
-    console.log(data);
-    try {
-      const successMessage = await loginAccount(data);
-      const successObj: warningState = {
-        message: successMessage,
-        type: "success",
-      };
-      setWarning(successObj);
-    } catch (error) {
-      const errorObj: warningState = {
-        message: "",
-        type: "error",
-      };
-
-      if (error instanceof Error) {
-        const errorMessage = error?.message;
-        errorObj.message = errorMessage;
-        setWarning(errorObj);
-      } else {
-        errorObj.message = "An unknown error occurred.";
-        setWarning(errorObj);
-      }
-    }
-  }
+  const { warning, onSubmit, emptyWarningState, setWarning } =
+    useAuthForm<LoginFormData>("/login");
 
   return (
     <>
