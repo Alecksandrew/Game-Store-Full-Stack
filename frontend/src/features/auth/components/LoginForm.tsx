@@ -1,30 +1,25 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "../../../components/Input";
-import { AUTH_URL } from "../../../BACKEND_URL";
 import { Warning } from "../../../components/Warning";
 import Button from "../../../components/Button";
-
-import { type RegisterFormProps } from "../types/RegisterFormType";
+import { type LoginFormData } from "../types/LoginFormType";
+import { AUTH_URL } from "../../../BACKEND_URL";
 import { type warningState } from "../../../types/warningType";
-import { type errorResponseApi } from "../../../types/responseApiType";
-import { type RegisterFormData } from "../types/RegisterFormType";
-import { useState } from "react";
+import { type LoginFormProps } from "../types/LoginFormType";
 
-
-const emptyWarningState:warningState = {
+const emptyWarningState: warningState = {
   message: "",
   type: "success",
 };
 
+export default function LoginForm({ className }: LoginFormProps) {
+  const { register, handleSubmit, formState } = useForm<LoginFormData>();
 
-
-export default function RegisterForm({className}:RegisterFormProps) {
-  const { register, handleSubmit, formState, getValues } =
-    useForm<RegisterFormData>();
   const [warning, setWarning] = useState<warningState>(emptyWarningState);
 
-  async function createAccount(formData: RegisterFormData) {
-    const response = await fetch(`${AUTH_URL}/register`, {
+  async function loginAccount(formData: LoginFormData) {
+    const response = await fetch(`${AUTH_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -38,11 +33,7 @@ export default function RegisterForm({className}:RegisterFormProps) {
       let errorMessage =
         responseData.message || "An unexpected error occurred.";
 
-      if (responseData.errors) {
-        errorMessage = responseData.errors
-          .map((err: errorResponseApi) => err.description)
-          .join("\n");
-      } else if (responseData.message) {
+      if (responseData.message) {
         errorMessage = responseData.message;
       }
 
@@ -52,10 +43,10 @@ export default function RegisterForm({className}:RegisterFormProps) {
     return responseData.message;
   }
 
-  async function onSubmit(data: RegisterFormData) {
+  async function onSubmit(data: LoginFormData) {
     console.log(data);
     try {
-      const successMessage = await createAccount(data);
+      const successMessage = await loginAccount(data);
       const successObj: warningState = {
         message: successMessage,
         type: "success",
@@ -72,37 +63,35 @@ export default function RegisterForm({className}:RegisterFormProps) {
         errorObj.message = errorMessage;
         setWarning(errorObj);
       } else {
-        errorObj.message = "An unknown error occurred."
-        setWarning(errorObj); 
+        errorObj.message = "An unknown error occurred.";
+        setWarning(errorObj);
       }
     }
   }
 
   return (
     <>
-     {warning.message !== "" ? <Warning message={warning.message} type={warning.type} onClose={() =>setWarning(emptyWarningState)}/> : null
-     }
+      {warning.message !== "" ? (
+        <Warning
+          message={warning.message}
+          type={warning.type}
+          onClose={() => setWarning(emptyWarningState)}
+        />
+      ) : null}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className={`flex flex-col justify-center items-center gap-4 p-6 
         bg-bg-secondary aspect-[10/12] 
-        max-h-[600px] rounded border-1 border-primary  w-full ${className}`}
+        max-h-[600px] rounded border-1 border-primary w-full ${className}`}
       >
         <div className="text-text-primary text-center mb-4">
           <h1 className="font-orbitron font-semibold text-4xl lg:text-5xl">
-            Create account
+            Login
           </h1>
           <p className="font-inter font-light lg:text-2xl">
-            Sign up to start your gaming journey
+            Login to start your gaming journey
           </p>
         </div>
-        <Input
-          title="User Name"
-          type="text"
-          placeholder="Enter your nickname"
-          {...register("username", { required: "User name is required" })}
-          errorMessage={formState.errors.username?.message}
-        />
         <Input
           title="Email"
           type="email"
@@ -129,18 +118,7 @@ export default function RegisterForm({className}:RegisterFormProps) {
           })}
           errorMessage={formState.errors.password?.message}
         />
-        <Input
-          title="Confirm Password"
-          type="password"
-          placeholder="Confirm your password"
-          {...register("confirmPassword", {
-            required: "Please confirm your password",
-            validate: (value) =>
-              value === getValues("password") || "The passwords do not match",
-          })}
-          errorMessage={formState.errors.confirmPassword?.message}
-        />
-        <Button title="Create account" type="submit"/>
+        <Button title="Login" type="submit" />
       </form>
     </>
   );

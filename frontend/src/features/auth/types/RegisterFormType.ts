@@ -4,3 +4,7 @@ export type RegisterFormData = {
   password:        string;
   confirmPassword: string;
 };
+
+export type RegisterFormProps = {
+  className?: string
+};

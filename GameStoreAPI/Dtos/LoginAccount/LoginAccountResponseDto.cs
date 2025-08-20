@@ -2,8 +2,8 @@
 {
     public class LoginAccountResponseDto
     {
-        public string? message;
-        public string? refreshTokenRes;
-        public string? jwtTokenRes;
+        public string? message { get; set; }
+        public string? refreshTokenRes { get; set; }
+        public string? jwtTokenRes { get; set; }
     }
 }
