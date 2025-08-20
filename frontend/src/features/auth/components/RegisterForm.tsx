@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { Input } from "../../../components/Input";
 import { BACKEND_URL } from "../../../BACKEND_URL";
 import { Warning } from "../../../components/Warning";
+import Button from "../../../components/Button";
 
 import { type errorResponseApi } from "../../../types/responseApiType";
 import { type RegisterFormData } from "../types/RegisterFormType";
@@ -138,12 +139,7 @@ export default function RegisterForm() {
           })}
           errorMessage={formState.errors.confirmPassword?.message}
         />
-        <button
-          type="submit"
-          className="bg-primary text-text-primary font-semibold p-1 rounded w-full mt-2"
-        >
-          Create account
-        </button>
+        <Button title="Create account" type="submit"/>
       </form>
     </>
   );
