@@ -82,7 +82,10 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase); // Allow better comunication between front and backend:
+                                                                                                                                  // JSON arrives CamelCase -> PascalCase
+                                                                                                                                  // JSON go back PascalCase -> CamelCase
 
 
 var app = builder.Build();

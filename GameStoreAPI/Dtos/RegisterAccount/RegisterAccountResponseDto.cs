@@ -4,7 +4,7 @@ namespace GameStoreAPI.Dtos.CreateAccount
 {
     public class RegisterAccountResponseDto
     {
-        public required string message;
-        public IEnumerable<IdentityError>? errors;
+        public required string Message { get; set; }
+        public IEnumerable<IdentityError>? Errors { get; set; }
     }
 }

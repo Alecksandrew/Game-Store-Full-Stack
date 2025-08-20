@@ -37,8 +37,8 @@ namespace GameStoreAPI.Controllers
 
             RegisterAccountResponseDto response = new RegisterAccountResponseDto
             {
-                message = message,
-                errors = errors
+                Message = message,
+                Errors = errors
             };
 
             return success ? Ok(response) : BadRequest(response);

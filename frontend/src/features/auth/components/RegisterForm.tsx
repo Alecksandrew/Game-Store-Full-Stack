@@ -18,8 +18,18 @@ export default function RegisterForm() {
     const responseData = await response.json();
 
     if (!response.ok) {
-      const errorMessage =
+      let errorMessage =
         responseData.message || "An unexpected error occurred.";
+
+          
+      if (responseData.errors) {
+
+        errorMessage = responseData.errors.map((err: any) => err.description).join("\n");
+      } else if (responseData.message) {
+
+        errorMessage = responseData.message;
+      }
+
       throw new Error(errorMessage);
     }
 
@@ -27,6 +37,7 @@ export default function RegisterForm() {
   }
 
   async function onSubmit(data: RegisterFormData) {
+    console.log(data);
     try {
       const successMessage = await createAccount(data);
       alert(successMessage); //I have to create a warning component
