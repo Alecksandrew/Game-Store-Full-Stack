@@ -79,8 +79,8 @@ namespace GameStoreAPI.Services.AuthService
         private async Task SendConfirmationEmailAsync(IdentityUser user)
         {
             var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            string BACKEND_URL = _configuration.GetValue<string>("ApplicationSettings:BackendUrl");
-            string confirmationURL = $"{BACKEND_URL}/api/account/confirm-email?emailToken={emailToken}&userId={user.Id}";
+            string FRONTEND_URL = _configuration.GetValue<string>("ApplicationSettings:FrontendUrl");
+            string confirmationURL = $"{FRONTEND_URL}/confirm-email?emailToken={emailToken}&userId={user.Id}";
 
             string subject = "Confirmation email - Game Store";
             string htmlContext = $"<h1>Welcome to GameStore!</h1><p>Please, confirm your account by clicking on the link:</p><a href='{confirmationURL}'>Confirm your email</a>";

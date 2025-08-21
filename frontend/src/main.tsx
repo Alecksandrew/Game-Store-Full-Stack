@@ -5,6 +5,7 @@ import './index.css'
 import AuthPage from './features/auth/pages/AuthPage.tsx';
 import ForgotPasswordPage from './features/auth/pages/ForgotPasswordPage.tsx';
 import ResetPasswordPage from './features/auth/pages/ResetPasswordPage.tsx';
+import EmailConfirmationPage from './features/auth/pages/EmailConfirmationPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path:"/reset-password",
     element: <ResetPasswordPage />
+  },
+  {
+    path:"/confirm-email",
+    element: <EmailConfirmationPage />
   }
 ])
 
