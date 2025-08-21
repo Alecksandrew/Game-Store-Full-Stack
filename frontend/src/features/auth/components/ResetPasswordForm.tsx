@@ -7,13 +7,23 @@ import { useForm } from "react-hook-form";
 
 import { type ResetPasswordFormProps } from "../types/ResetPasswordFormType";
 import { type ResetPasswordFormData } from "../types/ResetPasswordFormType";
-import { useAuthForm } from "../hooks/useAuth";
+import { useEffect } from "react";
+import { useLocation } from "react-router";
+import { useResetPassword } from "../hooks/useAuth";
 
 export default function ResetPasswordForm({ className }:ResetPasswordFormProps) {
-  const { register, handleSubmit, formState, getValues } =
+  const { register, handleSubmit, formState, getValues,  setValue } =
     useForm<ResetPasswordFormData>();
-  const { warning, onSubmit, emptyWarningState, setWarning } =
-    useAuthForm<ResetPasswordFormData>("/reset-password");
+  const { execute, warning, isLoading, setWarning, emptyWarningState } = useResetPassword();
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const token = params.get('token') || '';
+    const email = params.get('email') || '';
+    setValue('token', token);
+    setValue('email', email);
+  }, [location, setValue]);
 
   return (
     <>
@@ -24,11 +34,13 @@ export default function ResetPasswordForm({ className }:ResetPasswordFormProps) 
           onClose={() => setWarning(emptyWarningState)}
         />
       ) : null}
-      <form onSubmit={handleSubmit(onSubmit)} className={`form ${className}`}>
+      <form onSubmit={handleSubmit(execute)} className={`form ${className}`}>
         <FormHeader
           title="Update your password"
           subTitle="Set a new password and get back to enjoy daily game deals"
         />
+        <input type="hidden" {...register("token")} />
+        <input type="hidden" {...register("email")} />
         <Input
           title="New password"
           type="password"
@@ -53,7 +65,7 @@ export default function ResetPasswordForm({ className }:ResetPasswordFormProps) 
           })}
           errorMessage={formState.errors.confirmPassword?.message}
         />
-        <Button title="Reset password" type="submit" />
+        <Button title="Reset password" type="submit" disabled={isLoading} />
       </form>
     </>
   );

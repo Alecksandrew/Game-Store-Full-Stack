@@ -6,13 +6,13 @@ import { useForm } from "react-hook-form";
 
 import { type ForgotPassswordFormProps } from "../types/ForgotPasswordFormType";
 import { type ForgotPassswordFormData } from "../types/ForgotPasswordFormType";
-import { useAuthForm } from "../hooks/useAuth";
+import { useForgotPassword } from "../hooks/useAuth";
+
 
 export default function ForgotPasswordForm({ className }:ForgotPassswordFormProps) {
   const { register, handleSubmit, formState } =
     useForm<ForgotPassswordFormData>();
-  const { warning, onSubmit, emptyWarningState, setWarning } =
-    useAuthForm<ForgotPassswordFormData>("/forgot-password");
+  const { execute, warning, isLoading, setWarning, emptyWarningState } = useForgotPassword();
 
   return (
     <>
@@ -23,7 +23,7 @@ export default function ForgotPasswordForm({ className }:ForgotPassswordFormProp
           onClose={() => setWarning(emptyWarningState)}
         />
       ) : null}
-      <form onSubmit={handleSubmit(onSubmit)} className={`form ${className}`}>
+      <form onSubmit={handleSubmit(execute)} className={`form ${className}`}>
         <FormHeader
           title="Forgot your password?"
           subTitle="Dont worry! Type your email and we gonna send a link to update your password!"
@@ -41,7 +41,7 @@ export default function ForgotPasswordForm({ className }:ForgotPassswordFormProp
           })}
           errorMessage={formState.errors.email?.message}
         />
-        <Button title="Reset password" type="submit" />
+        <Button title="Reset password" type="submit" disabled={isLoading} />
       </form>
     </>
   );

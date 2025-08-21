@@ -1,68 +1,51 @@
-import { useState } from "react";
 import { AUTH_URL } from "../../../BACKEND_URL";
-import { type warningState } from "../../../types/warningType";
-import { type errorResponseApi } from "../../../types/responseApiType";
+import { useApi } from "../../../hooks/useApi";
+import { type ApiErrorDetail, type ForgotPasswordResponse, type LoginResponse, type RegisterResponse, type ResetPasswordResponse } from "../../../types/responseApiType";
+import type { ForgotPassswordFormData } from "../types/ForgotPasswordFormType";
+import type { LoginFormData } from "../types/LoginFormType";
+import type { RegisterFormData } from "../types/RegisterFormType";
+import type { ResetPasswordFormData } from "../types/ResetPasswordFormType";
 
-const emptyWarningState: warningState = {
-  message: "",
-  type: "success",
-};
+export async function authRequest<TData>(endpoint: string, data: TData) {
+  const response = await fetch(`${AUTH_URL}${endpoint}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
 
-export function useAuthForm<TFormData>(endpoint: "/login" | "/register" | "/forgot-password" | "/reset-password") {
-  const [warning, setWarning] = useState<warningState>(emptyWarningState);
-  const [isLoading, setIsLoading] = useState(false);
+  const responseData = await response.json();
 
-  async function onSubmit(data: TFormData) {
-    setIsLoading(true);
-    setWarning(emptyWarningState);
-
-    try {
-      const response = await fetch(`${AUTH_URL}${endpoint}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      const responseData = await response.json();
-
-      if (!response.ok) {
-        let errorMessage =
-          responseData.message || "An unexpected error occurred.";
-        if (responseData.errors) {
-          errorMessage = responseData.errors.map(
-            (err: errorResponseApi) => err.description
-          ).join("\n");
-        }
-        throw new Error(errorMessage);
-      }
-
-      const successObj: warningState = {
-        message: responseData.message,
-        type: "success",
-      };
-      setWarning(successObj);
-    } catch (error) {
-      const errorObj: warningState = {
-        message: "",
-        type: "error",
-      };
-      if (error instanceof Error) {
-        errorObj.message = error.message;
-        setWarning(errorObj);
-      } else {
-        errorObj.message = "An unknown error occurred.";
-        setWarning(errorObj);
-      }
-    } finally {
-      setIsLoading(false);
+  if (!response.ok) {
+    let errorMessage = responseData.message || "An unexpected error occurred.";
+    if (responseData.errors && Array.isArray(responseData.errors)) {
+      errorMessage = responseData.errors
+        .map((err: ApiErrorDetail) => err.description)
+        .join("\n");
     }
+
+    throw new Error(errorMessage);
   }
 
-  return {
-    warning,
-    isLoading,
-    onSubmit,
-    emptyWarningState,
-    setWarning,
-  };
+  return responseData;
+}
+
+
+export function useLogin() {
+  return useApi<LoginFormData, LoginResponse>((data: LoginFormData) => 
+    authRequest("/login", data)
+  );
+}
+
+export function useRegister() {
+  return useApi<RegisterFormData, RegisterResponse>((data: RegisterFormData) => authRequest("/register", data));
+}
+
+
+export function useForgotPassword() {
+  return useApi<ForgotPassswordFormData, ForgotPasswordResponse>((data: ForgotPassswordFormData) => authRequest("/forgot-password", data));
+}
+
+
+export function useResetPassword() {
+  return useApi<ResetPasswordFormData, ResetPasswordResponse>((data: ResetPasswordFormData) => authRequest("/reset-password", data));
 }
