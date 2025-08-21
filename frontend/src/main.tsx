@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import './index.css'
 import AuthPage from './features/auth/pages/AuthPage.tsx';
-import ForgotPasswordPage from './features/forgotPassword/pages/ForgotPasswordPage';
+import ForgotPasswordPage from './features/auth/pages/ForgotPasswordPage.tsx';
 
 const router = createBrowserRouter([
   {

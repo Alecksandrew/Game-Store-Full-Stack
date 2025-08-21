@@ -8,7 +8,7 @@ const emptyWarningState: warningState = {
   type: "success",
 };
 
-export function useAuthForm<TFormData>(endpoint: "/login" | "/register") {
+export function useAuthForm<TFormData>(endpoint: "/login" | "/register" | "/forgot-password") {
   const [warning, setWarning] = useState<warningState>(emptyWarningState);
   const [isLoading, setIsLoading] = useState(false);
 

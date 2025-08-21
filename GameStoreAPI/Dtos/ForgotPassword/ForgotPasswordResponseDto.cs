@@ -2,6 +2,6 @@
 {
     public class ForgotPasswordResponseDto
     {
-        public required string message;
+        public required string message { get; set; }
     }
 }
