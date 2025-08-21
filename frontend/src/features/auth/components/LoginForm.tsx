@@ -3,9 +3,11 @@ import { Input } from "../../../components/Input";
 import { Warning } from "../../../components/Warning";
 import Button from "../../../components/Button";
 import { useAuthForm } from "../hooks/useAuth";
+import FormHeader from "../../../components/FormHeader";
 
 import { type LoginFormData } from "../types/LoginFormType";
 import { type LoginFormProps } from "../types/LoginFormType";
+import { Link } from "react-router";
 
 export default function LoginForm({ className }: LoginFormProps) {
   const { register, handleSubmit, formState } = useForm<LoginFormData>();
@@ -24,18 +26,9 @@ export default function LoginForm({ className }: LoginFormProps) {
       ) : null}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className={`flex flex-col justify-center items-center gap-4 p-6 
-        bg-bg-secondary aspect-[10/12] 
-        max-h-[600px] rounded border-1 border-primary w-full ${className}`}
+        className={`form ${className}`}
       >
-        <div className="text-text-primary text-center mb-4">
-          <h1 className="font-orbitron font-semibold text-4xl lg:text-5xl">
-            Login
-          </h1>
-          <p className="font-inter font-light lg:text-2xl">
-            Login to start your gaming journey
-          </p>
-        </div>
+        <FormHeader title="Login" subTitle="Login to start your gaming journey"/>
         <Input
           title="Email"
           type="email"
@@ -63,7 +56,9 @@ export default function LoginForm({ className }: LoginFormProps) {
           errorMessage={formState.errors.password?.message}
         />
         <Button title="Login" type="submit" />
+        <Link to={"/forgot-password"} className="text-text-primary underline decoration-2 decoration-primary font-inter font-light text-sm mt-2">Forgot password</Link>
       </form>
+      
     </>
   );
 }

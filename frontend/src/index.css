@@ -22,3 +22,11 @@
   --font-orbitron: "Orbitron", sans-serif;
   --font-inter: "Inter", sans-serif;
 };
+
+@layer components {
+  .form {
+    @apply flex flex-col justify-center items-center gap-4 p-6 
+         bg-bg-secondary aspect-[10/12] 
+           max-h-[600px] rounded border-1 border-primary  w-full
+  } 
+}

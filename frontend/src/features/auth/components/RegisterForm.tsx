@@ -6,6 +6,7 @@ import { useAuthForm } from "../hooks/useAuth";
 
 import { type RegisterFormProps } from "../types/RegisterFormType";
 import { type RegisterFormData } from "../types/RegisterFormType";
+import FormHeader from "../../../components/FormHeader";
 
 export default function RegisterForm({ className }: RegisterFormProps) {
   const { register, handleSubmit, formState, getValues } =
@@ -24,18 +25,9 @@ export default function RegisterForm({ className }: RegisterFormProps) {
       ) : null}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className={`flex flex-col justify-center items-center gap-4 p-6 
-        bg-bg-secondary aspect-[10/12] 
-        max-h-[600px] rounded border-1 border-primary  w-full ${className}`}
+        className={`form ${className}`}
       >
-        <div className="text-text-primary text-center mb-4">
-          <h1 className="font-orbitron font-semibold text-4xl lg:text-5xl">
-            Create account
-          </h1>
-          <p className="font-inter font-light lg:text-2xl">
-            Sign up to start your gaming journey
-          </p>
-        </div>
+        <FormHeader title="Create account" subTitle="Sign up to start your gaming journey"/>
         <Input
           title="User Name"
           type="text"
