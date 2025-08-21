@@ -1,4 +1,3 @@
-import { AUTH_URL } from "../../../BACKEND_URL";
 import Button from "../../../components/Button";
 import FormHeader from "../../../components/FormHeader";
 import { Warning } from "../../../components/Warning";

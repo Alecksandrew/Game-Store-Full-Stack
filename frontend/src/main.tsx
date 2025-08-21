@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import './index.css'
 import AuthPage from './features/auth/pages/AuthPage.tsx';
 import ForgotPasswordPage from './features/auth/pages/ForgotPasswordPage.tsx';
+import ResetPasswordPage from './features/auth/pages/ResetPasswordPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
   {
     path:"/forgot-password",
     element: <ForgotPasswordPage />
+  },
+  {
+    path:"/reset-password",
+    element: <ResetPasswordPage />
   }
 ])
 
