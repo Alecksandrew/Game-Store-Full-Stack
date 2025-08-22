@@ -5,6 +5,8 @@ import Button from "../../../components/Button";
 import FormHeader from "../../../components/FormHeader";
 
 import { useUpdatePassword } from "../hooks/useUpdatePassword"; 
+import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 export type UpdatePasswordFormData = {
   currentPassword: string;
@@ -28,7 +30,10 @@ export default function UpdatePasswordForm({ className }: UpdatePasswordFormProp
         <Warning
           message={warning.message}
           type={warning.type}
-          onClose={() => setWarning(emptyWarningState)}
+          onClose={() => {
+            setWarning(emptyWarningState);
+
+          }}
         />
       )}
       <form

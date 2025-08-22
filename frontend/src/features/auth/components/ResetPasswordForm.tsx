@@ -1,4 +1,3 @@
-
 import Button from "../../../components/Button";
 import FormHeader from "../../../components/FormHeader";
 import { Warning } from "../../../components/Warning";
@@ -8,22 +7,34 @@ import { useForm } from "react-hook-form";
 import { type ResetPasswordFormProps } from "../types/ResetPasswordFormType";
 import { type ResetPasswordFormData } from "../types/ResetPasswordFormType";
 import { useEffect } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useResetPassword } from "../hooks/useAuth";
 
-export default function ResetPasswordForm({ className }:ResetPasswordFormProps) {
-  const { register, handleSubmit, formState, getValues,  setValue } =
+export default function ResetPasswordForm({
+  className,
+}: ResetPasswordFormProps) {
+  const { register, handleSubmit, formState, getValues, setValue } =
     useForm<ResetPasswordFormData>();
-  const { execute, warning, isLoading, setWarning, emptyWarningState } = useResetPassword();
+  const { execute, warning, isLoading, setWarning, emptyWarningState } =
+    useResetPassword();
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const token = params.get('token') || '';
-    const email = params.get('email') || '';
-    setValue('token', token);
-    setValue('email', email);
-  }, [location, setValue]);
+    const token = params.get("token") || "";
+    console.log('Token recebido da URL:', token); 
+    const email = params.get("email") || "";
+    setValue("token", token);
+    setValue("email", email);
+
+    if (warning.message && warning.type === "success") {
+      const timeout = setTimeout(() => {
+        navigate("/");
+      }, 2000);
+      return () => clearTimeout(timeout);
+    }
+  }, [location, setValue, warning, navigate]);
 
   return (
     <>
@@ -31,7 +42,10 @@ export default function ResetPasswordForm({ className }:ResetPasswordFormProps) 
         <Warning
           message={warning.message}
           type={warning.type}
-          onClose={() => setWarning(emptyWarningState)}
+          onClose={() => {
+            setWarning(emptyWarningState);
+            navigate("/");
+          }}
         />
       ) : null}
       <form onSubmit={handleSubmit(execute)} className={`form ${className}`}>
@@ -61,7 +75,8 @@ export default function ResetPasswordForm({ className }:ResetPasswordFormProps) 
           {...register("confirmNewPassword", {
             required: "Please confirm your password",
             validate: (value) =>
-              value === getValues("newPassword") || "The passwords do not match",
+              value === getValues("newPassword") ||
+              "The passwords do not match",
           })}
           errorMessage={formState.errors.confirmNewPassword?.message}
         />

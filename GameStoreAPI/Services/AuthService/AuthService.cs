@@ -95,7 +95,7 @@ namespace GameStoreAPI.Services.AuthService
             if (string.IsNullOrEmpty(origin))throw new Exception("FrontendUrl não está configurado no servidor.");
 
             var resetPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(user);
-
+            Console.WriteLine($"Token Gerado para {user.Email}: {resetPasswordToken}");
             var resetUrl = $"{origin}/reset-password?token={Uri.EscapeDataString(resetPasswordToken)}&email={Uri.EscapeDataString(user.Email)}";//url to get back to front end
 
             string subject = "Update Password - Game Store";
@@ -248,12 +248,14 @@ namespace GameStoreAPI.Services.AuthService
         }
         public async Task<(bool success, string message, IEnumerable<IdentityError>? errors)> ResetPasswordAsync(ResetPasswordRequestDto dto)
         {
+            Console.WriteLine($"Token Recebido para validação para {dto.Email}: {dto.Token}");
             var user = await _userManager.FindByEmailAsync(dto.Email);
 
             if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
             {
                 return (false, "Fail when updating password", null);
             };
+
 
             var result = await _userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
 

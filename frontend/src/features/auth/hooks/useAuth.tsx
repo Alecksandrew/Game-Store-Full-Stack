@@ -69,7 +69,7 @@ export function useLogin() {
       localStorage.setItem("refreshToken", response.data.refreshTokenRes);
     }
     if (response.data?.jwtTokenRes && response.data?.refreshTokenRes) {
-      const timeout = setTimeout(() => navigate("/my-account"), 5000);
+      const timeout = setTimeout(() => navigate("/my-account"), 3000);
       return () => clearTimeout(timeout);
     }
   }, [response.data, navigate]);
