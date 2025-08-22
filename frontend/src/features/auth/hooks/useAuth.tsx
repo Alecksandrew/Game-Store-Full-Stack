@@ -31,9 +31,15 @@ export async function authRequest<TData>(endpoint: string, data: TData) {
 
 
 export function useLogin() {
-  return useApi<LoginFormData, LoginResponse>((data: LoginFormData) => 
+  const response =  useApi<LoginFormData, LoginResponse>((data: LoginFormData) => 
     authRequest("/login", data)
   );
+
+  if (response.data?.jwtTokenRes) localStorage.setItem("jwtToken", response.data?.jwtTokenRes);
+  if (response.data?.refreshTokenRes) localStorage.setItem("refreshToken", response.data?.refreshTokenRes);
+
+  return response
+ 
 }
 
 export function useRegister() {
