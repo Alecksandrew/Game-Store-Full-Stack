@@ -1,3 +1,4 @@
+import { Navigate, useNavigate } from "react-router";
 import { AUTH_URL } from "../../../BACKEND_URL";
 import { useApi } from "../../../hooks/useApi";
 import { type ApiErrorDetail, type ForgotPasswordResponse, type LoginResponse, type RegisterResponse, type ResetPasswordResponse } from "../../../types/responseApiType";
@@ -30,16 +31,29 @@ export async function authRequest<TData>(endpoint: string, data: TData) {
 }
 
 
+import { useEffect } from "react";
+
 export function useLogin() {
-  const response =  useApi<LoginFormData, LoginResponse>((data: LoginFormData) => 
+  const navigate = useNavigate();
+
+  const response = useApi<LoginFormData, LoginResponse>((data: LoginFormData) =>
     authRequest("/login", data)
   );
 
-  if (response.data?.jwtTokenRes) localStorage.setItem("jwtToken", response.data?.jwtTokenRes);
-  if (response.data?.refreshTokenRes) localStorage.setItem("refreshToken", response.data?.refreshTokenRes);
+  useEffect(() => {
+    if (response.data?.jwtTokenRes) {
+      localStorage.setItem("jwtToken", response.data.jwtTokenRes);
+    }
+    if (response.data?.refreshTokenRes) {
+      localStorage.setItem("refreshToken", response.data.refreshTokenRes);
+    }
+    if (response.data?.jwtTokenRes && response.data?.refreshTokenRes) {
+      const timeout = setTimeout(() => navigate("/my-account"), 5000);
+      return () => clearTimeout(timeout);
+    }
+  }, [response.data, navigate]);
 
-  return response
- 
+  return response;
 }
 
 export function useRegister() {
