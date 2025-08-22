@@ -17,9 +17,9 @@ namespace GameStoreAPI.Controllers
     {
         private readonly AppDbContext _dbContext;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly AccountService _accountService;
+        private readonly IAccountService _accountService;
 
-        public MyAccountController(AppDbContext dbContext, UserManager<IdentityUser> userManager, AccountService accountService)
+        public MyAccountController(AppDbContext dbContext, UserManager<IdentityUser> userManager, IAccountService accountService)
         {
             _dbContext = dbContext;
             _userManager = userManager;

@@ -4,7 +4,7 @@ namespace GameStoreAPI.Dtos.UpdateAccount
 {
     public class UpdatePasswordResponseDto
     {
-        public required string message;
-        public IEnumerable<IdentityError>? errors;
+        public required string message { get; set; }
+        public IEnumerable<IdentityError>? errors { get; set; }
     }
 }

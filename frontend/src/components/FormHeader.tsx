@@ -1,11 +1,12 @@
 type FormHeaderProps = {
     title: string,
-    subTitle?:string
+    subTitle?:string,
+    className?: string
 }
 
-export default function FormHeader({title, subTitle}:FormHeaderProps) {
+export default function FormHeader({title, subTitle, className}:FormHeaderProps) {
   return (
-    <div className="text-text-primary text-center mb-4">
+    <div className={`text-text-primary text-center mb-4 ${className}`}>
       <h1 className="font-orbitron font-semibold text-4xl lg:text-5xl mb-1">
         {title}
       </h1>

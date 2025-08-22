@@ -1,16 +1,31 @@
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { AUTH_URL } from "../../../BACKEND_URL";
 import { useApi } from "../../../hooks/useApi";
-import { type ApiErrorDetail, type ForgotPasswordResponse, type LoginResponse, type RegisterResponse, type ResetPasswordResponse } from "../../../types/responseApiType";
+import {
+  type ApiErrorDetail,
+  type ForgotPasswordResponse,
+  type LoginResponse,
+  type RegisterResponse,
+  type ResetPasswordResponse,
+} from "../../../types/responseApiType";
 import type { ForgotPassswordFormData } from "../types/ForgotPasswordFormType";
 import type { LoginFormData } from "../types/LoginFormType";
 import type { RegisterFormData } from "../types/RegisterFormType";
 import type { ResetPasswordFormData } from "../types/ResetPasswordFormType";
 
-export async function authRequest<TData>(endpoint: string, data: TData) {
+export async function authRequest<TData>(endpoint: string, method:string ="POST", isAuthorizationNeeded:boolean, data?: TData,) {
+  let tokenHeader = {};
+  if (isAuthorizationNeeded === true) {
+    const jwtToken = localStorage.getItem("jwtToken");
+    tokenHeader = { Authorization: `Bearer ${jwtToken}` };
+  }
+
   const response = await fetch(`${AUTH_URL}${endpoint}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: method,
+    headers: { 
+      "Content-Type": "application/json",
+      ...tokenHeader
+    },
     body: JSON.stringify(data),
   });
 
@@ -30,14 +45,13 @@ export async function authRequest<TData>(endpoint: string, data: TData) {
   return responseData;
 }
 
-
 import { useEffect } from "react";
 
 export function useLogin() {
   const navigate = useNavigate();
 
   const response = useApi<LoginFormData, LoginResponse>((data: LoginFormData) =>
-    authRequest("/login", data)
+    authRequest("/login", "POST", false, data)
   );
 
   useEffect(() => {
@@ -57,15 +71,21 @@ export function useLogin() {
 }
 
 export function useRegister() {
-  return useApi<RegisterFormData, RegisterResponse>((data: RegisterFormData) => authRequest("/register", data));
+  return useApi<RegisterFormData, RegisterResponse>((data: RegisterFormData) =>
+    authRequest("/register", "POST", false, data)
+  );
 }
-
 
 export function useForgotPassword() {
-  return useApi<ForgotPassswordFormData, ForgotPasswordResponse>((data: ForgotPassswordFormData) => authRequest("/forgot-password", data));
+  return useApi<ForgotPassswordFormData, ForgotPasswordResponse>(
+    (data: ForgotPassswordFormData) => authRequest("/forgot-password", "POST", false, data)
+  );
 }
-
 
 export function useResetPassword() {
-  return useApi<ResetPasswordFormData, ResetPasswordResponse>((data: ResetPasswordFormData) => authRequest("/reset-password", data));
+  return useApi<ResetPasswordFormData, ResetPasswordResponse>(
+    (data: ResetPasswordFormData) => authRequest("/reset-password", "POST", false, data)
+  );
 }
+
+
