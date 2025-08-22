@@ -27,6 +27,8 @@ export function useApi<TData, TResponse>(
         (response as ApiResponse)?.message || "Operation successful!";
 
       setWarning({ message: successMessage, type: "success" });
+
+       return response; 
     } catch (error) {
       if (error instanceof Error) {
         setWarning({ message: error.message, type: "error" });

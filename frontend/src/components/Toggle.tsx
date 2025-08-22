@@ -15,13 +15,13 @@ export default function Toggle({ activeOption, onOptionChange }: ToggleProps) {
       <Button
         title="Log in"
         type="button"
-        className={loginClasses} 
+        className={"bg-primary" + loginClasses} 
         onClick={() => onOptionChange('login')}
       />
       <Button
         title="Register"
         type="button"
-        className={registerClasses} 
+        className={"bg-primary" + registerClasses} 
         onClick={() => onOptionChange('register')}
       />
     </div>
