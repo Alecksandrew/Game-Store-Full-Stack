@@ -6,6 +6,8 @@ import AuthPage from './features/auth/pages/AuthPage.tsx';
 import ForgotPasswordPage from './features/auth/pages/ForgotPasswordPage.tsx';
 import ResetPasswordPage from './features/auth/pages/ResetPasswordPage.tsx';
 import EmailConfirmationPage from './features/auth/pages/EmailConfirmationPage.tsx';
+import MyAccountPage from './features/myAccount/pages/MyAccountPage.tsx';
+import ProtectedRoute from './components/ProtectedRoutes.tsx';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,14 @@ const router = createBrowserRouter([
   {
     path:"/confirm-email",
     element: <EmailConfirmationPage />
+  },
+  {
+    path:"/my-account",
+    element: (
+      <ProtectedRoute>
+        <MyAccountPage />
+      </ProtectedRoute>
+    )
   }
 ])
 
