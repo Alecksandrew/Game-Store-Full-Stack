@@ -5,6 +5,6 @@ export type ResetPasswordFormProps = {
 export type ResetPasswordFormData = {
   email: string,
   token: string,
-  password:        string;
-  confirmPassword: string;
+ newPassword:        string; 
+  confirmNewPassword: string; 
 };

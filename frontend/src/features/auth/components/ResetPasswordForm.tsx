@@ -45,25 +45,25 @@ export default function ResetPasswordForm({ className }:ResetPasswordFormProps) 
           title="New password"
           type="password"
           placeholder="Create a password"
-          {...register("password", {
+          {...register("newPassword", {
             required: "Password is required",
             minLength: {
               value: 8,
               message: "Password must be at least 8 characters long",
             },
           })}
-          errorMessage={formState.errors.password?.message}
+          errorMessage={formState.errors.newPassword?.message}
         />
         <Input
           title="Confirm new password"
           type="password"
           placeholder="Confirm your password"
-          {...register("confirmPassword", {
+          {...register("confirmNewPassword", {
             required: "Please confirm your password",
             validate: (value) =>
-              value === getValues("password") || "The passwords do not match",
+              value === getValues("newPassword") || "The passwords do not match",
           })}
-          errorMessage={formState.errors.confirmPassword?.message}
+          errorMessage={formState.errors.confirmNewPassword?.message}
         />
         <Button title="Reset password" type="submit" disabled={isLoading} />
       </form>
