@@ -1,4 +1,5 @@
 import DeleteAccount from "../components/DeleteAccountCard";
+import LogoutAccount from "../components/LogoutAccount";
 import PersonalInfoCard from "../components/PersonalInfoCard";
 import UpdatePasswordForm from "../components/UpdatePasswordForm";
 
@@ -12,6 +13,7 @@ export default function MyAccountPage(){
             <div className="relative z-10 w-4/5 max-w-[800px] flex flex-col gap-4">
                 <PersonalInfoCard header={undefined} inputTitle={undefined}/>
                 <UpdatePasswordForm/>
+                <LogoutAccount/>
                 <DeleteAccount/>
             </div>
             

@@ -58,7 +58,7 @@ export default function DeleteAccount() {
       )}
 
       {/* Seção principal do componente */}
-      <div className="form h-[350px]">
+      <div className="form h-[450px]">
         <FormHeader
           title="Danger zone"
           subTitle="Irreversible actions that permanently affect your account"

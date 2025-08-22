@@ -15,7 +15,12 @@ namespace GameStoreAPI.Services
         public Task BlacklistTokenAsync(string jti, DateTime expiryTime)
         {
             var cacheExpiry = expiryTime.Subtract(DateTime.UtcNow);
-            _memoryCache.Set(jti, "revoked", cacheExpiry);
+            
+            if (cacheExpiry > TimeSpan.Zero)
+            {
+                _memoryCache.Set(jti, "revoked", cacheExpiry);
+            }
+
             return Task.CompletedTask;
         }
 

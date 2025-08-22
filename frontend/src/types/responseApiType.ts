@@ -15,6 +15,10 @@ export type LoginResponse = {
   jwtTokenRes?: string;
 };
 
+export type LogoutResponse = {
+  message: string
+};
+
 export type RegisterResponse = {
   message:string,
   errors?: ApiErrorDetail[] | null;

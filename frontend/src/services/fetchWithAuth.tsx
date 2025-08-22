@@ -1,5 +1,11 @@
 import { AUTH_URL } from "../BACKEND_URL";
-// Função auxiliar para tentar obter um novo token
+
+function handleUnauthorized() {
+  localStorage.removeItem('jwtToken');
+  localStorage.removeItem('refreshToken');
+  window.location.href = '/'; 
+}
+
 async function getNewAccessToken() {
   const refreshToken = localStorage.getItem('refreshToken');
   if (!refreshToken) {
@@ -15,6 +21,7 @@ async function getNewAccessToken() {
   });
 
   if (!response.ok) {
+    handleUnauthorized();
     throw new Error("Failed to refresh token");
   }
 
