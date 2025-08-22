@@ -23,8 +23,10 @@ export function useEmailConfirmation() {
 
     const confirmEmail = async () => {
       try {
+        const encodedToken = encodeURIComponent(emailToken);
+        
         const response = await fetch(
-          `${AUTH_URL}/confirm-email?emailToken=${emailToken}&userId=${userId}`
+          `${AUTH_URL}/confirm-email?emailToken=${encodedToken}&userId=${userId}`
         );
         
         const data: ApiResponse = await response.json();
@@ -47,7 +49,7 @@ export function useEmailConfirmation() {
     };
     confirmEmail();
   }, [searchParams]); 
-  
+
   return { status, message };
 }
 
