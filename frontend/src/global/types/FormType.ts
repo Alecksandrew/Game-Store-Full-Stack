@@ -6,4 +6,5 @@ export type FormProps<T extends FieldValues> = {
   children: ReactNode;
   submitText: string;
   isLoading?: boolean;
+  defaultValues?: T;
 };

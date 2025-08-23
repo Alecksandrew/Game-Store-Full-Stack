@@ -9,9 +9,10 @@ export default function Form<T extends FieldValues>({
   children,
   submitText,
   isLoading = false,
+  defaultValues
 }: FormProps<T>) {
 
-  const methods = useForm<T>();
+  const methods = useForm<T>(defaultValues);
 
   return (
     <FormProvider {...methods}>
