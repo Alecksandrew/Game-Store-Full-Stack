@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import FormWrapper from "../components/FormWrapper";
+import BackgroundPage from "@/global/components/BackgroundPage";
 import RegisterForm from "../components/RegisterForm";
 import LoginForm from "../components/LoginForm";
 import Toggle from "../../../global/components/Toggle";
@@ -12,14 +12,9 @@ export default function AuthPage() {
   );
 
   return (
-    <>
-        <Card>
-          {toggleState === "register" ? <RegisterForm /> : <LoginForm />}
-        </Card>
-        <FormWrapper>
-      <Toggle activeOption={toggleState} onOptionChange={setToggleState} />
-    </FormWrapper>
-        </>
-    
+      <Card className="gap-6">
+        <Toggle activeOption={toggleState} onOptionChange={setToggleState} />
+        {toggleState === "register" ? <RegisterForm /> : <LoginForm />}
+      </Card>
   );
 }
