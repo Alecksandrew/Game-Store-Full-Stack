@@ -1,6 +1,5 @@
 import Button from "@/global/components/Button";
 import FormHeader from "@/global/components/FormHeader";
-import { Warning } from "@/global/components/Warning";
 import { Input } from "@/global/components/Input";
 import { useForm } from "react-hook-form";
 
@@ -15,7 +14,7 @@ export default function ResetPasswordForm({
 }: ResetPasswordFormProps) {
   const { register, handleSubmit, formState, getValues, setValue } =
     useForm<ResetPasswordFormData>();
-  const { execute, warning, isLoading, setWarning, emptyWarningState } =
+  const { execute, isLoading, warningComponent, data } =
     useResetPassword();
   const location = useLocation();
   const navigate = useNavigate();
@@ -28,26 +27,17 @@ export default function ResetPasswordForm({
     setValue("token", token);
     setValue("email", email);
 
-    if (warning.message && warning.type === "success") {
+    if (data != null) {
       const timeout = setTimeout(() => {
         navigate("/");
       }, 2000);
       return () => clearTimeout(timeout);
     }
-  }, [location, setValue, warning, navigate]);
+  }, [location, setValue, navigate, data]);
 
   return (
     <>
-      {warning.message !== "" ? (
-        <Warning
-          message={warning.message}
-          type={warning.type}
-          onClose={() => {
-            setWarning(emptyWarningState);
-            navigate("/");
-          }}
-        />
-      ) : null}
+      {warningComponent}
       <form onSubmit={handleSubmit(execute)} className={`form ${className}`}>
         <FormHeader
           title="Update your password"

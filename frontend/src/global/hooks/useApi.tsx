@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { type warningState } from "../types/warningType";
 import { type ApiResponse } from "../types/responseApiType";
+import { Warning } from "@/global/components/Warning";
 
 const emptyWarningState: warningState = {
   message: "",
   type: "success",
 };
 
+//Fetch general api -> this custom hook controls loading, data and warning states
 export function useApi<TData, TResponse>(
   apiRequest: (data: TData) => Promise<TResponse>
 ) {
@@ -28,7 +30,7 @@ export function useApi<TData, TResponse>(
 
       setWarning({ message: successMessage, type: "success" });
 
-       return response; 
+      return response;
     } catch (error) {
       if (error instanceof Error) {
         setWarning({ message: error.message, type: "error" });
@@ -40,5 +42,14 @@ export function useApi<TData, TResponse>(
     }
   };
 
-  return { data, warning, isLoading, execute, setWarning, emptyWarningState };
+  const warningComponent =
+    warning.message !== "" ? (
+      <Warning
+        message={warning.message}
+        type={warning.type}
+        onClose={() => setWarning(emptyWarningState)}
+      />
+    ) : null;
+
+  return { data, isLoading, execute, warningComponent };
 }

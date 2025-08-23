@@ -18,7 +18,6 @@ export default function AuthPage() {
         </Card>
         <FormWrapper>
       <Toggle activeOption={toggleState} onOptionChange={setToggleState} />
-      {/* */}
     </FormWrapper>
         </>
     

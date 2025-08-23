@@ -1,6 +1,5 @@
 import Button from "@/global//components/Button";
 import FormHeader from "@/global/components/FormHeader";
-import { Warning } from "@/global/components/Warning";
 import { Input } from "@/global/components/Input";
 import { useForm } from "react-hook-form";
 
@@ -12,17 +11,11 @@ import { useForgotPassword } from "../hooks/useAuth";
 export default function ForgotPasswordForm({ className }:ForgotPassswordFormProps) {
   const { register, handleSubmit, formState } =
     useForm<ForgotPassswordFormData>();
-  const { execute, warning, isLoading, setWarning, emptyWarningState } = useForgotPassword();
+  const { execute, isLoading, warningComponent } = useForgotPassword();
 
   return (
     <>
-      {warning.message !== "" ? (
-        <Warning
-          message={warning.message}
-          type={warning.type}
-          onClose={() => setWarning(emptyWarningState)}
-        />
-      ) : null}
+      {warningComponent}
       <form onSubmit={handleSubmit(execute)} className={`form ${className}`}>
         <FormHeader
           title="Forgot your password?"

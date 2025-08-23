@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { Input } from "@/global/components/Input";
-import { Warning } from "@/global/components/Warning";
 import Button from "@/global/components/Button";
 import { useRegister } from "../hooks/useAuth";
 
@@ -11,17 +10,11 @@ import FormHeader from "@/global/components/FormHeader";
 export default function RegisterForm({ className }: RegisterFormProps) {
   const { register, handleSubmit, formState, getValues } =
     useForm<RegisterFormData>();
-   const { execute, warning, isLoading, setWarning, emptyWarningState } = useRegister();
+   const { execute, isLoading, warningComponent } = useRegister();
 
   return (
     <>
-      {warning.message !== "" ? (
-        <Warning
-          message={warning.message}
-          type={warning.type}
-          onClose={() => setWarning(emptyWarningState)}
-        />
-      ) : null}
+      {warningComponent}
       <form
         onSubmit={handleSubmit(execute)}
         className={`form ${className}`}

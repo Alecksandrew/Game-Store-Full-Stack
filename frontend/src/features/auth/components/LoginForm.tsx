@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { Input } from "@/global/components/Input";
-import { Warning } from "@/global/components/Warning";
 import Button from "@/global/components/Button";
 import { useLogin } from "../hooks/useAuth";
 import FormHeader from "@/global/components/FormHeader";
@@ -12,17 +11,11 @@ import { Link } from "react-router";
 export default function LoginForm({ className }: LoginFormProps) {
   const { register, handleSubmit, formState } = useForm<LoginFormData>();
 
-   const { execute, warning, isLoading, setWarning, emptyWarningState } = useLogin();
+   const { execute, isLoading, warningComponent } = useLogin();
 
   return (
     <>
-      {warning.message !== "" && (
-        <Warning
-          message={warning.message}
-          type={warning.type}
-          onClose={() => setWarning(emptyWarningState)}
-        />
-      )}
+      {warningComponent}
       <form
         onSubmit={handleSubmit(execute)}
         className={`form ${className}`}
