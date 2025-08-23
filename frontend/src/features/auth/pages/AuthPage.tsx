@@ -4,6 +4,7 @@ import FormWrapper from "../components/FormWrapper";
 import RegisterForm from "../components/RegisterForm";
 import LoginForm from "../components/LoginForm";
 import Toggle from "../../../global/components/Toggle";
+import Card from "@/global/components/Card";
 
 export default function AuthPage() {
   const [toggleState, setToggleState] = useState<"login" | "register">(
@@ -11,9 +12,15 @@ export default function AuthPage() {
   );
 
   return (
-    <FormWrapper>
+    <>
+        <Card>
+          {toggleState === "register" ? <RegisterForm /> : <LoginForm />}
+        </Card>
+        <FormWrapper>
       <Toggle activeOption={toggleState} onOptionChange={setToggleState} />
-      {toggleState === "register" ? <RegisterForm /> : <LoginForm />}
+      {/* */}
     </FormWrapper>
+        </>
+    
   );
 }
