@@ -1,7 +1,9 @@
 import type { InputHTMLAttributes, ReactElement } from "react"
+import type { RegisterOptions } from "react-hook-form";
 
-export interface inputProps extends InputHTMLAttributes<HTMLInputElement> {
-    title: string;
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+    label: string;
+    name: string;
+    rules?: RegisterOptions; 
     icon?: ReactElement;
-    errorMessage?: string;
 };
