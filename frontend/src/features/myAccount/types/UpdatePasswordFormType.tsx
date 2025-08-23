@@ -1,9 +1,9 @@
-import type { ApiErrorDetail } from "../../../types/responseApiType";
+import type { ApiErrorDetail } from "@/global/types/responseApiType";
 
 export type UpdatePasswordFormData = {
-  password: string,
-  newPassword:        string; 
-  confirmNewPassword: string; 
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
 };
 
 

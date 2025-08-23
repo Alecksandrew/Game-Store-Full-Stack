@@ -1,84 +1,64 @@
-import { useForm } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
+import Form from "@/global/components/Form";
 import { Input } from "@/global/components/Input";
-import { Warning } from "@/global/components/Warning";
-import Button from "@/global/components/Button";
 import FormHeader from "@/global/components/FormHeader";
+import { useUpdatePassword } from "../hooks/useUpdatePassword";
+import { type UpdatePasswordFormData } from "../types/UpdatePasswordFormType";
 
-import { useUpdatePassword } from "../hooks/useUpdatePassword"; 
+export default function UpdatePasswordForm() {
 
+  const { execute, isLoading, warningComponent } = useUpdatePassword();
 
-export type UpdatePasswordFormData = {
-  currentPassword: string;
-  newPassword: string;
-  confirmNewPassword: string;
-};
-
-export type UpdatePasswordFormProps = {
-  className?: string;
-};
-
-export default function UpdatePasswordForm({ className }: UpdatePasswordFormProps) {
-  const { register, handleSubmit, formState, getValues } =
-    useForm<UpdatePasswordFormData>();
-    
-  const { execute, warning, isLoading, setWarning, emptyWarningState } = useUpdatePassword();
+  const ConfirmNewPasswordField = () => {
+    const { getValues } = useFormContext();
+    return (
+      <Input
+        label="Confirm New Password"
+        name="confirmNewPassword"
+        type="password"
+        placeholder="Confirm your new password"
+        rules={{
+          required: "Please confirm your new password",
+          validate: (value) =>
+            value === getValues("newPassword") || "The new passwords do not match",
+        }}
+      />
+    );
+  };
 
   return (
     <>
-      {warning.message !== "" && (
-        <Warning
-          message={warning.message}
-          type={warning.type}
-          onClose={() => {
-            setWarning(emptyWarningState);
-
-          }}
-        />
-      )}
-      <form
-        onSubmit={handleSubmit(execute)}
-        className={`form ${className}`}
+      {warningComponent}
+      <Form<UpdatePasswordFormData>
+        onSubmit={execute}
+        submitText="Update Password"
+        isLoading={isLoading}
       >
         <FormHeader title="Update Password" subTitle="Choose a new, strong password for your account."/>
-        
         <Input
-          title="Current Password"
+          label="Current Password"
+          name="currentPassword"
           type="password"
           placeholder="Enter your current password"
-          {...register("currentPassword", {
+          rules={{
             required: "Current password is required",
-          })}
-          errorMessage={formState.errors.currentPassword?.message}
+          }}
         />
-
         <Input
-          title="New Password"
+          label="New Password"
+          name="newPassword"
           type="password"
           placeholder="Create a new password"
-          {...register("newPassword", {
+          rules={{
             required: "New password is required",
             minLength: {
               value: 8,
               message: "Password must be at least 8 characters long",
             },
-          })}
-          errorMessage={formState.errors.newPassword?.message}
+          }}
         />
-
-        <Input
-          title="Confirm New Password"
-          type="password"
-          placeholder="Confirm your new password"
-          {...register("confirmNewPassword", {
-            required: "Please confirm your new password",
-            validate: (value) =>
-              value === getValues("newPassword") || "The new passwords do not match",
-          })}
-          errorMessage={formState.errors.confirmNewPassword?.message}
-        />
-
-        <Button title="Update Password" type="submit" disabled={isLoading} />
-      </form>
+        <ConfirmNewPasswordField />
+      </Form>
     </>
   );
 }
