@@ -14,12 +14,19 @@ export default function ResetPasswordForm() {
   //In order to pass hidden values to react hook form
   const defaultValues = useMemo(() => {
     const params = new URLSearchParams(location.search);
+    console.log({
+      token: params.get("token") || "",
+      email: params.get("email") || "",
+      newPassword: "",
+      confirmNewPassword: "",
+    })
     return {
       token: params.get("token") || "",
       email: params.get("email") || "",
       newPassword: "",
       confirmNewPassword: "",
     };
+    
   }, [location.search]);
 
   useEffect(() => {
@@ -50,6 +57,16 @@ export default function ResetPasswordForm() {
     );
   };
 
+  const HiddenFields = () => {
+    const { register } = useFormContext();
+    return (
+      <>
+        <input type="hidden" {...register("token")} />
+        <input type="hidden" {...register("email")} />
+      </>
+    )
+  }
+
   return (
     <>
       {warningComponent}
@@ -63,6 +80,7 @@ export default function ResetPasswordForm() {
           title="Update your password"
           subTitle="Set a new password and get back to enjoy daily game deals"
         />
+        <HiddenFields />
         <Input
           label="New password"
           name="newPassword"

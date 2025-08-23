@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { AUTH_URL } from "../../../global/constants/BACKEND_URL";
+import { AUTH_URL } from "@/global/constants/BACKEND_URL";
 import { useApi } from "@/global/hooks/useApi";
 import {
   type ApiErrorDetail,
@@ -117,7 +117,9 @@ export function useForgotPassword() {
 
 export function useResetPassword() {
   return useApi<ResetPasswordFormData, ResetPasswordResponse>(
-    (data: ResetPasswordFormData) =>
-      authRequest("/reset-password", "POST", false, data)
+    (data: ResetPasswordFormData) => {
+      console.log(data);
+      return authRequest("/reset-password", "POST", false, data)
+      }
   );
 }

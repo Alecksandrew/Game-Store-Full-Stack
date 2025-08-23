@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@/global/components/Button";
 import FormHeader from "@/global/components/FormHeader";
 import ConfirmationModal from "./ConfirmationModal";
@@ -10,26 +10,25 @@ export default function DeleteAccount() {
 
   const { 
     execute: deleteAccount, 
-    warning, 
+    warningComponent, 
     isLoading, 
-    setWarning, 
-    emptyWarningState,
+    data
   } = useDeleteAccount();
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
-  const handleConfirmDelete = async () => {
-    setWarning(emptyWarningState);
-    const result = await deleteAccount();
+  const handleConfirmDelete = () => {
+    deleteAccount();
+  };
 
-    if (result && !result.errors) {
-    
+  useEffect(() => {
+    if (data) {//data means response from API when the result is successful
       localStorage.removeItem("jwtToken");
       localStorage.removeItem("refreshToken");
       window.location.href = "/"; 
     }
-  };
+  }, [data]); 
 
   return (
     <>
@@ -44,20 +43,9 @@ export default function DeleteAccount() {
         />
       )}
 
-      {/* Se houver um aviso (erro) da API, ele será exibido */}
-      {warning.message && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-            {/* Aqui você poderia usar seu componente <Warning>, mas para não conflitar com o modal, 
-                estou mostrando a mensagem de forma mais simples. 
-                A melhor abordagem seria integrar a mensagem de erro dentro do próprio modal. */}
-            <div className="bg-danger text-text-primary p-4 rounded-lg">
-                <p>{warning.message}</p>
-                <Button title="Fechar" type="button" onClick={() => setWarning(emptyWarningState)} className="mt-2"/>
-            </div>
-        </div>
-      )}
+     {warningComponent}
 
-      {/* Seção principal do componente */}
+
       <div className="form h-[450px]">
         <FormHeader
           title="Danger zone"

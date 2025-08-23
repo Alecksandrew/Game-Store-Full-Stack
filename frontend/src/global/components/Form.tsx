@@ -12,7 +12,7 @@ export default function Form<T extends FieldValues>({
   defaultValues
 }: FormProps<T>) {
 
-  const methods = useForm<T>(defaultValues);
+  const methods = useForm<T>({defaultValues:defaultValues});
 
   return (
     <FormProvider {...methods}>

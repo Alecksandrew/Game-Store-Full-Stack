@@ -163,6 +163,7 @@ namespace GameStoreAPI.Controllers
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword(ResetPasswordRequestDto req)
         {
+
             var (success, message, errors) = await _authService.ResetPasswordAsync(req);
 
             ResetPasswordResponseDto response = new ResetPasswordResponseDto
