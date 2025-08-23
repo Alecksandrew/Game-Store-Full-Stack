@@ -1,12 +1,11 @@
 import { useForm } from "react-hook-form";
-import { Input } from "../../../components/Input";
-import { Warning } from "../../../components/Warning";
-import Button from "../../../components/Button";
-import FormHeader from "../../../components/FormHeader";
+import { Input } from "@/global/components/Input";
+import { Warning } from "@/global/components/Warning";
+import Button from "@/global/components/Button";
+import FormHeader from "@/global/components/FormHeader";
 
 import { useUpdatePassword } from "../hooks/useUpdatePassword"; 
-import { useNavigate } from "react-router";
-import { useEffect } from "react";
+
 
 export type UpdatePasswordFormData = {
   currentPassword: string;

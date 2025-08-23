@@ -1,7 +1,7 @@
-import { MYACCOUNT_URL } from "../../../BACKEND_URL";
-import { useApi } from "../../../hooks/useApi";
-import { fetchWithAuth } from "../../../services/fetchWithAuth";
-import type { ApiErrorDetail } from "../../../types/responseApiType";
+import { MYACCOUNT_URL } from "../../../global/constants/BACKEND_URL";
+import { useApi } from "@/global/hooks/useApi";
+import { fetchWithAuth } from "@/global/services/fetchWithAuth";
+import type { ApiErrorDetail } from "@/global/types/responseApiType";
 import type {
   UpdatePasswordFormData,
   UpdatePasswordResponse,

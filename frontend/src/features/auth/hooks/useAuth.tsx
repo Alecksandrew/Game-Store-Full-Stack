@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
-import { AUTH_URL } from "../../../BACKEND_URL";
-import { useApi } from "../../../hooks/useApi";
+import { AUTH_URL } from "../../../global/constants/BACKEND_URL";
+import { useApi } from "@/global/hooks/useApi";
 import {
   type ApiErrorDetail,
   type ForgotPasswordResponse,
@@ -8,7 +8,7 @@ import {
   type LogoutResponse,
   type RegisterResponse,
   type ResetPasswordResponse,
-} from "../../../types/responseApiType";
+} from "@/global/types/responseApiType";
 import type { ForgotPassswordFormData } from "../types/ForgotPasswordFormType";
 import type { LoginFormData } from "../types/LoginFormType";
 import type { RegisterFormData } from "../types/RegisterFormType";
@@ -52,7 +52,7 @@ export async function authRequest<TData>(
 }
 
 import { useEffect } from "react";
-import { fetchWithAuth } from "../../../services/fetchWithAuth";
+import { fetchWithAuth } from "@/global/services/fetchWithAuth";
 
 export function useLogin() {
   const navigate = useNavigate();

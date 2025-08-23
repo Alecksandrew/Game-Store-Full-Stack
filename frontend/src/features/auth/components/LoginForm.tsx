@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
-import { Input } from "../../../components/Input";
-import { Warning } from "../../../components/Warning";
-import Button from "../../../components/Button";
+import { Input } from "@/global/components/Input";
+import { Warning } from "@/global/components/Warning";
+import Button from "@/global/components/Button";
 import { useLogin } from "../hooks/useAuth";
-import FormHeader from "../../../components/FormHeader";
+import FormHeader from "@/global/components/FormHeader";
 
 import { type LoginFormData } from "../types/LoginFormType";
 import { type LoginFormProps } from "../types/LoginFormType";

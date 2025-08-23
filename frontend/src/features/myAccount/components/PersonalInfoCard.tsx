@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import FormHeader from "../../../components/FormHeader";
-import InputOnlyDisplayInfo from "../../../components/InputOnlyDisplayInfo";
-import { fetchWithAuth } from "../../../services/fetchWithAuth";
-import { MYACCOUNT_URL } from "../../../BACKEND_URL";
+import FormHeader from "@/global/components/FormHeader";
+import InputOnlyDisplayInfo from "@/global/components/InputOnlyDisplayInfo";
+import { fetchWithAuth } from "@/global/services/fetchWithAuth";
+import { MYACCOUNT_URL } from "../../../global/constants/BACKEND_URL";
 
 type userDataType = {
   userName: string;

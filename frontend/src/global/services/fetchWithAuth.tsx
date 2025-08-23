@@ -1,4 +1,4 @@
-import { AUTH_URL } from "../BACKEND_URL";
+import { AUTH_URL } from "@/global/constants/BACKEND_URL";
 
 function handleUnauthorized() {
   localStorage.removeItem('jwtToken');

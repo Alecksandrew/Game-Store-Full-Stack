@@ -7,7 +7,7 @@ import ForgotPasswordPage from './features/auth/pages/ForgotPasswordPage.tsx';
 import ResetPasswordPage from './features/auth/pages/ResetPasswordPage.tsx';
 import EmailConfirmationPage from './features/auth/pages/EmailConfirmationPage.tsx';
 import MyAccountPage from './features/myAccount/pages/MyAccountPage.tsx';
-import ProtectedRoute from './components/ProtectedRoutes.tsx';
+import ProtectedRoute from './global/routes/ProtectedRoutes.tsx';
 
 const router = createBrowserRouter([
   {

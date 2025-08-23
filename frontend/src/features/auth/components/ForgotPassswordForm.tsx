@@ -1,7 +1,7 @@
-import Button from "../../../components/Button";
-import FormHeader from "../../../components/FormHeader";
-import { Warning } from "../../../components/Warning";
-import { Input } from "../../../components/Input";
+import Button from "@/global//components/Button";
+import FormHeader from "@/global/components/FormHeader";
+import { Warning } from "@/global/components/Warning";
+import { Input } from "@/global/components/Input";
 import { useForm } from "react-hook-form";
 
 import { type ForgotPassswordFormProps } from "../types/ForgotPasswordFormType";

@@ -1,6 +1,6 @@
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@/global/hooks/useApi";
 import { myAccountRequest } from "./useUpdatePassword";
-import { type ApiResponse } from "../../../types/responseApiType";
+import { type ApiResponse } from "@/global/types/responseApiType";
 
 type DeleteAccountResponse = ApiResponse;
 

@@ -3,7 +3,7 @@ import { useState } from "react";
 import FormWrapper from "../components/FormWrapper";
 import RegisterForm from "../components/RegisterForm";
 import LoginForm from "../components/LoginForm";
-import Toggle from "../../../components/Toggle";
+import Toggle from "../../../global/components/Toggle";
 
 export default function AuthPage() {
   const [toggleState, setToggleState] = useState<"login" | "register">(

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router';
-import { AUTH_URL } from '../../../BACKEND_URL';
-import { type ApiResponse } from '../../../types/responseApiType';
+import { AUTH_URL } from '../../../global/constants/BACKEND_URL';
+import { type ApiResponse } from '@/global/types/responseApiType';
 
 type Status = 'confirming' | 'success' | 'error';
 
