@@ -1,10 +1,10 @@
 import ResetPasswordForm from "../components/ResetPasswordForm"
-import FormWrapper from "../components/FormWrapper"
+import Card from "@/global/components/Card"
 
 export default function ResetPasswordPage(){
     return(
-        <FormWrapper>
+        <Card>
             <ResetPasswordForm/>
-        </FormWrapper>  
+        </Card>  
     )
 }

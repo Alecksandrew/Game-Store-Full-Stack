@@ -1,87 +1,101 @@
-import Button from "../../../components/Button";
-import FormHeader from "../../../components/FormHeader";
-import { Warning } from "../../../components/Warning";
-import { Input } from "../../../components/Input";
-import { useForm } from "react-hook-form";
-
-import { type ResetPasswordFormProps } from "../types/ResetPasswordFormType";
-import { type ResetPasswordFormData } from "../types/ResetPasswordFormType";
-import { useEffect } from "react";
+import FormHeader from "@/global/components/FormHeader";
+import { Input } from "@/global/components/Input";
+import { useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { useResetPassword } from "../hooks/useAuth";
+import Form from "@/global/components/Form";
+import { useFormContext } from "react-hook-form";
 
-export default function ResetPasswordForm({
-  className,
-}: ResetPasswordFormProps) {
-  const { register, handleSubmit, formState, getValues, setValue } =
-    useForm<ResetPasswordFormData>();
-  const { execute, warning, isLoading, setWarning, emptyWarningState } =
-    useResetPassword();
+export default function ResetPasswordForm() {
+  const { execute, isLoading, warningComponent, data } = useResetPassword();
   const location = useLocation();
   const navigate = useNavigate();
 
-  useEffect(() => {
+  //In order to pass hidden values to react hook form
+  const defaultValues = useMemo(() => {
     const params = new URLSearchParams(location.search);
-    const token = params.get("token") || "";
-    console.log('Token recebido da URL:', token); 
-    const email = params.get("email") || "";
-    setValue("token", token);
-    setValue("email", email);
+    console.log({
+      token: params.get("token") || "",
+      email: params.get("email") || "",
+      newPassword: "",
+      confirmNewPassword: "",
+    })
+    return {
+      token: params.get("token") || "",
+      email: params.get("email") || "",
+      newPassword: "",
+      confirmNewPassword: "",
+    };
+    
+  }, [location.search]);
 
-    if (warning.message && warning.type === "success") {
-      const timeout = setTimeout(() => {
-        navigate("/");
-      }, 2000);
+  useEffect(() => {
+    if (data) {
+      const timeout = setTimeout(() => navigate("/"), 2000);
       return () => clearTimeout(timeout);
     }
-  }, [location, setValue, warning, navigate]);
+  }, [data, navigate]);
+
+
+  //It is better i use useFormContext again to get a new function, because most of
+  //other forms, dont use getValues
+  const ConfirmNewPasswordInput = () => {
+    const { getValues } = useFormContext();
+    return (
+      <Input
+        label="Confirm new password"
+        name="confirmNewPassword"
+        type="password"
+        placeholder="Confirm your new password"
+        rules={{
+          required: "Please confirm your password",
+          validate: (value) =>
+            value === getValues("newPassword") ||
+            "The new passwords do not match",
+        }}
+      />
+    );
+  };
+
+  const HiddenFields = () => {
+    const { register } = useFormContext();
+    return (
+      <>
+        <input type="hidden" {...register("token")} />
+        <input type="hidden" {...register("email")} />
+      </>
+    )
+  }
 
   return (
     <>
-      {warning.message !== "" ? (
-        <Warning
-          message={warning.message}
-          type={warning.type}
-          onClose={() => {
-            setWarning(emptyWarningState);
-            navigate("/");
-          }}
-        />
-      ) : null}
-      <form onSubmit={handleSubmit(execute)} className={`form ${className}`}>
+      {warningComponent}
+      <Form
+        onSubmit={execute}
+        submitText="Reset password"
+        isLoading={isLoading}
+        defaultValues={defaultValues}
+      >
         <FormHeader
           title="Update your password"
           subTitle="Set a new password and get back to enjoy daily game deals"
         />
-        <input type="hidden" {...register("token")} />
-        <input type="hidden" {...register("email")} />
+        <HiddenFields />
         <Input
-          title="New password"
+          label="New password"
+          name="newPassword"
           type="password"
           placeholder="Create a password"
-          {...register("newPassword", {
+          rules={{
             required: "Password is required",
             minLength: {
               value: 8,
               message: "Password must be at least 8 characters long",
             },
-          })}
-          errorMessage={formState.errors.newPassword?.message}
+          }}
         />
-        <Input
-          title="Confirm new password"
-          type="password"
-          placeholder="Confirm your password"
-          {...register("confirmNewPassword", {
-            required: "Please confirm your password",
-            validate: (value) =>
-              value === getValues("newPassword") ||
-              "The passwords do not match",
-          })}
-          errorMessage={formState.errors.confirmNewPassword?.message}
-        />
-        <Button title="Reset password" type="submit" disabled={isLoading} />
-      </form>
+        <ConfirmNewPasswordInput />
+      </Form>
     </>
   );
 }

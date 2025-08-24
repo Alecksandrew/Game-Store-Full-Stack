@@ -32,7 +32,7 @@ export const Warning: FC<WarningProps> = ({ message, type, onClose }) => {
             className={`ml-4 px-3 py-1 text-md font-semibold rounded font-orbitron
             hover:bg-opacity-80 transition-colors ${buttonColorClass}`}
           >
-            Fechar
+            Close
           </button>
         </div>
       </div>

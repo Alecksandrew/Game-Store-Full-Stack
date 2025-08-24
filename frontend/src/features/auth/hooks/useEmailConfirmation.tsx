@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router';
-import { AUTH_URL } from '../../../BACKEND_URL';
-import { type ApiResponse } from '../../../types/responseApiType';
+import { API_ROUTES } from '@/global/constants/BACKEND_URL';
+import { type ApiResponse } from '@/global/types/responseApiType';
 
 type Status = 'confirming' | 'success' | 'error';
 
@@ -26,7 +26,7 @@ export function useEmailConfirmation() {
         const encodedToken = encodeURIComponent(emailToken);
         
         const response = await fetch(
-          `${AUTH_URL}/confirm-email?emailToken=${encodedToken}&userId=${userId}`
+          `${API_ROUTES.AUTH.CONFIRM_EMAIL}?emailToken=${encodedToken}&userId=${userId}`
         );
         
         const data: ApiResponse = await response.json();

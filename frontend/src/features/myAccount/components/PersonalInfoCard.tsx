@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import FormHeader from "../../../components/FormHeader";
-import InputOnlyDisplayInfo from "../../../components/InputOnlyDisplayInfo";
-import { fetchWithAuth } from "../../../services/fetchWithAuth";
-import { MYACCOUNT_URL } from "../../../BACKEND_URL";
+import FormHeader from "@/global/components/FormHeader";
+import InputOnlyDisplayInfo from "@/global/components/InputOnlyDisplayInfo";
+import { fetchWithAuth } from "@/global/services/fetchWithAuth";
+import { API_ROUTES } from "../../../global/constants/BACKEND_URL";
 
 type userDataType = {
   userName: string;
@@ -20,7 +20,7 @@ export default function PersonalnfoCard() {
   useEffect(() => {
     async function getUserInfos() {
       try {
-        const response = await fetchWithAuth(MYACCOUNT_URL, {
+        const response = await fetchWithAuth(API_ROUTES.ACCOUNT.ME, {
           method: "GET",
         });
 

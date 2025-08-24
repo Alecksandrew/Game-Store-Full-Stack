@@ -1,5 +1,5 @@
-import Button from "../../../components/Button";
-import FormHeader from "../../../components/FormHeader";
+import Button from "@/global/components/Button";
+import FormHeader from "@/global/components/FormHeader";
 import { useLogout } from "../../auth/hooks/useAuth";
 
 
