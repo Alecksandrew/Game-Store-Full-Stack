@@ -1,8 +1,6 @@
 import { useNavigate } from "react-router";
-import { AUTH_URL } from "@/global/constants/BACKEND_URL";
 import { useApi } from "@/global/hooks/useApi";
 import {
-  type ApiErrorDetail,
   type ForgotPasswordResponse,
   type LoginResponse,
   type LogoutResponse,
@@ -13,66 +11,38 @@ import type { ForgotPassswordFormData } from "../types/ForgotPasswordFormType";
 import type { LoginFormData } from "../types/LoginFormType";
 import type { RegisterFormData } from "../types/RegisterFormType";
 import type { ResetPasswordFormData } from "../types/ResetPasswordFormType";
-
-export async function authRequest<TData>(
-  endpoint: string,
-  method: string = "POST",
-  isAuthorizationNeeded: boolean,
-  data?: TData
-) {
-  let tokenHeader = {};
-  if (isAuthorizationNeeded === true) {
-    const jwtToken = localStorage.getItem("jwtToken");
-    tokenHeader = { Authorization: `Bearer ${jwtToken}` };
-  }
-
-  const response = await fetch(`${AUTH_URL}${endpoint}`, {
-    method: method,
-    headers: {
-      "Content-Type": "application/json",
-      ...tokenHeader,
-    },
-    body: JSON.stringify(data),
-  });
-
-  const responseData = await response.json();
-
-  if (!response.ok) {
-    let errorMessage = responseData.message || "An unexpected error occurred.";
-    if (responseData.errors && Array.isArray(responseData.errors)) {
-      errorMessage = responseData.errors
-        .map((err: ApiErrorDetail) => err.description)
-        .join("\n");
-    }
-
-    throw new Error(errorMessage);
-  }
-
-  return responseData;
-}
-
+import { apiClient } from "@/global/services/apiClient";
+import { API_ROUTES } from "@/global/constants/BACKEND_URL";
+import { REDIRECT_DELAY_MS } from "@/global/constants/appConfig";
 import { useEffect } from "react";
-import { fetchWithAuth } from "@/global/services/fetchWithAuth";
 
 export function useLogin() {
   const navigate = useNavigate();
 
-  const response = useApi<LoginFormData, LoginResponse>((data: LoginFormData) =>
-    authRequest("/login", "POST", false, data)
+  const response = useApi<LoginFormData, LoginResponse>(
+    (data: LoginFormData) => {
+      const options = {
+        method: "POST" as const,
+        body: data
+      };
+      return apiClient(API_ROUTES.AUTH.LOGIN, options, false);
+    }
   );
 
   useEffect(() => {
-    if (response.data?.jwtTokenRes) {
-      localStorage.setItem("jwtToken", response.data.jwtTokenRes);
-    }
-    if (response.data?.refreshTokenRes) {
-      localStorage.setItem("refreshToken", response.data.refreshTokenRes);
-    }
-    if (response.data?.jwtTokenRes && response.data?.refreshTokenRes) {
-      const timeout = setTimeout(() => navigate("/my-account"), 3000);
+    const { data } = response;
+
+    if (data?.jwtTokenRes && data?.refreshTokenRes) {
+      localStorage.setItem("jwtToken", data.jwtTokenRes);
+      localStorage.setItem("refreshToken", data.refreshTokenRes);
+
+      const timeout = setTimeout(
+        () => navigate("/my-account"),
+        REDIRECT_DELAY_MS
+      );
       return () => clearTimeout(timeout);
     }
-  }, [response.data, navigate]);
+  }, [response, navigate]);
 
   return response;
 }
@@ -80,21 +50,19 @@ export function useLogin() {
 export function useLogout() {
   const navigate = useNavigate();
 
-  const url = AUTH_URL + "/logout"
-  const options = {
-    method: "POST",
-  }
-  const response = useApi<void, LogoutResponse>(() =>
-    fetchWithAuth(url, options)
-  );
-  console.log(response);
+  const response = useApi<void, LogoutResponse>(() => {
+    const options = {
+      method: "POST" as const,
+    };
+    return apiClient(API_ROUTES.AUTH.LOGOUT, options, true);
+  });
 
   useEffect(() => {
     if (response.data) {
       localStorage.removeItem("jwtToken");
       localStorage.removeItem("refreshToken");
 
-      const timeout = setTimeout(() => navigate("/"), 2000);
+      const timeout = setTimeout(() => navigate("/"), REDIRECT_DELAY_MS);
       return () => clearTimeout(timeout);
     }
   }, [response.data, navigate]);
@@ -103,23 +71,37 @@ export function useLogout() {
 }
 
 export function useRegister() {
-  return useApi<RegisterFormData, RegisterResponse>((data: RegisterFormData) =>
-    authRequest("/register", "POST", false, data)
+  return useApi<RegisterFormData, RegisterResponse>(
+    (data: RegisterFormData) => {
+      const options = {
+        method: "POST" as const,
+        body: data,
+      };
+      return apiClient(API_ROUTES.AUTH.REGISTER, options, false);
+    }
   );
 }
 
 export function useForgotPassword() {
   return useApi<ForgotPassswordFormData, ForgotPasswordResponse>(
-    (data: ForgotPassswordFormData) =>
-      authRequest("/forgot-password", "POST", false, data)
+    (data: ForgotPassswordFormData) => {
+      const options = {
+        method: "POST" as const,
+        body: data,
+      };
+      return apiClient(API_ROUTES.AUTH.FORGOT_PASSWORD, options, false);
+    }
   );
 }
 
 export function useResetPassword() {
   return useApi<ResetPasswordFormData, ResetPasswordResponse>(
     (data: ResetPasswordFormData) => {
-      console.log(data);
-      return authRequest("/reset-password", "POST", false, data)
-      }
+      const options = {
+        method: "POST" as const,
+        body: data,
+      };
+      return apiClient(API_ROUTES.AUTH.RESET_PASSWORD, options, false);
+    }
   );
 }

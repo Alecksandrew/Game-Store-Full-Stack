@@ -1,4 +1,4 @@
-import { AUTH_URL } from "@/global/constants/BACKEND_URL";
+import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 
 function handleUnauthorized() {
   localStorage.removeItem('jwtToken');
@@ -12,7 +12,7 @@ async function getNewAccessToken() {
     throw new Error("No refresh token found");
   }
 
-  const response = await fetch(`${AUTH_URL}/refresh`, {
+  const response = await fetch(API_ROUTES.AUTH.REFRESH_TOKEN, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
