@@ -13,7 +13,8 @@ namespace GameStoreAPI.Data
         }
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }
-
+        public DbSet<GameInventory> GamesInventory { get; set; }
+        public DbSet<GameKey> GameKeys { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

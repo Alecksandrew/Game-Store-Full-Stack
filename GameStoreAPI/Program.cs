@@ -1,7 +1,8 @@
 using GameStoreAPI.Data;
+using GameStoreAPI.Features.Authentication.AuthService;
+using GameStoreAPI.Features.Games.GamesService;
+using GameStoreAPI.Features.MyAccount.AccountService;
 using GameStoreAPI.Services;
-using GameStoreAPI.Services.AccountService;
-using GameStoreAPI.Services.AuthService;
 using GameStoreAPI.Services.EmailService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -88,11 +89,25 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddHttpClient("IGDB", client =>
+{
+    var igdbConfig = builder.Configuration.GetSection("IGDB");
+    var apiUrl = igdbConfig["ApiUrl"];
+
+    if (string.IsNullOrEmpty(apiUrl))
+    {
+        throw new InvalidOperationException("IGDB api url was not found in settings");
+    }
+
+    client.BaseAddress = new Uri(apiUrl);
+});
+
+builder.Services.AddSingleton<IIGDBService, IGDBService>();
+
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase); // Allow better comunication between front and backend:
                                                                                                                                   // JSON arrives CamelCase -> PascalCase
                                                                                                                                   // JSON go back PascalCase -> CamelCase
-
 
 var app = builder.Build();
 
