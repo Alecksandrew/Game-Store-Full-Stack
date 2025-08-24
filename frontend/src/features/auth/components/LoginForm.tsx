@@ -3,12 +3,11 @@ import { useLogin } from "../hooks/useAuth";
 import FormHeader from "@/global/components/FormHeader";
 
 import { type LoginFormData } from "../types/LoginFormType";
-import { type LoginFormProps } from "../types/LoginFormType";
 import { Link } from "react-router";
 import Form from "@/global/components/Form";
 import { PAGE_ROUTES } from "@/global/constants/FRONTEND_URL";
 
-export default function LoginForm({ className }: LoginFormProps) {
+export default function LoginForm() {
   const { execute, isLoading, warningComponent } = useLogin();
 
   return (

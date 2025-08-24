@@ -4,17 +4,16 @@ import FormHeader from "@/global/components/FormHeader";
 import ConfirmationModal from "./ConfirmationModal";
 
 import { useDeleteAccount } from "../hooks/useDeleteAccount";
-import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 import { PAGE_ROUTES } from "@/global/constants/FRONTEND_URL";
 
 export default function DeleteAccount() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { 
-    execute: deleteAccount, 
-    warningComponent, 
-    isLoading, 
-    data
+  const {
+    execute: deleteAccount,
+    warningComponent,
+    isLoading,
+    data,
   } = useDeleteAccount();
 
   const handleOpenModal = () => setIsModalOpen(true);
@@ -25,12 +24,13 @@ export default function DeleteAccount() {
   };
 
   useEffect(() => {
-    if (data) {//data means response from API when the result is successful
+    if (data) {
+      //data means response from API when the result is successful
       localStorage.removeItem("jwtToken");
       localStorage.removeItem("refreshToken");
-      window.location.href = PAGE_ROUTES.STORE.HOME; 
+      window.location.href = PAGE_ROUTES.STORE.HOME;
     }
-  }, [data]); 
+  }, [data]);
 
   return (
     <>
@@ -45,8 +45,7 @@ export default function DeleteAccount() {
         />
       )}
 
-     {warningComponent}
-
+      {warningComponent}
 
       <div className="form h-[450px]">
         <FormHeader
@@ -57,14 +56,12 @@ export default function DeleteAccount() {
 
         <div className="bg-bg-primary p-4 rounded-md border border-danger/50 w-full text-center">
           <p className="text-text-secondary">
-            Please note: This action is permanent and cannot be undone. All
-your data will be deleted, including purchases, wishlists, and
-history.
+            Please note: This action is permanent and cannot be undone. All your
+            data will be deleted, including purchases, wishlists, and history.
           </p>
         </div>
 
         <div className="w-full mt-4">
-
           <Button
             title="Excluir Minha Conta"
             type="button"
