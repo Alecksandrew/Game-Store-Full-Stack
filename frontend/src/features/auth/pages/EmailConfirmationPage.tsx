@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import FormWrapper from "../components/FormWrapper";
 import { useEmailConfirmation } from "../hooks/useEmailConfirmation";
 import { FadeLoader } from "react-spinners";
+import { PAGE_ROUTES } from "@/global/constants/FRONTEND_URL";
 
 export default function EmailConfirmationPage() {
   const { status, message } = useEmailConfirmation();
@@ -13,7 +14,7 @@ export default function EmailConfirmationPage() {
           <>
             <h1 className=" font-semibold text-3xl font-orbitron text-primary">Success!</h1>
             <p className="text-text-primary mt-2">{message}</p>
-            <Link to="/" className="mt-4 bg-primary text-text-primary font-semibold p-2 rounded w-1/2 text-center">
+            <Link to={PAGE_ROUTES.AUTH.LOGIN} className="mt-4 bg-primary text-text-primary font-semibold p-2 rounded w-1/2 text-center">
               Go to Login
             </Link>
           </>
@@ -23,7 +24,7 @@ export default function EmailConfirmationPage() {
           <>
             <h1 className="font-semibold text-3xl font-orbitron text-danger">Error!</h1>
             <p className="text-text-primary mt-2">{message}</p>
-            <Link to="/" className="mt-4 bg-primary text-text-primary font-semibold p-2 rounded w-1/2 text-center">
+            <Link to={PAGE_ROUTES.STORE.HOME} className="mt-4 bg-primary text-text-primary font-semibold p-2 rounded w-1/2 text-center">
               Back to Home
             </Link>
           </>

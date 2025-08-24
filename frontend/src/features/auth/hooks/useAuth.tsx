@@ -15,6 +15,7 @@ import { apiClient } from "@/global/services/apiClient";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 import { REDIRECT_DELAY_MS } from "@/global/constants/appConfig";
 import { useEffect } from "react";
+import { PAGE_ROUTES } from "@/global/constants/FRONTEND_URL";
 
 export function useLogin() {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ export function useLogin() {
       localStorage.setItem("refreshToken", data.refreshTokenRes);
 
       const timeout = setTimeout(
-        () => navigate("/my-account"),
+        () => navigate(PAGE_ROUTES.ACCOUNT.DASHBOARD),
         REDIRECT_DELAY_MS
       );
       return () => clearTimeout(timeout);
@@ -62,7 +63,7 @@ export function useLogout() {
       localStorage.removeItem("jwtToken");
       localStorage.removeItem("refreshToken");
 
-      const timeout = setTimeout(() => navigate("/"), REDIRECT_DELAY_MS);
+      const timeout = setTimeout(() => navigate(PAGE_ROUTES.AUTH.LOGIN), REDIRECT_DELAY_MS);
       return () => clearTimeout(timeout);
     }
   }, [response.data, navigate]);

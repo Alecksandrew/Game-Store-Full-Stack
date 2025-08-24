@@ -4,6 +4,8 @@ import FormHeader from "@/global/components/FormHeader";
 import ConfirmationModal from "./ConfirmationModal";
 
 import { useDeleteAccount } from "../hooks/useDeleteAccount";
+import { API_ROUTES } from "@/global/constants/BACKEND_URL";
+import { PAGE_ROUTES } from "@/global/constants/FRONTEND_URL";
 
 export default function DeleteAccount() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,7 +28,7 @@ export default function DeleteAccount() {
     if (data) {//data means response from API when the result is successful
       localStorage.removeItem("jwtToken");
       localStorage.removeItem("refreshToken");
-      window.location.href = "/"; 
+      window.location.href = PAGE_ROUTES.STORE.HOME; 
     }
   }, [data]); 
 

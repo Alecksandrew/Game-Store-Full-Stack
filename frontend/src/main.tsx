@@ -9,25 +9,26 @@ import EmailConfirmationPage from "./features/auth/pages/EmailConfirmationPage.t
 import MyAccountPage from "./features/myAccount/pages/MyAccountPage.tsx";
 import ProtectedRoute from "./global/routes/ProtectedRoutes.tsx";
 import AuthLayout from "./features/auth/pages/AuthLayout.tsx";
+import { PAGE_ROUTES } from "./global/constants/FRONTEND_URL.ts";
 
 const router = createBrowserRouter([
-  {
+   {
     element: <AuthLayout />,
     children: [
       {
-        path: "/",
+        path: PAGE_ROUTES.AUTH.LOGIN, 
         element: <AuthPage />,
       },
       {
-        path: "/forgot-password",
+        path: PAGE_ROUTES.AUTH.FORGOT_PASSWORD,
         element: <ForgotPasswordPage />,
       },
       {
-        path: "/reset-password",
+        path: PAGE_ROUTES.AUTH.RESET_PASSWORD, 
         element: <ResetPasswordPage />,
       },
       {
-        path: "/confirm-email",
+        path: PAGE_ROUTES.AUTH.CONFIRM_EMAIL,
         element: <EmailConfirmationPage />,
       },
     ],
