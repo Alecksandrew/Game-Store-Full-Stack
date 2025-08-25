@@ -102,7 +102,7 @@ builder.Services.AddHttpClient("IGDB", client =>
     client.BaseAddress = new Uri(apiUrl);
 });
 
-builder.Services.AddSingleton<IIGDBService, IGDBService>();
+builder.Services.AddScoped<IIGDBService, IGDBService>();
 
 builder.Services.AddScoped<IGameService, GameService>();
 

@@ -14,16 +14,13 @@ namespace GameStoreAPI.Features.Games.GamesService
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
-        private readonly AppDbContext _dbContext;
-        private readonly IIGDBService _igdbService;
+
 
         private string _accessToken = null;
         private DateTime _tokenExpiration = DateTime.UtcNow;
 
-        public IGDBService(IHttpClientFactory httpClientFactory, IConfiguration configuration, AppDbContext context, IIGDBService igdbService)
+        public IGDBService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
-            _dbContext = context;
-            _igdbService = igdbService;
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
         }
@@ -80,6 +77,7 @@ namespace GameStoreAPI.Features.Games.GamesService
             httpClient.DefaultRequestHeaders.Clear();
             httpClient.DefaultRequestHeaders.Add("Client-ID", _configuration["IGDB:ClientId"]);
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
 
             var query = $"fields name, platforms.name, screenshots.image_id, cover.image_id, first_release_date, game_type, genres.name, language_supports, summary, videos.video_id; where id = {igdbId};";
 
@@ -89,7 +87,6 @@ namespace GameStoreAPI.Features.Games.GamesService
             {
                 return null;
             }
-
             var content = await response.Content.ReadAsStringAsync();
 
             var gamesList = JsonSerializer.Deserialize<List<GameDetailsResponseIGDBDto>>(content);

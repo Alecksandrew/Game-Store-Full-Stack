@@ -41,6 +41,14 @@ namespace GameStoreAPI.Data
                       .HasForeignKey(e => e.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
+
+            modelBuilder.Entity<GameInventory>(entity =>
+            {
+                entity.HasKey(e => e.IgdbId);
+                entity.Property(e => e.IgdbId).ValueGeneratedNever();
+                entity.Property(e => e.Price).HasPrecision(6, 2);
+                entity.Property(e => e.DiscountPrice).HasPrecision(6, 2);
+            });
         }
 
 

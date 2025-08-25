@@ -24,17 +24,16 @@ namespace GameStoreAPI.Migrations
 
             modelBuilder.Entity("GameStoreAPI.Models.GameInventory", b =>
                 {
-                    b.Property<long>("IgdbId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IgdbId"));
+                    b.Property<int>("IgdbId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("DiscountPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(6, 2)
+                        .HasColumnType("decimal(6,2)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(6, 2)
+                        .HasColumnType("decimal(6,2)");
 
                     b.Property<int>("TotalSells")
                         .HasColumnType("int");
@@ -53,8 +52,8 @@ namespace GameStoreAPI.Migrations
                     b.Property<long>("GameIgdbId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("GameInventoryIgdbId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("GameInventoryIgdbId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsSold")
                         .HasColumnType("bit");

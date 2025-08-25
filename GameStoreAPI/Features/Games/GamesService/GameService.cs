@@ -26,17 +26,15 @@ namespace GameStoreAPI.Features.Games.GamesService
                 var random = new Random();
                 var stock = random.Next(5, 15);
                 int price = random.Next(29, 299);
-                int discountPrice = random.Next(1, price);
+                int discountPrice = 0;
 
-                gameInventory = new GameInventory
-                {
-                    IgdbId = igdbId,
-                    Price = price,
-                    DiscountPrice = discountPrice,
-                    TotalSells = 0
-                };
+                //Logic to add discount only in some games and not in everything
+                if (random.Next(0, 4) == 0)
+                {      
+                    double discountPercentage = random.Next(5, 91) / 100.0;
+                    discountPrice = (int)(price * (1 - (decimal)discountPercentage));
+                }
 
-                await _dbContext.GamesInventory.AddAsync(gameInventory);
 
                 // Fake game keys to sell
                 var newKeys = new List<GameKey>();
@@ -50,7 +48,16 @@ namespace GameStoreAPI.Features.Games.GamesService
                     });
                 }
 
-                await _dbContext.GameKeys.AddRangeAsync(newKeys);
+                gameInventory = new GameInventory
+                {
+                    IgdbId = igdbId,
+                    Price = price,
+                    DiscountPrice = discountPrice,
+                    TotalSells = 0,
+                    GameKeys = newKeys
+                };
+
+                await _dbContext.GamesInventory.AddAsync(gameInventory);
 
                 await _dbContext.SaveChangesAsync();
             }
@@ -61,40 +68,37 @@ namespace GameStoreAPI.Features.Games.GamesService
         {
 
             //Return screenshots url to frontend
-            List<string> screenshotsIds = igdbGame.ScreenshotsImageId.Select(s => s.Image_Id).ToList();
-            List<string> screenshotsUrls = new List<string>();
-            if (screenshotsIds is not null)
+            var screenshotsUrls = igdbGame.Screenshots?
+                .Select(s => $"https://images.igdb.com/igdb/image/upload/t_screenshot_big/{s.ImageId}.jpg")
+                .ToList() ?? new List<string>();
+
+            var platforms = igdbGame.Platforms?
+                .Select(p => p.Name)
+                .ToList() ?? new List<string>();
+
+            var videosUrls = igdbGame.Videos?
+                .Select(v => $"https://www.youtube.com/embed/{v.VideoId}")
+                .ToList() ?? new List<string>();
+
+            var coverUrl = $"https://images.igdb.com/igdb/image/upload/t_cover_big/{igdbGame.Cover?.ImageId}.jpg"
+               ?? string.Empty;
+
+            long? unixTimestamp = igdbGame.FirstReleaseDate;
+            string? formattedDate = null;
+            if (unixTimestamp != null) 
             {
-                foreach (var screenshotId in screenshotsIds)
-                {
-                    string screenshotUrl = $"https://images.igdb.com/igdb/image/upload/screenshot_big/{screenshotId}.jpg";
-                    screenshotsUrls.Add(screenshotUrl);
-                }
-            }
-
-            //Return array platforms to frontend
-            List<string> platforms = igdbGame.Platforms.Select(p => p.Name).ToList();
-
-
-            //return videos url to frontend
-            List<string> videosIds = igdbGame.Videos.Select(s => s.Video_Id).ToList();
-            List<string> videosUrls = new List<string>();
-            if (videosIds is not null)
-            {
-                foreach (var videosId in videosIds)
-                {
-                    string videoUrl = $"https://www.youtube.com/embed/{videosId}";
-                    videosUrls.Add(videoUrl);
-                }
-            }
-
+               DateTime date = DateTimeOffset.FromUnixTimeSeconds((long)unixTimestamp).DateTime;
+               formattedDate = date.ToString("MM/dd/yyyy");
+            } 
+            
+             
             GameDetailsResponseDto response = new GameDetailsResponseDto
             {
                 Id = gameInventory.IgdbId,
                 Name = igdbGame.Name,
                 Summary = igdbGame.Summary,
-                FirstReleaseDate = igdbGame.FirstReleaseDate,
-                CoverImageId = igdbGame.CoverImageId,
+                FirstReleaseDate = formattedDate,
+                CoverUrl = coverUrl,
                 ScreenshotsImageUrl = screenshotsUrls,
                 Platforms = platforms,
                 Videos = videosUrls,
