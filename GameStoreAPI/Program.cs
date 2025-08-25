@@ -104,6 +104,8 @@ builder.Services.AddHttpClient("IGDB", client =>
 
 builder.Services.AddSingleton<IIGDBService, IGDBService>();
 
+builder.Services.AddScoped<IGameService, GameService>();
+
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase); // Allow better comunication between front and backend:
                                                                                                                                   // JSON arrives CamelCase -> PascalCase
