@@ -18,53 +18,57 @@ namespace GameStoreAPI.Features.Games.GamesService
             _configuration = configuration;
             _igdbService = igdbService;
         }
-        private async Task<GameInventory> CreateFakePurchaseInfoAsync(int igdbId)
+        private GameInventory CreateFakeInventoryForGame(int igdbId)
+        {      
+            var random = new Random();
+            var stock = random.Next(5, 15);
+            int price = random.Next(29, 299);
+            int discountPrice = 0;
+
+            //Logic to add discount only in some games and not in everything
+            if (random.Next(0, 4) == 0)
+            {      
+                double discountPercentage = random.Next(5, 91) / 100.0;
+                discountPrice = (int)(price * (1 - (decimal)discountPercentage));
+            }
+
+            // Fake game keys to sell
+            var newKeys = new List<GameKey>();
+            for (int i = 0; i < stock; i++)
+            {
+                newKeys.Add(new GameKey
+                {
+                    GameIgdbId = igdbId,
+                    KeyValue = $"FAKE-{Guid.NewGuid().ToString().ToUpper()}",
+                    IsSold = false
+                });
+            }
+
+            GameInventory gameInventory = new GameInventory
+            {
+                IgdbId = igdbId,
+                Price = price,
+                DiscountPrice = discountPrice,
+                TotalSells = 0,
+                GameKeys = newKeys
+            };
+
+            return gameInventory;
+        }
+        private async Task<GameInventory> GetOrCreateInventoryForGameAsync(int igdbId)
         {
-            var gameInventory = await _dbContext.GamesInventory.FindAsync(igdbId);
+            var gameInventory = await _dbContext.GamesInventory.FirstOrDefaultAsync(gi => gi.IgdbId == igdbId);
+
             if (gameInventory == null)
             {
-                var random = new Random();
-                var stock = random.Next(5, 15);
-                int price = random.Next(29, 299);
-                int discountPrice = 0;
-
-                //Logic to add discount only in some games and not in everything
-                if (random.Next(0, 4) == 0)
-                {      
-                    double discountPercentage = random.Next(5, 91) / 100.0;
-                    discountPrice = (int)(price * (1 - (decimal)discountPercentage));
-                }
-
-
-                // Fake game keys to sell
-                var newKeys = new List<GameKey>();
-                for (int i = 0; i < stock; i++)
-                {
-                    newKeys.Add(new GameKey
-                    {
-                        GameIgdbId = igdbId,
-                        KeyValue = $"FAKE-{Guid.NewGuid().ToString().ToUpper()}",
-                        IsSold = false
-                    });
-                }
-
-                gameInventory = new GameInventory
-                {
-                    IgdbId = igdbId,
-                    Price = price,
-                    DiscountPrice = discountPrice,
-                    TotalSells = 0,
-                    GameKeys = newKeys
-                };
-
+                gameInventory = CreateFakeInventoryForGame(igdbId);
                 await _dbContext.GamesInventory.AddAsync(gameInventory);
-
                 await _dbContext.SaveChangesAsync();
             }
 
             return gameInventory;
         }
-        private async Task<GameDetailsResponseDto> MapToGamesDetailsResponseDto(GameDetailsResponseIGDBDto igdbGame, GameInventory gameInventory)
+        private  GameDetailsResponseDto MapToGamesDetailsResponseDto(GameDetailsResponseIGDBDto igdbGame, GameInventory gameInventory, int availableStock)
         {
 
             //Return screenshots url to frontend
@@ -105,7 +109,7 @@ namespace GameStoreAPI.Features.Games.GamesService
                 Price = gameInventory.Price,
                 DiscountPrice = gameInventory.DiscountPrice,
                 TotalSells = gameInventory.TotalSells,
-                AvailableKeysStock = await _dbContext.GameKeys.CountAsync(key => key.GameIgdbId == gameInventory.IgdbId && !key.IsSold)
+                AvailableKeysStock = availableStock,
 
             };
 
@@ -121,11 +125,60 @@ namespace GameStoreAPI.Features.Games.GamesService
 
             //Verify if i have some purchase infos in my database about the game from external API
             //If not, put some fake data to simulate
-            var gameInventory = await CreateFakePurchaseInfoAsync(igdbId);
+            var gameInventory = await GetOrCreateInventoryForGameAsync(igdbId);
 
-            var responseDto = await MapToGamesDetailsResponseDto(igdbGame, gameInventory);
+            var availableStock = await _dbContext.GameKeys.CountAsync(key => key.GameIgdbId == igdbId && !key.IsSold);
+            var responseDto =  MapToGamesDetailsResponseDto(igdbGame, gameInventory, availableStock);
             
             return Result<GameDetailsResponseDto>.Ok(responseDto);
+        }
+        public async Task<Result<List<GameDetailsResponseDto>>> GetPopularGamesDetails(int amount)
+        {
+            var igdbGames = await _igdbService.GetPopularGamesAsync(amount);
+            if (igdbGames is null)
+            {
+                return Result<List<GameDetailsResponseDto>>.Fail(new Error("Games.NotFound", "Games were not found in IGDB Database.")); ;
+            }
+
+
+            List<int> gamesIds = igdbGames.Select(g => g.Id).ToList();
+
+            var existingInventories = await _dbContext.GamesInventory
+                                        .Where(gi => gamesIds.Contains(gi.IgdbId))
+                                        .ToDictionaryAsync(gi => gi.IgdbId);
+            
+            var keysStockMap = await _dbContext.GameKeys
+                                .Where(k => gamesIds.Contains((int)k.GameIgdbId) && !k.IsSold)
+                                .GroupBy(k => k.GameIgdbId)
+                                .Select(g => new { GameId = g.Key, Stock = g.Count() })
+                                .ToDictionaryAsync(g => g.GameId, g => g.Stock);
+
+            var newInventoriesToCreate = new List<GameInventory>();
+            foreach (var id in gamesIds)
+            {
+                if (!existingInventories.ContainsKey(id))
+                {
+                    var newInventory = CreateFakeInventoryForGame(id);
+                    newInventoriesToCreate.Add(newInventory);
+                    existingInventories[id] = newInventory;
+                }
+            }
+
+            if (newInventoriesToCreate.Any())
+            {
+                await _dbContext.GamesInventory.AddRangeAsync(newInventoriesToCreate);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            var gameDetailsList = igdbGames.Select(igdbGame =>
+            {
+                var inventory = existingInventories[igdbGame.Id];
+                var stock = keysStockMap.GetValueOrDefault(igdbGame.Id, inventory.GameKeys.Count);
+
+                return MapToGamesDetailsResponseDto(igdbGame, inventory, stock);
+            }).ToList();
+
+            return Result<List<GameDetailsResponseDto>>.Ok(gameDetailsList);
         }
 
        

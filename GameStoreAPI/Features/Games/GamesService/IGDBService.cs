@@ -3,6 +3,7 @@ using GameStoreAPI.Data;
 using GameStoreAPI.Features.Games.Dtos;
 using GameStoreAPI.Features.Games.Dtos.GetGameDetails;
 using GameStoreAPI.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -66,20 +67,16 @@ namespace GameStoreAPI.Features.Games.GamesService
             return _accessToken;
         }
 
-        
 
-        public async Task<GameDetailsResponseIGDBDto?> GetGameByIdAsync(int igdbId)
+        private async Task<List<GameDetailsResponseIGDBDto>?> ExecuteIgdbQueryAsync( string query)
         {
-            var token = await GetValidApiToken();
-
+            string? token = await GetValidApiToken();
+           
             var httpClient = _httpClientFactory.CreateClient("IGDB");
-
             httpClient.DefaultRequestHeaders.Clear();
             httpClient.DefaultRequestHeaders.Add("Client-ID", _configuration["IGDB:ClientId"]);
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
-
-            var query = $"fields name, platforms.name, screenshots.image_id, cover.image_id, first_release_date, game_type, genres.name, language_supports, summary, videos.video_id; where id = {igdbId};";
 
             var response = await httpClient.PostAsync("games", new StringContent(query, Encoding.UTF8, "text/plain"));
 
@@ -89,9 +86,23 @@ namespace GameStoreAPI.Features.Games.GamesService
             }
             var content = await response.Content.ReadAsStringAsync();
 
-            var gamesList = JsonSerializer.Deserialize<List<GameDetailsResponseIGDBDto>>(content);
+            return JsonSerializer.Deserialize<List<GameDetailsResponseIGDBDto>>(content);
+        }
 
+        public async Task<GameDetailsResponseIGDBDto?> GetGameByIdAsync(int igdbId)
+        {
+            var query = $"fields name, platforms.name, screenshots.image_id, cover.image_id, first_release_date, summary, videos.video_id; where id = {igdbId};";
+            var gamesList = await ExecuteIgdbQueryAsync(query);
             return gamesList?.FirstOrDefault();
+        }
+
+        public async Task<List<GameDetailsResponseIGDBDto>> GetPopularGamesAsync(int amount)
+        {
+            var query = $"fields name, platforms.name, screenshots.image_id, cover.image_id, first_release_date, summary; " +
+                        $"where cover != null & screenshots != null & summary != null & aggregated_rating >= 85 & aggregated_rating_count > 10; " +
+                        $"limit {amount};";
+            var result = await ExecuteIgdbQueryAsync(query);
+            return result ?? new List<GameDetailsResponseIGDBDto>();
         }
     }
 }
