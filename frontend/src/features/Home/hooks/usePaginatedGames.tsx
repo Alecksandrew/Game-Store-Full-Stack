@@ -12,7 +12,7 @@ export function usePaginatedGames() {
     return apiClient<GameCardData[]>(url);
   }, [currentPage]);
 
-  const { data, isLoading, execute, warningComponent, warningType } = useApi<
+  const { data, isLoading, execute, warningComponent, warningType, setData } = useApi<
     void,
     GameCardData[]
   >(fetchGamesForPage);
@@ -29,6 +29,7 @@ export function usePaginatedGames() {
   };
 
   return {
+    setData,
     data,
     isLoading,
     warningComponent,

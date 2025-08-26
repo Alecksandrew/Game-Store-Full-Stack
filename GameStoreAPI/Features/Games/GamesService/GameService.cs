@@ -4,6 +4,8 @@ using GameStoreAPI.Features.Games.Dtos.GetGameSummary;
 using GameStoreAPI.Models;
 using GameStoreAPI.Shared;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.ConstrainedExecution;
+using static Azure.Core.HttpHeader;
 
 namespace GameStoreAPI.Features.Games.GamesService
 {
@@ -190,6 +192,125 @@ namespace GameStoreAPI.Features.Games.GamesService
             if (igdbGames is null)
             {
                 return Result<List<GameSummaryResponseDto>>.Fail(new Error("Games.NotFound", "Games were not found in IGDB Database.")); ;
+            }
+
+            var gameIds = igdbGames.Select(g => g.Id).ToList();
+
+            var existingInventories = await _dbContext.GamesInventory
+                .Where(gi => gameIds.Contains(gi.IgdbId))
+                .ToDictionaryAsync(gi => gi.IgdbId);
+
+            var newInventoriesToCreate = new List<GameInventory>();
+            foreach (var id in gameIds)
+            {
+                if (!existingInventories.ContainsKey(id))
+                {
+                    var newInventory = CreateFakeInventoryForGame(id);
+                    newInventoriesToCreate.Add(newInventory);
+                    existingInventories[id] = newInventory;
+                }
+            }
+
+            if (newInventoriesToCreate.Any())
+            {
+                await _dbContext.GamesInventory.AddRangeAsync(newInventoriesToCreate);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            var gameSummaryList = igdbGames.Select(igdbGame =>
+            {
+                var inventory = existingInventories[igdbGame.Id];
+                return new GameSummaryResponseDto
+                {
+                    Id = igdbGame.Id,
+                    Name = igdbGame.Name,
+                    CoverUrl = $"https://images.igdb.com/igdb/image/upload/t_cover_big/{igdbGame.Cover?.ImageId}.jpg" ?? string.Empty,
+                    Price = inventory.Price,
+                    DiscountPrice = inventory.DiscountPrice
+                };
+            }).ToList();
+
+            return Result<List<GameSummaryResponseDto>>.Ok(gameSummaryList);
+        }
+
+        public async Task<Result<List<GameSummaryResponseDto>>> SearchGamesByNameAsync(string searchTerm, int page, int pageSize)
+        {
+            Com certeza!Você está absolutamente certo, para um resultado de busca, mostrar o preço é essencial.Minhas desculpas por ter simplificado demais na resposta anterior.
+
+Vamos construir o endpoint de busca paginado que retorna tudo o que você precisa: nome, capa, preço e desconto.
+
+A lógica será uma combinação inteligente do que já fizemos:
+
+Buscamos os jogos na API da IGDB pelo nome, com paginação.
+
+Usamos os IDs desses jogos para buscar os preços e descontos no seu banco de dados local, de forma otimizada.
+
+Juntamos tudo e enviamos para o frontend.
+
+## Passo a Passo: Criando o Endpoint de Busca Completo
+Passo 1: Atualizar o IGDBService(para busca com paginação)
+Primeiro, vamos garantir que a camada que fala com a IGDB saiba como fazer uma busca paginada.
+
+Ação:
+            Abra a interface IIGDBService.cs e adicione a nova assinatura de método:
+
+C#
+
+// Em: IIGDBService.cs
+public interface IIGDBService
+        {
+            // ... seus outros métodos
+
+            // ADICIONE ESTA NOVA LINHA
+            Task<List<GameDetailsResponseIGDBDto>> SearchGamesByNameAsync(string searchTerm, int limit, int offset);
+        }
+        Agora, implemente este método na classe IGDBService.cs:
+
+C#
+
+// Em: IGDBService.cs
+public async Task<List<GameDetailsResponseIGDBDto>> SearchGamesByNameAsync(string searchTerm, int limit, int offset)
+        {
+            // A query de busca usa "search" e agora inclui limit e offset
+            var query = $"fields name, cover.image_id; " +
+                        $"search \"{searchTerm}\"; " +
+                        $"where cover != null; " + // Garante que os resultados tenham uma capa
+                        $"limit {limit}; " +
+                        $"offset {offset};";
+
+            var result = await ExecuteIgdbQueryAsync(query);
+            return result ?? new List<GameDetailsResponseIGDBDto>();
+        }
+        Passo 2: Adicionar a Lógica Completa ao GameService
+Esta é a parte mais importante.O GameService vai orquestrar tudo: buscar na IGDB, buscar no seu banco local e juntar as informações.
+
+Ação:
+Abra a interface IGameService.cs e adicione a nova assinatura:
+
+C#
+
+// Em: IGameService.cs
+public interface IGameService
+        {
+            // ... seus outros métodos
+
+            // ADICIONE ESTA NOVA LINHA
+            Task<Result<List<GameSummaryResponseDto>>> SearchGamesByNameAsync(string searchTerm, int page, int pageSize);
+        }
+        Implemente o método na classe GameService.cs.Note como ele é muito parecido com o seu método GetPopularGamesDetailsAsync, pois a lógica de otimização é a mesma.
+
+
+        C#
+
+// Em: GameService.cs
+public async Task<Result<List<GameSummaryResponseDto>>> SearchGamesByNameAsync(string searchTerm, int page, int pageSize)
+        {
+            var offset = (page - 1) * pageSize;
+            var igdbGames = await _igdbService.SearchGamesByNameAsync(searchTerm, pageSize, offset);
+
+            if (igdbGames is null || !igdbGames.Any())
+            {
+                return Result<List<GameSummaryResponseDto>>.Fail(new Error("Games.NotFound", "No game was found with this name"));
             }
 
             var gameIds = igdbGames.Select(g => g.Id).ToList();

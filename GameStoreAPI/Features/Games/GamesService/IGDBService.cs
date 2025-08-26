@@ -116,6 +116,17 @@ namespace GameStoreAPI.Features.Games.GamesService
             return result ?? new List<GameDetailsResponseIGDBDto>();
         }
 
+        public async Task<List<GameDetailsResponseIGDBDto>> SearchGamesByNameAsync(string searchTerm, int amount, int offset)
+        {
+            var query = $"fields name, cover.image_id; " +
+                        $"search \"{searchTerm}\"; " +
+                        $"where cover != null; " +
+                        $"limit {amount}; " +
+                        $"offset {offset};";
+
+            var result = await ExecuteIgdbQueryAsync(query);
+            return result ?? new List<GameDetailsResponseIGDBDto>();
+        }
 
     }
 }

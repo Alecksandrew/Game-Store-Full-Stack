@@ -9,7 +9,9 @@ namespace GameStoreAPI.Features.Games.GamesService
         Task<GameDetailsResponseIGDBDto?> GetGameByIdAsync(int igdbId);
         public Task<List<GameDetailsResponseIGDBDto>> GetPopularGamesAsync(int amount);
         public Task<List<GameDetailsResponseIGDBDto>> GetPopularGamesSummaryAsync(int amount, int offset);
-
-
+        public Task<List<GameDetailsResponseIGDBDto>> SearchGamesByNameAsync(string searchTerm, int amount, int offset);
     }
+
+
+}
 }

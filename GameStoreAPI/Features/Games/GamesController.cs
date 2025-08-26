@@ -1,5 +1,6 @@
 ﻿using GameStoreAPI.Data;
 using GameStoreAPI.Features.Games.Dtos.GetGameDetails;
+using GameStoreAPI.Features.Games.Dtos.GetGameSummary;
 using GameStoreAPI.Features.Games.GamesService;
 using GameStoreAPI.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -72,6 +73,26 @@ namespace GameStoreAPI.Features.Games
                 return NotFound(result.Error);
             }
 
+            return Ok(result.Value);
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchGames(
+        [FromQuery, Required(ErrorMessage = "Search must not be empty.")] string name,
+        [FromQuery, Range(1, 100)] int page = 1,
+        [FromQuery, Range(1, 50)] int pageSize = 12
+            )
+        {
+            var result = await _gamesService.SearchGamesByNameAsync(name, page, pageSize);
+
+            if (result.IsFailure)
+            {
+                if (result.Error.Code == "Games.NotFound")
+                {
+                    return Ok(new List<GameSummaryResponseDto>());
+                }
+                return BadRequest(result.Error);
+            }
             return Ok(result.Value);
         }
     }
