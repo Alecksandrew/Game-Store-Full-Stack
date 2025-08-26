@@ -51,5 +51,5 @@ export function useApi<TData, TResponse>(
       />
     ) : null;
 
-  return { data, isLoading, execute, warningComponent };
+  return { data, isLoading, execute, warningComponent, warningType: warning.type };
 }

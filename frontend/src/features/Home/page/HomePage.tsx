@@ -1,49 +1,49 @@
+import { useEffect, useState } from "react";
 import GameCard from "../components/GameCard";
+import SearchGameForm from "../components/SearchGameForm";
+import { apiClient } from "@/global/services/apiClient";
+import { useApi } from "@/global/hooks/useApi";
+import type { GameCardData } from "../types/GameCardType";
+import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 
 
 
 
+export default function HomePage() {
+    const { data, isLoading, execute, warningComponent, warningType } = useApi<void, GameCardData[]>(
+      () => apiClient(API_ROUTES.GAMES.POPULAR.SUMMARY_INFOS + "?amount=12")
+    );
 
-export default function HomePage(){
+    
+    useEffect(() => {
+        execute();
+    }, []);
+    
 
-    const gameData = {
-        name: "Cyberpunk 2077",
-        price: "$288",
-        discountPrice: "$200"
-    }
+  function listGameCards(gamesData:GameCardData[]){
+    console.log(gamesData);
+    if(gamesData == null) return;
 
-    const game = {
-  id: 1400,
-  name: "Professor Layton and the Last Specter",
-  summary: "Last Specter is the fourth game in the Professor Layton series, and is a prequel that takes place three years before the first trilogy, detailing how Professor Layton met his apprentice, Luke Triton. The game includes over 170 puzzles.\nProfessor Layton and the Last Specter also includes an additional role-playing game entitled Professor Layton's London Life, available from the start of the game. London Life, in which players interact with various characters from the series in a town called \"Little London\", was advertised to contain over 100 hours of content. London Life was removed from the European versions of the game in order to prevent a significant delay of the game's release for translation.",
-  firstReleaseDate: "11/26/2009",
-  coverUrl: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1wtl.jpg",
-  screenshotsImageUrl: [
-    "https://images.igdb.com/igdb/image/upload/t_screenshot_big/kbkgg8ej2oxqyokm9huz.jpg",
-    "https://images.igdb.com/igdb/image/upload/t_screenshot_big/mtdnixqkvqhhzfjcmovx.jpg",
-    "https://images.igdb.com/igdb/image/upload/t_screenshot_big/jcttc8xk15jswea5ozpl.jpg",
-    "https://images.igdb.com/igdb/image/upload/t_screenshot_big/x1yoke2yyxresrbrd1kt.jpg",
-    "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ruhyfxkeq3ajmpjyyo6u.jpg",
-    "https://images.igdb.com/igdb/image/upload/t_screenshot_big/smdkwhccm7sdyjvyjspg.jpg",
-    "https://images.igdb.com/igdb/image/upload/t_screenshot_big/s8q1sg8oztj5rqiim2nq.jpg",
-    "https://images.igdb.com/igdb/image/upload/t_screenshot_big/nfmjzhtnrugpoohdnu2y.jpg",
-    "https://images.igdb.com/igdb/image/upload/t_screenshot_big/mivnynbifkwjaoblt0g4.jpg",
-    "https://images.igdb.com/igdb/image/upload/t_screenshot_big/qi6vapufnma4ridftobo.jpg",
-    "https://images.igdb.com/igdb/image/upload/t_screenshot_big/kgfckybbng977cdd1vib.jpg",
-    "https://images.igdb.com/igdb/image/upload/t_screenshot_big/bwjuf5fzgjigfqmrx8sk.jpg"
-  ],
-  platforms: ["Nintendo DS"],
-  videos: [
-    "https://www.youtube.com/embed/FO7U_yQPm9c",
-    "https://www.youtube.com/embed/qJysZOD66aI"
-  ],
-  price: 203,
-  discountPrice: 79,
-  totalSells: 0,
-  availableKeysStock: 7
-};
+    return gamesData.map(game => {
+      return (
+      <li key={game.name}>
+        <GameCard gameData={game}/>
+      </li>
+      )
+    })
+  }
+
 
     return (
-        <GameCard gameData={game}/>
+      <>
+      {warningType == "error" ? warningComponent : null}
+      <div className="bg-bg-primary min-h-screen">
+        <div className="w-8/10 max-w-[1300px] mx-auto">
+          <SearchGameForm/>
+          <ul className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4 mt-5">{data != null ? listGameCards(data) : null }</ul>
+        </div>
+      </div>
+    </>
+      
     )
 }

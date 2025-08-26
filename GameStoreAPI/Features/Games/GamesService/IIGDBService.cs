@@ -8,6 +8,7 @@ namespace GameStoreAPI.Features.Games.GamesService
         Task<string> GetValidApiToken();
         Task<GameDetailsResponseIGDBDto?> GetGameByIdAsync(int igdbId);
         public Task<List<GameDetailsResponseIGDBDto>> GetPopularGamesAsync(int amount);
+        public Task<List<GameDetailsResponseIGDBDto>> GetPopularGamesSummaryAsync(int amount);
 
 
     }

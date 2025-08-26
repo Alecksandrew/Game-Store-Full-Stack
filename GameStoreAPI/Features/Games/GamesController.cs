@@ -44,7 +44,7 @@ namespace GameStoreAPI.Features.Games
         [HttpGet("popular")]
         public async Task<IActionResult> GetPopularGamesDetails([FromQuery][Range(1, 500, ErrorMessage = "The amount of games must be between 1 and 500.")] int amount)
         {         
-           var result = await _gamesService.GetPopularGamesDetails(amount);
+           var result = await _gamesService.GetPopularGamesAsync(amount);
 
             if (result.IsFailure)
             {
@@ -60,5 +60,17 @@ namespace GameStoreAPI.Features.Games
         }
 
 
+        [HttpGet("popular-summary")]
+        public async Task<IActionResult> GetPopularGamesSummary([FromQuery][Range(1, 500, ErrorMessage = "The amount of games must be between 1 and 500.")] int amount)
+        {
+            var result = await _gamesService.GetPopularGamesSummaryAsync(amount);
+
+            if (result.IsFailure)
+            {
+                return NotFound(result.Error);
+            }
+
+            return Ok(result.Value);
+        }
     }
 }
