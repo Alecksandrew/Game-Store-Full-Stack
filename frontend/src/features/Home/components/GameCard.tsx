@@ -20,7 +20,7 @@ export default function GameCard({gameData, className}:GameCardProps) {
     <div className={`relative bg-bg-secondary aspect-4/5 w-full min-h-[500px] rounded-xl overflow-hidden flex flex-col outline-1 outline-primary ${className}`}>
       <ToggleWishlist className="absolute right-2/100 top-2/100"/>
       <div className="w-full h-65/100 bg-amber-300">
-        <img src={gameData.coverUrl} alt={`Image of the game ${gameData.name}`} className="object-cover w-full h-full"  />
+        <img src={gameData.coverUrl} alt={`Image of the game ${gameData.name}`} className="w-full h-full"  />
       </div>
       <div className=" flex flex-col justify-between p-3 flex-1">
           <div className="">

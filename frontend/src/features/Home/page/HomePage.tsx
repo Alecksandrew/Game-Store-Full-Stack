@@ -1,36 +1,19 @@
-import { useCallback, useEffect, useState } from "react";
 import GameCard from "../components/GameCard";
 import SearchGameForm from "../components/SearchGameForm";
-import { apiClient } from "@/global/services/apiClient";
-import { useApi } from "@/global/hooks/useApi";
 import type { GameCardData } from "../types/GameCardType";
-import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 import Pagination from "@mui/material/Pagination";
 import CircularProgress from "@mui/material/CircularProgress";
+import { usePaginatedGames } from "../hooks/usePaginatedGames";
 
 export default function HomePage() {
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const fetchGamesForPage = useCallback(() => {
-    const url = `${API_ROUTES.GAMES.POPULAR.SUMMARY_INFOS}?page=${currentPage}&pageSize=12`;
-    return apiClient<GameCardData[]>(url);
-  }, [currentPage]);
-
-  const { data, isLoading, execute, warningComponent, warningType } = useApi<
-    void,
-    GameCardData[]
-  >(fetchGamesForPage);
-
-  useEffect(() => {
-    execute();
-  }, [execute]);
-
-  const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
-    value: number
-  ) => {
-    setCurrentPage(value);
-  };
+  const {
+    data,
+    isLoading,
+    warningComponent,
+    warningType,
+    currentPage,
+    handlePageChange,
+  } = usePaginatedGames();
 
   function listGameCards(gamesData: GameCardData[]) {
     console.log(gamesData);
@@ -54,7 +37,7 @@ export default function HomePage() {
           <SearchGameForm />
           {isLoading ? (
             <div className="flex justify-center items-center min-h-100">
-              <CircularProgress size="4rem" className="mx-auto"/>
+              <CircularProgress size="4rem" className="mx-auto" />
             </div>
           ) : (
             <>
