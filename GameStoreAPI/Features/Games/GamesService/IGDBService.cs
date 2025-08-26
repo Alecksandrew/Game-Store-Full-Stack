@@ -105,12 +105,13 @@ namespace GameStoreAPI.Features.Games.GamesService
             return result ?? new List<GameDetailsResponseIGDBDto>();
         }
 
-        public async Task<List<GameDetailsResponseIGDBDto>> GetPopularGamesSummaryAsync(int amount)
+        public async Task<List<GameDetailsResponseIGDBDto>> GetPopularGamesSummaryAsync(int amount, int offset)
         {
             var query = $"fields name, cover.image_id; " +
                         $"where cover != null & aggregated_rating >= 85 & aggregated_rating_count > 10; " +
                         $"sort aggregated_rating desc; " +
-                        $"limit {amount}; ";
+                        $"limit {amount}; " +
+                        $"offset {offset}; ";
             var result = await ExecuteIgdbQueryAsync(query);
             return result ?? new List<GameDetailsResponseIGDBDto>();
         }

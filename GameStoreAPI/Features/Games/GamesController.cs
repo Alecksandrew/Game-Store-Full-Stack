@@ -61,9 +61,11 @@ namespace GameStoreAPI.Features.Games
 
 
         [HttpGet("popular-summary")]
-        public async Task<IActionResult> GetPopularGamesSummary([FromQuery][Range(1, 500, ErrorMessage = "The amount of games must be between 1 and 500.")] int amount)
+        public async Task<IActionResult> GetPopularGamesSummary(
+            [FromQuery][Range(1, 100)] int page = 1,
+            [FromQuery][Range(1, 50)] int pageSize = 12)
         {
-            var result = await _gamesService.GetPopularGamesSummaryAsync(amount);
+            var result = await _gamesService.GetPopularGamesSummaryAsync(page, pageSize);
 
             if (result.IsFailure)
             {

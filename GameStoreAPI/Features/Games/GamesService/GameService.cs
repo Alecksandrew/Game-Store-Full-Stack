@@ -183,9 +183,10 @@ namespace GameStoreAPI.Features.Games.GamesService
             return Result<List<GameDetailsResponseDto>>.Ok(gameDetailsList);
         }
 
-        public async Task<Result<List<GameSummaryResponseDto>>> GetPopularGamesSummaryAsync(int amount)
+        public async Task<Result<List<GameSummaryResponseDto>>> GetPopularGamesSummaryAsync(int page, int pageSize)
         {
-            var igdbGames = await _igdbService.GetPopularGamesSummaryAsync(amount);
+            var offset = (page - 1) * pageSize;
+            var igdbGames = await _igdbService.GetPopularGamesSummaryAsync(pageSize, offset);
             if (igdbGames is null)
             {
                 return Result<List<GameSummaryResponseDto>>.Fail(new Error("Games.NotFound", "Games were not found in IGDB Database.")); ;
