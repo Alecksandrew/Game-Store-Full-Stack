@@ -23,6 +23,16 @@
   --font-inter: "Inter", sans-serif;
 };
 
+@layer base {
+  *{
+    @apply font-inter
+  }
+  
+  h1, h2, h3, h4 {
+    @apply font-orbitron font-semibold
+  }
+}
+
 @layer components {
   .form {
     @apply flex flex-col gap-2 justify-center items-center

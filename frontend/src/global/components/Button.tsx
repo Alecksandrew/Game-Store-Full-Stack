@@ -7,14 +7,14 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export default function Button({
-  className = "bg-primary",
+  className = "bg-primary text-text-primary",
   title,
   type,
   ...props
 }: ButtonProps) {
 
   return (
-    <button type={type} className={`text-text-primary font-semibold p-1 rounded w-full mt-2 ${className}`} {...props}>
+    <button type={type} className={`font-semibold p-1 rounded w-full mt-2 ${className}`} {...props}>
       {title}
     </button>
   );
