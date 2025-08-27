@@ -57,7 +57,7 @@ namespace GameStoreAPI.Features.Games
             try
             {
                 var result = await _gamesService.GetGamesAsync(parameters);
-                return Ok(result);
+                return Ok(result.Value);
             }
             catch (Exception ex)
             {

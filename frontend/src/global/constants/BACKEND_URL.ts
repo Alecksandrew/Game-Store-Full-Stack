@@ -14,12 +14,6 @@ export const API_ROUTES = {
     ME: `${API_BASE_URL}/api/account/me`,
   },
   GAMES: {
-    POPULAR: {
-      DETAILED_INFOS: `${API_BASE_URL}/api/Games/popular`,
-      SUMMARY_INFOS:`${API_BASE_URL}/api/Games/popular-summary`,
-    },
-    SEARCH: {
-       SUMMARY_INFOS: `${API_BASE_URL}/api/Games/search`,
-    }
+    GET: `${API_BASE_URL}/api/Games`,
   }
 };

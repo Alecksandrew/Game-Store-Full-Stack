@@ -10,13 +10,13 @@ import MainSection from "../components/MainSection";
 export default function HomePage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
-  
+  /*
   const {
     data,
     isLoading,
     warningComponent,
     warningType,
-  } = usePaginatedGames({searchTerm, currentPage});
+  } = usePaginatedGames({searchTerm, currentPage});*/
 
   const handleSearchSubmit = (data: { gameName: string }) => {
     setSearchTerm(data.gameName);
@@ -45,13 +45,13 @@ export default function HomePage() {
 
   return (
     <>
-      {warningType == "error" ? warningComponent : null}
+      {/*warningType == "error" ? warningComponent : null */}
 
       <div className="bg-bg-primary min-h-screen py-4">
-        <div className="w-8/10 max-w-[1300px] mx-auto">
+        <div className="w-8/10 max-w-[1000px] mx-auto">
         <MainSection/>
           <SearchGameForm onSubmit={handleSearchSubmit} />
-          {isLoading ? (
+          { /*isLoading ? (
             <div className="flex justify-center items-center min-h-100">
               <CircularProgress size="4rem" className="mx-auto" />
             </div>
@@ -89,7 +89,7 @@ export default function HomePage() {
                 />
               </div>
             </>
-          )}
+          )*/}
         </div>
       </div>
     </>
