@@ -25,3 +25,19 @@ Content-Type: application/json
 }
 
 ###
+
+# Cenário 1: Buscar jogos populares (visão resumida)
+GET {{GameStoreAPI_HostAddress}}/api/games?sort=popular&page=1&pageSize=5&view=summary
+Accept: application/json
+
+###
+
+# Cenário 2: Buscar por um jogo específico (visão resumida)
+GET {{GameStoreAPI_HostAddress}}/api/games?search=witcher
+Accept: application/json
+
+###
+
+# Cenário 3: Buscar jogos populares (visão detalhada)
+GET {{GameStoreAPI_HostAddress}}/api/games?sort=popular&pageSize=3&view=detailed
+Accept: application/json

@@ -1,4 +1,5 @@
 ﻿using GameStoreAPI.Data;
+using GameStoreAPI.Features.Games.Dtos.GetGame;
 using GameStoreAPI.Features.Games.Dtos.GetGameDetails;
 using GameStoreAPI.Features.Games.Dtos.GetGameSummary;
 using GameStoreAPI.Features.Games.GamesService;
@@ -24,6 +25,8 @@ namespace GameStoreAPI.Features.Games
             _gamesService = gamesService;
         }
 
+        /*========ENDPOINTS============*/
+
         [HttpGet("{igdbId}")]
         public async Task<IActionResult> GetGameDetails(int igdbId)
         {
@@ -42,58 +45,28 @@ namespace GameStoreAPI.Features.Games
             return Ok(result.Value);
         }
 
-        [HttpGet("popular")]
-        public async Task<IActionResult> GetPopularGamesDetails([FromQuery][Range(1, 500, ErrorMessage = "The amount of games must be between 1 and 500.")] int amount)
-        {         
-           var result = await _gamesService.GetPopularGamesAsync(amount);
 
-            if (result.IsFailure)
-            {
-                if (result.Error.Code == "Game.NotFound")
-                {
-                    return NotFound(result.Error);
-                }
-
-                return BadRequest(result.Error);
-            }
-
-            return Ok(result.Value);
-        }
-
-
-        [HttpGet("popular-summary")]
-        public async Task<IActionResult> GetPopularGamesSummary(
-            [FromQuery][Range(1, 100)] int page = 1,
-            [FromQuery][Range(1, 50)] int pageSize = 12)
+        [HttpGet]
+        public async Task<IActionResult> GetGames([FromQuery] GetGamesRequestDto parameters)
         {
-            var result = await _gamesService.GetPopularGamesSummaryAsync(page, pageSize);
-
-            if (result.IsFailure)
+            if (parameters.YearFrom > parameters.YearTo)
             {
-                return NotFound(result.Error);
+                return BadRequest("YearFrom cannot be greater than YearTo");
             }
 
-            return Ok(result.Value);
-        }
-
-        [HttpGet("search")]
-        public async Task<IActionResult> SearchGames(
-        [FromQuery, Required(ErrorMessage = "Search must not be empty.")] string name,
-        [FromQuery, Range(1, 100)] int page = 1,
-        [FromQuery, Range(1, 50)] int pageSize = 12
-            )
-        {
-            var result = await _gamesService.SearchGamesByNameAsync(name, page, pageSize);
-
-            if (result.IsFailure)
+            try
             {
-                if (result.Error.Code == "Games.NotFound")
-                {
-                    return Ok(new List<GameSummaryResponseDto>());
-                }
-                return BadRequest(result.Error);
+                var result = await _gamesService.GetGamesAsync(parameters);
+                return Ok(result);
             }
-            return Ok(result.Value);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Internal server error" });
+            }
         }
+
+
+     
+       
     }
 }
