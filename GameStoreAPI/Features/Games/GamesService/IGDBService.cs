@@ -99,7 +99,7 @@ namespace GameStoreAPI.Features.Games.GamesService
         public async Task<List<GameDetailsResponseIGDBDto>> GetPopularGamesAsync(int amount)
         {
             var query = $"fields name, platforms.name, screenshots.image_id, cover.image_id, first_release_date, summary; " +
-                        $"where cover != null & screenshots != null & summary != null & aggregated_rating >= 85 & aggregated_rating_count > 10; " +
+                        $"where cover != null & screenshots != null & summary != null & aggregated_rating >= 85 & aggregated_rating_count > 10  & game_type = 0; " +
                         $"limit {amount};";
             var result = await ExecuteIgdbQueryAsync(query);
             return result ?? new List<GameDetailsResponseIGDBDto>();
@@ -108,7 +108,7 @@ namespace GameStoreAPI.Features.Games.GamesService
         public async Task<List<GameDetailsResponseIGDBDto>> GetPopularGamesSummaryAsync(int amount, int offset)
         {
             var query = $"fields name, cover.image_id; " +
-                        $"where cover != null & aggregated_rating >= 85 & aggregated_rating_count > 10; " +
+                        $"where cover != null & aggregated_rating >= 85 & aggregated_rating_count > 10  & game_type = 0; " +
                         $"sort aggregated_rating desc; " +
                         $"limit {amount}; " +
                         $"offset {offset}; ";
@@ -120,7 +120,7 @@ namespace GameStoreAPI.Features.Games.GamesService
         {
             var query = $"fields name, cover.image_id; " +
                         $"search \"{searchTerm}\"; " +
-                        $"where cover != null; " +
+                        $"where cover != null & game_type = 0; " +
                         $"limit {amount}; " +
                         $"offset {offset};";
 

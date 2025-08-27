@@ -1,40 +1,41 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import type { GameCardData } from "../types/GameCardType";
 import { apiClient } from "@/global/services/apiClient";
 import { useApi } from "@/global/hooks/useApi";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 
-export function usePaginatedGames() {
-  const [currentPage, setCurrentPage] = useState(1);
+export function usePaginatedGames({
+  searchTerm,
+  currentPage,
+}: {
+  searchTerm: string;
+  currentPage: number;
+}) {
 
   const fetchGamesForPage = useCallback(() => {
-    const url = `${API_ROUTES.GAMES.POPULAR.SUMMARY_INFOS}?page=${currentPage}&pageSize=12`;
-    return apiClient<GameCardData[]>(url);
-  }, [currentPage]);
+    let url = "";
 
-  const { data, isLoading, execute, warningComponent, warningType, setData } = useApi<
-    void,
-    GameCardData[]
-  >(fetchGamesForPage);
+    if (searchTerm.trim()) {
+      url = `${API_ROUTES.GAMES.SEARCH.SUMMARY_INFOS}?name=${searchTerm}&page=${currentPage}&pageSize=12`;
+    } else {
+      url = `${API_ROUTES.GAMES.POPULAR.SUMMARY_INFOS}?page=${currentPage}&pageSize=12`;
+    }
+
+    return apiClient<GameCardData[]>(url);
+  }, [currentPage, searchTerm]);
+
+  const { data, isLoading, execute, warningComponent, warningType } =
+    useApi<void, GameCardData[]>(fetchGamesForPage);
 
   useEffect(() => {
     execute();
   }, [execute]);
 
-  const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
-    value: number
-  ) => {
-    setCurrentPage(value);
-  };
-
   return {
-    setData,
     data,
     isLoading,
     warningComponent,
     warningType,
     currentPage,
-    handlePageChange,
   };
 }

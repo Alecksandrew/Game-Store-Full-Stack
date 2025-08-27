@@ -15,14 +15,15 @@ namespace GameStoreAPI.Features.Games.GamesService
         private readonly AppDbContext _dbContext;
         private readonly IIGDBService _igdbService;
 
-        public GameService( IConfiguration configuration, AppDbContext context, IIGDBService igdbService)
+
+        public GameService(IConfiguration configuration, AppDbContext context, IIGDBService igdbService)
         {
             _dbContext = context;
             _configuration = configuration;
             _igdbService = igdbService;
         }
         private GameInventory CreateFakeInventoryForGame(int igdbId)
-        {      
+        {
             var random = new Random();
             var stock = random.Next(5, 15);
             int price = random.Next(29, 299);
@@ -30,7 +31,7 @@ namespace GameStoreAPI.Features.Games.GamesService
 
             //Logic to add discount only in some games and not in everything
             if (random.Next(0, 4) == 0)
-            {      
+            {
                 double discountPercentage = random.Next(5, 91) / 100.0;
                 discountPrice = (int)(price * (1 - (decimal)discountPercentage));
             }
@@ -71,7 +72,7 @@ namespace GameStoreAPI.Features.Games.GamesService
 
             return gameInventory;
         }
-        private  GameDetailsResponseDto MapToGamesDetailsResponseDto(GameDetailsResponseIGDBDto igdbGame, GameInventory gameInventory, int availableStock)
+        private GameDetailsResponseDto MapToGamesDetailsResponseDto(GameDetailsResponseIGDBDto igdbGame, GameInventory gameInventory, int availableStock)
         {
 
             //Return screenshots url to frontend
@@ -92,13 +93,13 @@ namespace GameStoreAPI.Features.Games.GamesService
 
             long? unixTimestamp = igdbGame.FirstReleaseDate;
             string? formattedDate = null;
-            if (unixTimestamp != null) 
+            if (unixTimestamp != null)
             {
-               DateTime date = DateTimeOffset.FromUnixTimeSeconds((long)unixTimestamp).DateTime;
-               formattedDate = date.ToString("MM/dd/yyyy");
-            } 
-            
-             
+                DateTime date = DateTimeOffset.FromUnixTimeSeconds((long)unixTimestamp).DateTime;
+                formattedDate = date.ToString("MM/dd/yyyy");
+            }
+
+
             GameDetailsResponseDto response = new GameDetailsResponseDto
             {
                 Id = gameInventory.IgdbId,
@@ -131,8 +132,8 @@ namespace GameStoreAPI.Features.Games.GamesService
             var gameInventory = await GetOrCreateInventoryForGameAsync(igdbId);
 
             var availableStock = await _dbContext.GameKeys.CountAsync(key => key.GameIgdbId == igdbId && !key.IsSold);
-            var responseDto =  MapToGamesDetailsResponseDto(igdbGame, gameInventory, availableStock);
-            
+            var responseDto = MapToGamesDetailsResponseDto(igdbGame, gameInventory, availableStock);
+
             return Result<GameDetailsResponseDto>.Ok(responseDto);
         }
         public async Task<Result<List<GameDetailsResponseDto>>> GetPopularGamesAsync(int amount)
@@ -150,7 +151,7 @@ namespace GameStoreAPI.Features.Games.GamesService
                                         .Include(gi => gi.GameKeys)
                                         .Where(gi => gamesIds.Contains(gi.IgdbId))
                                         .ToDictionaryAsync(gi => gi.IgdbId);
-            
+
             var keysStockMap = await _dbContext.GameKeys
                                 .Where(k => gamesIds.Contains((int)k.GameIgdbId) && !k.IsSold)
                                 .GroupBy(k => k.GameIgdbId)
@@ -233,77 +234,8 @@ namespace GameStoreAPI.Features.Games.GamesService
             return Result<List<GameSummaryResponseDto>>.Ok(gameSummaryList);
         }
 
+
         public async Task<Result<List<GameSummaryResponseDto>>> SearchGamesByNameAsync(string searchTerm, int page, int pageSize)
-        {
-            Com certeza!Você está absolutamente certo, para um resultado de busca, mostrar o preço é essencial.Minhas desculpas por ter simplificado demais na resposta anterior.
-
-Vamos construir o endpoint de busca paginado que retorna tudo o que você precisa: nome, capa, preço e desconto.
-
-A lógica será uma combinação inteligente do que já fizemos:
-
-Buscamos os jogos na API da IGDB pelo nome, com paginação.
-
-Usamos os IDs desses jogos para buscar os preços e descontos no seu banco de dados local, de forma otimizada.
-
-Juntamos tudo e enviamos para o frontend.
-
-## Passo a Passo: Criando o Endpoint de Busca Completo
-Passo 1: Atualizar o IGDBService(para busca com paginação)
-Primeiro, vamos garantir que a camada que fala com a IGDB saiba como fazer uma busca paginada.
-
-Ação:
-            Abra a interface IIGDBService.cs e adicione a nova assinatura de método:
-
-C#
-
-// Em: IIGDBService.cs
-public interface IIGDBService
-        {
-            // ... seus outros métodos
-
-            // ADICIONE ESTA NOVA LINHA
-            Task<List<GameDetailsResponseIGDBDto>> SearchGamesByNameAsync(string searchTerm, int limit, int offset);
-        }
-        Agora, implemente este método na classe IGDBService.cs:
-
-C#
-
-// Em: IGDBService.cs
-public async Task<List<GameDetailsResponseIGDBDto>> SearchGamesByNameAsync(string searchTerm, int limit, int offset)
-        {
-            // A query de busca usa "search" e agora inclui limit e offset
-            var query = $"fields name, cover.image_id; " +
-                        $"search \"{searchTerm}\"; " +
-                        $"where cover != null; " + // Garante que os resultados tenham uma capa
-                        $"limit {limit}; " +
-                        $"offset {offset};";
-
-            var result = await ExecuteIgdbQueryAsync(query);
-            return result ?? new List<GameDetailsResponseIGDBDto>();
-        }
-        Passo 2: Adicionar a Lógica Completa ao GameService
-Esta é a parte mais importante.O GameService vai orquestrar tudo: buscar na IGDB, buscar no seu banco local e juntar as informações.
-
-Ação:
-Abra a interface IGameService.cs e adicione a nova assinatura:
-
-C#
-
-// Em: IGameService.cs
-public interface IGameService
-        {
-            // ... seus outros métodos
-
-            // ADICIONE ESTA NOVA LINHA
-            Task<Result<List<GameSummaryResponseDto>>> SearchGamesByNameAsync(string searchTerm, int page, int pageSize);
-        }
-        Implemente o método na classe GameService.cs.Note como ele é muito parecido com o seu método GetPopularGamesDetailsAsync, pois a lógica de otimização é a mesma.
-
-
-        C#
-
-// Em: GameService.cs
-public async Task<Result<List<GameSummaryResponseDto>>> SearchGamesByNameAsync(string searchTerm, int page, int pageSize)
         {
             var offset = (page - 1) * pageSize;
             var igdbGames = await _igdbService.SearchGamesByNameAsync(searchTerm, pageSize, offset);
@@ -352,6 +284,6 @@ public async Task<Result<List<GameSummaryResponseDto>>> SearchGamesByNameAsync(s
             return Result<List<GameSummaryResponseDto>>.Ok(gameSummaryList);
         }
 
-
     }
+        
 }

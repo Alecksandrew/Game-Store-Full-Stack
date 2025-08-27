@@ -17,6 +17,9 @@ export const API_ROUTES = {
     POPULAR: {
       DETAILED_INFOS: `${API_BASE_URL}/api/Games/popular`,
       SUMMARY_INFOS:`${API_BASE_URL}/api/Games/popular-summary`,
+    },
+    SEARCH: {
+       SUMMARY_INFOS: `${API_BASE_URL}/api/Games/search`,
     }
   }
 };
