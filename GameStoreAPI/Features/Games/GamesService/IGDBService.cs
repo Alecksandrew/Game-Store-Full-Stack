@@ -138,7 +138,12 @@ namespace GameStoreAPI.Features.Games.GamesService
 
             if (!string.IsNullOrWhiteSpace(parameters.Genre))
             {
-                whereClauses.Add($"genre.name = {parameters.Genre}");
+                whereClauses.Add($"genres.name = \"{parameters.Genre}\"");
+            }
+
+            if (!string.IsNullOrWhiteSpace(parameters.Rating))
+            {
+                whereClauses.Add($"rating >= {parameters.Rating}");
             }
 
 

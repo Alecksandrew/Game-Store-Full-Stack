@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace GameStoreAPI.Features.Games.Dtos.GetGame
 {
@@ -31,4 +32,10 @@ namespace GameStoreAPI.Features.Games.Dtos.GetGame
         public int? YearTo { get; set; }
 
     }
+
+
+
+
+      
+    
 }

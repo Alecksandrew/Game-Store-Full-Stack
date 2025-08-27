@@ -18,7 +18,7 @@ export function usePaginatedGames({
     if (searchTerm.trim()) {
       url = `${API_ROUTES.GAMES.GET}?search=${searchTerm}&page=${currentPage}&pageSize=12`;
     } else {
-      url = `${API_ROUTES.GAMES.GET}?page=${currentPage}&pageSize=12`;
+      url = `${API_ROUTES.GAMES.GET}?page=${currentPage}&pageSize=12&yearFrom=2018&rating=88`;
     }
 
     return apiClient<GameCardData[]>(url);
