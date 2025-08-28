@@ -87,8 +87,8 @@ Este projeto foi uma oportunidade para aplicar conceitos cruciais de desenvolvim
 - [x] Sistema completo de Autenticação com JWT (Login, Registro, Confirmação de Email, Troca de Senha)
 - [x] Sistema de Gerenciamento de Conta (Ver dados, Trocar Senha, Deletar Conta)
 - [x] Integração Frontend-Backend para Autenticação
-- [ ] Proxy no Backend para API da IGDB
-- [ ] Desenvolvimento da Home Page e listagem de jogos
+- [X] Proxy no Backend para API da IGDB
+- [X] Desenvolvimento da Home Page e listagem de jogos
 - [ ] Página de Detalhes do Jogo com sistema de Reviews
 - [ ] Funcionalidade de Wishlist
 - [ ] Funcionalidade de Carrinho e Checkout Simulado
