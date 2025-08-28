@@ -7,6 +7,7 @@ import { usePaginatedGames } from "../hooks/usePaginatedGames";
 import { useState } from "react";
 import MainSection from "../components/MainSection";
 import CategoryCard from "../components/CategoryCard";
+import Header from "../components/Header";
 
 export default function HomePage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,7 +46,7 @@ export default function HomePage() {
   return (
     <>
       {warningType == "error" ? warningComponent : null}
-
+      <Header/>
       <div className="bg-bg-primary min-h-screen py-4">
         <div className="w-8/10 max-w-[1000px] mx-auto">
           <MainSection />
