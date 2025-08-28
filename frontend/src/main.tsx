@@ -10,9 +10,14 @@ import MyAccountPage from "./features/myAccount/pages/MyAccountPage.tsx";
 import ProtectedRoute from "./global/routes/ProtectedRoutes.tsx";
 import AuthLayout from "./features/auth/pages/AuthLayout.tsx";
 import { PAGE_ROUTES } from "./global/constants/FRONTEND_URL.ts";
+import HomePage from "./features/Home/page/HomePage.tsx";
 
 const router = createBrowserRouter([
-   {
+  {
+    path:"/",
+    element:<HomePage/>
+  },
+  {
     element: <AuthLayout />,
     children: [
       {

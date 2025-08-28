@@ -4,7 +4,7 @@ export const PAGE_ROUTES = {
     GAME_DETAILS: (id: string) => `/game/${id}`,
   },
   AUTH: {
-    LOGIN: "/",
+    LOGIN: "/auth",
     FORGOT_PASSWORD: "/forgot-password",
     RESET_PASSWORD: "/reset-password",
     CONFIRM_EMAIL: "/confirm-email",

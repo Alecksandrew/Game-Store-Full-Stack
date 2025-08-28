@@ -13,4 +13,7 @@ export const API_ROUTES = {
   ACCOUNT: {
     ME: `${API_BASE_URL}/api/account/me`,
   },
+  GAMES: {
+    GET: `${API_BASE_URL}/api/Games`,
+  }
 };

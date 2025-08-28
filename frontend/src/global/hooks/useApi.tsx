@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { type warningState } from "../types/warningType";
 import { type ApiResponse } from "../types/responseApiType";
 import { Warning } from "@/global/components/Warning";
@@ -16,7 +16,7 @@ export function useApi<TData, TResponse>(
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<TResponse | null>(null);
 
-  const execute = async (requestData: TData) => {
+  const execute = useCallback( async (requestData: TData) => {
     setIsLoading(true);
     setWarning(emptyWarningState);
 
@@ -40,7 +40,7 @@ export function useApi<TData, TResponse>(
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [apiRequest]);
 
   const warningComponent =
     warning.message !== "" ? (
@@ -51,5 +51,5 @@ export function useApi<TData, TResponse>(
       />
     ) : null;
 
-  return { data, isLoading, execute, warningComponent };
+  return { data, isLoading, execute, warningComponent, warningType: warning.type, setData };
 }

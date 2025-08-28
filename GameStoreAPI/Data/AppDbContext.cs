@@ -13,7 +13,8 @@ namespace GameStoreAPI.Data
         }
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }
-
+        public DbSet<GameInventory> GamesInventory { get; set; }
+        public DbSet<GameKey> GameKeys { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -39,6 +40,14 @@ namespace GameStoreAPI.Data
                       .WithMany()
                       .HasForeignKey(e => e.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<GameInventory>(entity =>
+            {
+                entity.HasKey(e => e.IgdbId);
+                entity.Property(e => e.IgdbId).ValueGeneratedNever();
+                entity.Property(e => e.Price).HasPrecision(6, 2);
+                entity.Property(e => e.DiscountPrice).HasPrecision(6, 2);
             });
         }
 

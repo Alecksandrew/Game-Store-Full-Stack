@@ -22,6 +22,53 @@ namespace GameStoreAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("GameStoreAPI.Models.GameInventory", b =>
+                {
+                    b.Property<int>("IgdbId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("DiscountPrice")
+                        .HasPrecision(6, 2)
+                        .HasColumnType("decimal(6,2)");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(6, 2)
+                        .HasColumnType("decimal(6,2)");
+
+                    b.Property<int>("TotalSells")
+                        .HasColumnType("int");
+
+                    b.HasKey("IgdbId");
+
+                    b.ToTable("GamesInventory");
+                });
+
+            modelBuilder.Entity("GameStoreAPI.Models.GameKey", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("GameIgdbId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("GameInventoryIgdbId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsSold")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("KeyValue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameInventoryIgdbId");
+
+                    b.ToTable("GameKeys");
+                });
+
             modelBuilder.Entity("GameStoreAPI.Models.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
@@ -250,6 +297,17 @@ namespace GameStoreAPI.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("GameStoreAPI.Models.GameKey", b =>
+                {
+                    b.HasOne("GameStoreAPI.Models.GameInventory", "GameInventory")
+                        .WithMany("GameKeys")
+                        .HasForeignKey("GameInventoryIgdbId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GameInventory");
+                });
+
             modelBuilder.Entity("GameStoreAPI.Models.RefreshToken", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
@@ -308,6 +366,11 @@ namespace GameStoreAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("GameStoreAPI.Models.GameInventory", b =>
+                {
+                    b.Navigation("GameKeys");
                 });
 #pragma warning restore 612, 618
         }
