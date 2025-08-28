@@ -129,6 +129,7 @@ namespace GameStoreAPI.Features.Games.GamesService
                 Id = gameInventory.IgdbId,
                 Name = igdbGame.Name,
                 Summary = igdbGame.Summary,
+                Genres = igdbGame.Genres, 
                 FirstReleaseDate = formattedDate,
                 CoverUrl = coverUrl,
                 ScreenshotsImageUrl = screenshotsUrls,
@@ -147,6 +148,7 @@ namespace GameStoreAPI.Features.Games.GamesService
 
 
         //SERVICES================================================
+        //Get one specific game
         public async Task<Result<GameDetailsResponseDto>> GetGameDetailsAsync(int igdbId)
         {
             var igdbGame = await _igdbService.GetGameByIdAsync(igdbId);
@@ -166,6 +168,7 @@ namespace GameStoreAPI.Features.Games.GamesService
             return Result<GameDetailsResponseDto>.Ok(responseDto);
         }
 
+        //Get several games
         public async Task<Result<object>> GetGamesAsync(GetGamesRequestDto parameters)
         {
             var igdbGames = await _igdbService.GetGamesAsync(parameters);

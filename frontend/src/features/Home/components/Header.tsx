@@ -7,10 +7,10 @@ export default function Header() {
   const jwtToken = localStorage.getItem("jwtToken");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width: 768px");
-  const linkClass = `hover:bg-primary hover:text-text-primary w-full text-center rounded flex items-center justify-center`;
+  const linkClass = `hover:bg-bg-secondary hover:text-text-primary w-full text-center rounded flex items-center justify-center`;
   const buttonClass = `p-1.5 rounded`;
   const containerOptionsClass =
-    `bg-bg-primary text-text-primary flex justify-center gap-5  ` +
+    `bg-primary text-text-primary flex justify-center gap-5  ` +
     (!isMobile
       ? ` relative max-w-150 mx-auto`
       : `absolute z-20 flex-col w-full top-full border-b-4 border-primary ${
@@ -51,7 +51,7 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-20 w-screen bg-bg-primary border-b-2 border-text-primary">
+    <header className="sticky top-0 z-20 max-w-screen bg-primary border-b-2 border-text-primary">
       {isMobile ? (
         <>
           <IoMenu

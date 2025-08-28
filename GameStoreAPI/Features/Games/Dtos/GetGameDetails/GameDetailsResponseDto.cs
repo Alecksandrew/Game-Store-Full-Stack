@@ -6,6 +6,7 @@
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Summary { get; set; }
+        public List<IgdbGenreDto?> Genres { get; set; }
         public string? FirstReleaseDate { get; set; }
         public string CoverUrl { get; set; }
         public List<string> ScreenshotsImageUrl { get; set; }

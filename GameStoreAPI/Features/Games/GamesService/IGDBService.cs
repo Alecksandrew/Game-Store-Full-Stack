@@ -103,7 +103,7 @@ namespace GameStoreAPI.Features.Games.GamesService
             var queryBuilder = new StringBuilder();
 
             var fields = parameters.Detailed
-                ? "name, platforms.name, screenshots.image_id, cover.image_id, first_release_date, summary, aggregated_rating"
+                ? "name, platforms.name, screenshots.image_id, cover.image_id, first_release_date, summary, aggregated_rating, genres.name"
                 : "name, cover.image_id";
             queryBuilder.Append($"fields {fields}; ");
 

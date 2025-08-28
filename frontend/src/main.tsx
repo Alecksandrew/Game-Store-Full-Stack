@@ -11,11 +11,16 @@ import ProtectedRoute from "./global/routes/ProtectedRoutes.tsx";
 import AuthLayout from "./features/auth/pages/AuthLayout.tsx";
 import { PAGE_ROUTES } from "./global/constants/FRONTEND_URL.ts";
 import HomePage from "./features/Home/page/HomePage.tsx";
+import GameDetailsPage from "./features/Details/pages/GameDetailsPage.tsx";
 
 const router = createBrowserRouter([
   {
     path:"/",
     element:<HomePage/>
+  },
+  {
+    path:"/games/:id",
+    element:<GameDetailsPage/>
   },
   {
     element: <AuthLayout />,
