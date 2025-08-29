@@ -1,10 +1,11 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { IoMenu } from "react-icons/io5";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useState } from "react";
 
 export default function Header() {
   const jwtToken = localStorage.getItem("jwtToken");
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width: 768px");
   const linkClass = `hover:bg-bg-secondary hover:text-text-primary w-full text-center rounded flex items-center justify-center`;
@@ -45,7 +46,9 @@ export default function Header() {
           >
             Logout
           </button>
-        ) : null}
+        ) : <Link className={linkClass} to={"/auth"}>
+          <button className={buttonClass}>Login</button>
+        </Link>}
       </div>
     );
   }

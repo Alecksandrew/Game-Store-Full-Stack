@@ -38,7 +38,7 @@ export function useLogin() {
       localStorage.setItem("refreshToken", data.refreshTokenRes);
 
       const timeout = setTimeout(
-        () => navigate(PAGE_ROUTES.ACCOUNT.DASHBOARD),
+        () => navigate(PAGE_ROUTES.STORE.HOME),
         REDIRECT_DELAY_MS
       );
       return () => clearTimeout(timeout);
