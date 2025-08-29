@@ -18,7 +18,7 @@ export default function Platforms({
       return (
         <li
           key={platform}
-          className=" bg-primary rounded p-1 text-text-primary italic"
+          className=" ring-1 ring-text-primary rounded p-1 text-text-primary font-inter italic text-sm font-light"
         >
           {platform}
         </li>
@@ -29,8 +29,8 @@ export default function Platforms({
   const Heading: ElementType = heading;
   return (
     <div className={className}>
-      <Heading className="text-xl font-bold">Available platforms</Heading>
-      <ul className="flex list-none gap-2 text-sm">
+      <Heading className="text-xl font-light text-text-primary">Available platforms</Heading>
+      <ul className="flex flex-wrap list-none gap-2 text-sm mt-1">
         {listPlatforms(platforms)}
       </ul>
     </div>

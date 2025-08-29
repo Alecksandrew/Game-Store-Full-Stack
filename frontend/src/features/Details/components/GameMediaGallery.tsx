@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { GameDetailsDataContext } from "../contexts/GameDetailsDataContext";
 
-export default function GameMediaGallery() {
+export default function GameMediaGallery({className}: {className?:string}) {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
   
   const data = useContext(GameDetailsDataContext);
@@ -15,7 +15,7 @@ export default function GameMediaGallery() {
   }
 
   return (
-    <div className="w-full">
+    <div className={`w-full ${className}`}>
       {/* MAIN IMAGE */}
       <Swiper
         style={
@@ -32,13 +32,14 @@ export default function GameMediaGallery() {
         }}
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiperMain rounded-lg mb-4"
+        style={{padding: "3px"}}
       >
         {screenshotsUrls.map((url, index) => (
           <SwiperSlide key={index}>
             <img
               src={url}
               alt={`Screenshot ${index + 1}`}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover ring-3 ring-primary bg-gray"
             />
           </SwiperSlide>
         ))}
@@ -59,8 +60,8 @@ export default function GameMediaGallery() {
         {screenshotsUrls.map((url, index) => (
           <SwiperSlide
             key={index}
-            className="group cursor-pointer rounded-md overflow-hidden bg-primary relative transition-all duration-300
-             [&.swiper-slide-thumb-active]:ring-4 
+            className="group cursor-pointer rounded-md overflow-hidden bg-text-primary relative transition-all duration-300 ring-3 ring-text-primary
+             [&.swiper-slide-thumb-active]:ring-3
              [&.swiper-slide-thumb-active]:ring-primary"
           >
             {/* O 'swiper-slide-thumb-active' é uma classe que o próprio Swiper adiciona à miniatura ativa! */}

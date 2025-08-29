@@ -37,12 +37,16 @@ export default function GameDetailsPage() {
   }
 
   return (
-    <>
-      {warningType == "error" && warningComponent}
-      <GameDetailsDataContext.Provider value={data}>
-        <GameMediaGallery/>
-        <GamePurchasePanel/>
-      </GameDetailsDataContext.Provider>
-    </>
+    <div className="min-h-screen bg-bg-primary">
+      <div className="w-9/10 max-w-[1100px] mx-auto">
+        {warningType == "error" && warningComponent}
+        <GameDetailsDataContext.Provider value={data}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+            <GameMediaGallery className="bg-bg-primary"/>
+            <GamePurchasePanel/>
+          </div>
+        </GameDetailsDataContext.Provider>
+      </div>
+    </div>
   );
 }
