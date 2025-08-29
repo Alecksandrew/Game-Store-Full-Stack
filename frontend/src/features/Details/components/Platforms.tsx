@@ -1,16 +1,18 @@
-import type { ElementType } from "react";
+import { useContext, type ElementType } from "react";
+import { GameDetailsDataContext } from "../contexts/GameDetailsDataContext";
 
 type PlatformsProps = {
   heading: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-  platforms: string[];
   className?: string;
 };
 
 export default function Platforms({
   heading,
-  platforms,
   className,
 }: PlatformsProps) {
+  const data = useContext(GameDetailsDataContext)
+  const platforms:string[] = data.platforms;
+  
   function listPlatforms(platforms: string[]) {
     return platforms.map((platform) => {
       return (

@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import type { Swiper as SwiperClass } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
-import type { GameMediaGalleryProps } from "../types/GameMediaGalleryType";
+import { GameDetailsDataContext } from "../contexts/GameDetailsDataContext";
 
-export default function GameMediaGallery({
-  screenshotUrls,
-}: GameMediaGalleryProps) {
+export default function GameMediaGallery() {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
-
-  if (!screenshotUrls || screenshotUrls.length === 0) {
+  
+  const data = useContext(GameDetailsDataContext);
+  const screenshotsUrls = data.screenshotsImageUrl;
+ 
+  if (!screenshotsUrls || screenshotsUrls.length === 0) {
     return <div className="text-text-primary">No media available.</div>;
   }
 
@@ -23,7 +24,7 @@ export default function GameMediaGallery({
             "--swiper-pagination-color": "#FFFFFF",
           } as React.CSSProperties
         }
-        loop={true}
+        loop={false}
         spaceBetween={0}
         navigation={true}
         thumbs={{
@@ -32,7 +33,7 @@ export default function GameMediaGallery({
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiperMain rounded-lg mb-4"
       >
-        {screenshotUrls.map((url, index) => (
+        {screenshotsUrls.map((url, index) => (
           <SwiperSlide key={index}>
             <img
               src={url}
@@ -46,7 +47,7 @@ export default function GameMediaGallery({
       {/* SECONDARY IMAGES */}
       <Swiper
         onSwiper={setThumbsSwiper}
-        loop={true}
+        loop={false}
         spaceBetween={10}
         slidesPerView={4}
         freeMode={true}
@@ -55,7 +56,7 @@ export default function GameMediaGallery({
         className="mySwiperThumbs"
         style={{padding: "4px"}}
       >
-        {screenshotUrls.map((url, index) => (
+        {screenshotsUrls.map((url, index) => (
           <SwiperSlide
             key={index}
             className="group cursor-pointer rounded-md overflow-hidden bg-primary relative transition-all duration-300

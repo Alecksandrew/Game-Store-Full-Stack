@@ -1,22 +1,30 @@
+import { useContext } from "react";
 import type { PriceContainerProps } from "../types/PriceContainerType";
+import { GameDetailsDataContext } from "@/features/Details/contexts/GameDetailsDataContext";
 
+export default function PriceContainer({ className }: PriceContainerProps) {
+  const data = useContext(GameDetailsDataContext);
 
-
-export default function PriceContainer({gameData, className}:PriceContainerProps){
- function displayPrice() {
-    if (gameData.discountPrice != null) {
+  function displayPrice() {
+    if (data.discountPrice != null) {
       return (
         <>
-          <span>${gameData.discountPrice}</span>
-          <span className="text-text-secondary line-through text-lg font-light">${gameData.price}</span>
+          <span>${data.discountPrice}</span>
+          <span className="text-text-secondary line-through text-lg font-light">
+            ${data.price}
+          </span>
         </>
       );
     } else {
-      return <span>${gameData.price}</span>;
+      return <span>${data.price}</span>;
     }
   }
 
-    return (
-         <div className={`text-primary font-bold text-3xl flex items-center gap-2 ${className}`}>{displayPrice()}</div>
-    )
+  return (
+    <div
+      className={`text-primary font-bold text-3xl flex items-center gap-2 ${className}`}
+    >
+      {displayPrice()}
+    </div>
+  );
 }
