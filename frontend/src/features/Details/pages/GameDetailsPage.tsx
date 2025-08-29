@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import GameMediaGallery from "../components/GameMediaGallery";
 import GamePurchasePanel from "../components/GamePurchasePanel";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
@@ -9,11 +9,18 @@ import { apiClient } from "@/global/services/apiClient";
 
 export default function GameDetailsPage() {
   const { id } = useParams<{ id: string }>();
+
+  //This callback is being used in order to avoid fetch loops within the useApi hook and apiClient service
+  const getGameDetails = useCallback(() => {
+    if (!id) return Promise.reject(new Error("Game ID is missing."));
+    return apiClient<GameDetailsApiResponse>(API_ROUTES.GAMES.GET_BY_ID + `/${id}`);
+  }, [id]);
+
   // eslint-disable-next-line prefer-const
   let { data, isLoading, execute, warningComponent, warningType } = useApi<
     null,
     GameDetailsApiResponse
-  >(() => apiClient(API_ROUTES.GAMES.GET_BY_ID + `/${id}`));
+  >(getGameDetails);
 
   const placeholderGameData = {
     id: 0,
@@ -33,9 +40,8 @@ export default function GameDetailsPage() {
   };
 
   useEffect(() => {
-    if (id == null) return;
     execute(null);
-  }, [execute, id]);
+  }, [execute]);
 
   if (data == null) {
     data = placeholderGameData

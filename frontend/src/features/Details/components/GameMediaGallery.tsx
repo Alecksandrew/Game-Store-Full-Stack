@@ -14,7 +14,7 @@ export default function GameMediaGallery({
   }
 
   return (
-    <div className="w-1/2">
+    <div className="w-full">
       {/* MAIN IMAGE */}
       <Swiper
         style={

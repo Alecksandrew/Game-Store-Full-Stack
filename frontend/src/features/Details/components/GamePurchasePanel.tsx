@@ -9,8 +9,8 @@ export default function GamePurchasePanel({gameData, className}:GamePurchasePane
 
     return(
         <div className={className}>
-            <h1>{gameData.name}</h1>
-            <Platforms heading="h3" platforms={["platforma1", "platforma2"]}/>
+            <h1 className="text-2xl">{gameData.name}</h1>
+            <Platforms heading="h3" platforms={gameData.platforms} className="mt-4"/>
             <PriceContainer gameData={gameData}/>
         </div>
     );
