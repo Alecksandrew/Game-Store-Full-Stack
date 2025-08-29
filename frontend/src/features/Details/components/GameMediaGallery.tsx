@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import type { Swiper as SwiperClass } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode, Navigation, Thumbs } from "swiper/modules";
+import { Autoplay, FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { GameDetailsDataContext } from "../contexts/GameDetailsDataContext";
 
 export default function GameMediaGallery({className}: {className?:string}) {
@@ -30,9 +30,10 @@ export default function GameMediaGallery({className}: {className?:string}) {
         thumbs={{
           swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
         }}
-        modules={[FreeMode, Navigation, Thumbs]}
+        modules={[FreeMode, Navigation, Thumbs, Autoplay]}
         className="mySwiperMain rounded-lg mb-4"
         style={{padding: "3px"}}
+        autoplay={{ delay: 4000, disableOnInteraction: false }}
       >
         {screenshotsUrls.map((url, index) => (
           <SwiperSlide key={index}>
@@ -56,6 +57,7 @@ export default function GameMediaGallery({className}: {className?:string}) {
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiperThumbs"
         style={{padding: "4px"}}
+       
       >
         {screenshotsUrls.map((url, index) => (
           <SwiperSlide
