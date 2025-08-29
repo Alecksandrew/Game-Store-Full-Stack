@@ -15,5 +15,6 @@ export const API_ROUTES = {
   },
   GAMES: {
     GET: `${API_BASE_URL}/api/Games`,
+    GET_BY_ID: `${API_BASE_URL}/api/Games`,
   }
 };
