@@ -146,22 +146,42 @@ namespace GameStoreAPI.Features.Games.GamesService
            
 
             List<string>? GameModes = new();
-            foreach (var gameMode in igdbGame.GameModes)
+            if(igdbGame?.GameModes != null)
             {
-                string gameModeName = gameMode.Name;
-                if (gameModeName == null) continue;
+                foreach (var gameMode in igdbGame.GameModes)
+                {
+                    string gameModeName = gameMode.Name;
+                    if (gameModeName == null) continue;
 
-                GameModes.Add(gameModeName);
+                    GameModes.Add(gameModeName);
+                }
+
             }
+           
 
 
             List<string> genres = new();
-            if(igdbGame.Genres != null)
+            if(igdbGame?.Genres != null)
             {
                 foreach (var genre in igdbGame.Genres)
                 {
                     if (genre.Name == null) continue;
                     genres.Add(genre.Name);
+                }
+            }
+
+            List<SimilarGameResponse> similarGameResponse = new();
+            if (igdbGame?.SimilarGames != null)
+            {
+                foreach (var similarGame in igdbGame?.SimilarGames)
+                {
+                    SimilarGameResponse similarGameFinalResponse = new SimilarGameResponse
+                    {
+                        Id = similarGame.Id,
+                        Name = similarGame.Name,
+                        CoverUrl = $"https://images.igdb.com/igdb/image/upload/t_cover_big/{similarGame.Cover.ImageId}.jpg"
+                    };
+                    similarGameResponse.Add(similarGameFinalResponse);
                 }
             }
 
@@ -183,6 +203,7 @@ namespace GameStoreAPI.Features.Games.GamesService
                 AvailableKeysStock = availableStock,
                 InvolvedCompanies = InvolvedCompaniesResponse,
                 GameModes = GameModes,
+                SimilarGames = similarGameResponse,
 
 
             };

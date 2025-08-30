@@ -22,11 +22,19 @@ namespace GameStoreAPI.Features.Games.Dtos.GetGameDetails
         public decimal DiscountPrice { get; set; }
         public int TotalSells { get; set; }
         public int AvailableKeysStock { get; set; }
+        public List<SimilarGameResponse> SimilarGames { get; set; }
     }
 
     public class InvolvedCompanies
     {
         public List<string> Developers { get; set; } = [];
         public List<string> Publishers { get; set; } = [];
+    }
+
+    public class SimilarGameResponse
+    {
+        public int Id { get; set; }
+        public string CoverUrl { get; set; }
+        public string Name { get; set; }
     }
 }

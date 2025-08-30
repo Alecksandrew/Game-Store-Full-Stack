@@ -12,6 +12,7 @@ import {
 } from "../contexts/GameDetailsDataContext";
 import About from "../components/About";
 import ColumnInfo from "../components/ColumnInfo";
+import SimilarGamesSection from "../components/SimilarGamesSection";
 
 export default function GameDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -48,6 +49,7 @@ export default function GameDetailsPage() {
             <GamePurchasePanel />
             <About/>
             <ColumnInfo/>
+            <SimilarGamesSection/>
           </div>
         </GameDetailsDataContext.Provider>
       </div>

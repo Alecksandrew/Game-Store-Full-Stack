@@ -94,7 +94,8 @@ namespace GameStoreAPI.Features.Games.GamesService
         public async Task<GameDetailsResponseIGDBDto?> GetGameByIdAsync(int igdbId)
         {
             var query = $"fields name, platforms.name, screenshots.image_id, cover.image_id, first_release_date, summary, videos.video_id, genres.name,  " +
-                $"involved_companies.company.name, involved_companies.developer, involved_companies.publisher, game_modes.name; where id = {igdbId};";
+                $"involved_companies.company.name, involved_companies.developer, involved_companies.publisher, game_modes.name, similar_games.name, similar_games.cover.image_id; " +
+                $"where id = {igdbId};";
             var gamesList = await ExecuteIgdbQueryAsync(query);
             return gamesList?.FirstOrDefault();
         }

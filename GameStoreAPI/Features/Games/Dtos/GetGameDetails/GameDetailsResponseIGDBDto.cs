@@ -37,8 +37,22 @@ public class GameDetailsResponseIGDBDto
     [JsonPropertyName("game_modes")]
     public List<GameMode>? GameModes { get; set; }
 
+    [JsonPropertyName("similar_games")]
+    public List<SimilarGame> SimilarGames { get; set; }
 }
 
+
+public class SimilarGame
+{
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
+
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
+
+    [JsonPropertyName("cover")]
+    public IgdbCoverDto Cover { get; set; }
+}
 public class GameMode
 {
     [JsonPropertyName("name")]

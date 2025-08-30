@@ -1,13 +1,13 @@
 export type GameDetailsApiResponse = {
   id: number; //
   name: string; //
-  summary: string;//
+  summary: string; //
   genres: string[] | null;
-  firstReleaseDate: string | null; 
+  firstReleaseDate: string | null;
   coverUrl: string; //
   screenshotsImageUrl: string[]; //
   platforms: string[]; //
-  videos: string[];  //
+  videos: string[]; //
   price: number; //
   discountPrice: number; //
   totalSells: number; //
@@ -15,6 +15,12 @@ export type GameDetailsApiResponse = {
   involvedCompanies: {
     developers: string[];
     publishers: string[];
-  }
-  gameModes: string[]
+  };
+  gameModes: string[];
+  similarGames:
+    {
+      id: number;
+      coverUrl: string;
+      name: string;
+    }[];
 };

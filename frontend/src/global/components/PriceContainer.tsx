@@ -1,9 +1,10 @@
 import { useContext } from "react";
 import type { PriceContainerProps } from "../types/PriceContainerType";
-import { GameDetailsDataContext } from "@/features/Details/contexts/GameDetailsDataContext";
+import { GameCardContext } from "@/features/Home/context/GameCardContext";
+
 
 export default function PriceContainer({ className }: PriceContainerProps) {
-  const data = useContext(GameDetailsDataContext);
+  const data = useContext(GameCardContext);
 
   function displayPrice() {
     if (data.discountPrice != null) {
