@@ -1,7 +1,7 @@
 export type GameDetailsApiResponse = {
   id: number; //
   name: string; //
-  summary: string;
+  summary: string;//
   genres: string[] | null;
   firstReleaseDate: string | null; 
   coverUrl: string; //
@@ -12,4 +12,9 @@ export type GameDetailsApiResponse = {
   discountPrice: number; //
   totalSells: number; //
   availableKeysStock: number;
+  involvedCompanies: {
+    developers: string[];
+    publishers: string[];
+  }
+  gameModes: string[]
 };

@@ -30,8 +30,35 @@ public class GameDetailsResponseIGDBDto
 
     [JsonPropertyName("genres")]
     public List<IgdbGenreDto>? Genres { get; set; }
+
+    [JsonPropertyName("involved_companies")]
+    public List<IgdbInvolvedCompanyDto>? InvolvedCompanies { get; set; }
+
+    [JsonPropertyName("game_modes")]
+    public List<GameMode>? GameModes { get; set; }
+
 }
 
+public class GameMode
+{
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
+}
+
+public class IgdbInvolvedCompanyDto
+{
+    [JsonPropertyName("company")]
+    public Company Company { get; set; }
+    [JsonPropertyName("developer")]
+    public bool Developer { get; set; }
+    [JsonPropertyName("publisher")]
+    public bool Publisher { get; set; }
+}
+public class Company
+{
+    [JsonPropertyName("name")]
+    public string? Name { get; set; }
+}
 public class IgdbCoverDto
 {
     [JsonPropertyName("image_id")]

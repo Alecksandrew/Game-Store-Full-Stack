@@ -17,7 +17,7 @@ export default function GamePurchasePanel({
       <Platforms heading="h3" className="mt-3" />
       <PriceContainer className="mt-8"/>
       <BuyAndWishlistBtns/>
-      <PurchaseBenefitsCard heading={"h1"} className="mt-6"/>
+      <PurchaseBenefitsCard heading={"h1"} className="mt-4"/>
     </div>
   );
 }

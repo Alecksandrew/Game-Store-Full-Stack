@@ -8,7 +8,7 @@ type PurchaseBenefitsCardProps = {
 export default function PurchaseBenefitsCard({ heading, className }:PurchaseBenefitsCardProps) {
   const Heading: ElementType = heading;
   return (
-    <div className={`bg-bg-secondary rounded p-2 ring-1 ring-primary ${className}`}>
+    <div className={`bg-bg-secondary rounded p-4 ring-1 ring-primary ${className}`}>
       <Heading className="text-2xl text-text-primary">What you get</Heading>
       <ul className="text-sm text-text-secondary list-disc list-inside">
         <li>Digital game key for instant download</li>

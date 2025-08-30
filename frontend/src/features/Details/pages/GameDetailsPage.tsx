@@ -11,6 +11,7 @@ import {
   placeholderGameData,
 } from "../contexts/GameDetailsDataContext";
 import About from "../components/About";
+import ColumnInfo from "../components/ColumnInfo";
 
 export default function GameDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -42,10 +43,11 @@ export default function GameDetailsPage() {
       <div className="w-9/10 max-w-[1100px] mx-auto">
         {warningType == "error" && warningComponent}
         <GameDetailsDataContext.Provider value={data}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 lg:grid-cols-[65%_35%] gap-4">
             <GameMediaGallery className="bg-bg-primary" />
             <GamePurchasePanel />
             <About/>
+            <ColumnInfo/>
           </div>
         </GameDetailsDataContext.Provider>
       </div>
