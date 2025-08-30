@@ -13,6 +13,7 @@ import {
 import About from "../components/About";
 import ColumnInfo from "../components/ColumnInfo";
 import SimilarGamesSection from "../components/SimilarGamesSection";
+import ReviewSection from "../components/ReviewSection";
 
 export default function GameDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -50,6 +51,7 @@ export default function GameDetailsPage() {
             <About/>
             <ColumnInfo/>
             <SimilarGamesSection/>
+            <ReviewSection className="lg:col-span-2 mt-10"/>
           </div>
         </GameDetailsDataContext.Provider>
       </div>
