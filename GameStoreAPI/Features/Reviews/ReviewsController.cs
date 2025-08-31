@@ -1,10 +1,13 @@
 ﻿using GameStoreAPI.Data;
+using GameStoreAPI.Features.Reviews.Dto.CreateReviewByGame;
 using GameStoreAPI.Features.Reviews.ReviewsService;
 using GameStoreAPI.Models;
 using GameStoreAPI.Shared.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace GameStoreAPI.Features.Reviews
 {
@@ -44,6 +47,43 @@ namespace GameStoreAPI.Features.Reviews
 
         }
 
-    
+       
+        [HttpPost("/api/games/{gameId}/reviews")]
+        [Authorize]
+        public async Task<IActionResult> CreateReviewByGame(CreateReviewByGameRequestDto req)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var userReview = await _reviewService.CreateReviewByGameAsync(userId, req.GameIgdbId, req.Rating, req.Description);
+
+                CreateReviewByGameResponseDto response = new CreateReviewByGameResponseDto
+                {
+                    Id = userReview.Id,
+                    Rating = userReview.Rating,
+                    Description = userReview.Description,
+                    CreatedAt = userReview.CreatedAt,
+                    Username = userReview.User.UserName ?? "Unknown User",
+
+                };
+                return CreatedAtAction(
+                    nameof(GetReviewById),
+                    new { gameId = userReview.GameIgdbId, reviewId = userReview.Id },
+                    response
+                );
+            }
+            catch (KeyNotFoundException ex) 
+            {
+                return NotFound(new { message = ex.Message });
+            }
+
+        }
+
+
     }
 }

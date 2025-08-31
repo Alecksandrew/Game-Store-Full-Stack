@@ -10,5 +10,12 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
             DateTime? lastCreatedAt = null,
             int? lastId = null,
             int pageSize = 10);
+
+        public Task<Review> CreateReviewByGameAsync(
+            string userId,
+            int gameId,
+            double rating,
+            string? description
+            );
     }
 }

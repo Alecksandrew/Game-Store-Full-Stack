@@ -41,5 +41,37 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
 
             return reviews;
         }
+
+        public async Task<Review> CreateReviewByGameAsync(
+            string userId,
+            int gameId,
+            double rating,
+            string? description
+            )
+        {
+            var game = await _dbContext.GamesInventory.AnyAsync(g => g.IgdbId == gameId);
+            if(!game)
+            {
+                throw new KeyNotFoundException($"Game with IGDB ID '{gameId}' not found.");
+            }
+
+            Review userReview = new Review
+            {
+                UserId = userId,
+                GameIgdbId = gameId,
+                Rating = rating,
+                Description = description
+
+            };
+
+            await _dbContext.Reviews.AddAsync(userReview);
+            await _dbContext.SaveChangesAsync();
+
+            var createdReviewWithUser = await _dbContext.Reviews
+                                              .Include(r => r.User)
+                                              .FirstAsync(r => r.Id == userReview.Id);
+
+            return createdReviewWithUser;
+        }
     }
 }
