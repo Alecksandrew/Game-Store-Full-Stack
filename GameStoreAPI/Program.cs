@@ -2,6 +2,7 @@ using GameStoreAPI.Data;
 using GameStoreAPI.Features.Authentication.AuthService;
 using GameStoreAPI.Features.Games.GamesService;
 using GameStoreAPI.Features.MyAccount.AccountService;
+using GameStoreAPI.Features.Reviews.ReviewsService;
 using GameStoreAPI.Services;
 using GameStoreAPI.Services.EmailService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -110,6 +111,8 @@ builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase); // Allow better comunication between front and backend:
                                                                                                                                   // JSON arrives CamelCase -> PascalCase
                                                                                                                                   // JSON go back PascalCase -> CamelCase
+//Review dependency
+builder.Services.AddScoped<IReviewsService, ReviewsService>();
 
 var app = builder.Build();
 

@@ -76,7 +76,9 @@ namespace GameStoreAPI.Data
                 entity.Property(e => e.Description)
                        .HasMaxLength(1000);
 
-                entity.Property(e => e.CreatedAt).IsRequired();
+                entity.Property(r => r.CreatedAt)
+                      .IsRequired()
+                      .HasDefaultValueSql("GETUTCDATE()");
 
 
             });

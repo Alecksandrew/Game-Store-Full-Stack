@@ -8,7 +8,7 @@ namespace GameStoreAPI.Models
     public class Review
     {
      
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
      
         //foreign key
         public int GameIgdbId { get; set; }
@@ -26,7 +26,7 @@ namespace GameStoreAPI.Models
         [MaxLength(1000, ErrorMessage = "Description cannot exceed 1000 characters.")]
         public string? Description { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; }
 
     }
 
