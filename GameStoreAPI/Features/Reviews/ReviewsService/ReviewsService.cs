@@ -18,15 +18,32 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
         public async Task<List<Review>> GetMostRecentReviewsByGameAsync(
             int gameId,
             DateTime? lastCreatedAt = null, 
+            int pageSize = 10,
             int? lastId = null,
-            int pageSize = 10)
+            string? userId = null)
         {
 
-            var query = _dbContext.Reviews
-                                .Where(r => r.GameIgdbId == gameId)
-                                .OrderByDescending(x => x.CreatedAt)
-                                .ThenByDescending(x => x.Id) //tiebreaker if the reviews were created at the same second
-                                .AsQueryable();
+            //If user is in his account, then dont fetch his reviews -> use the other endpoint -> Because frontend will be able to display his reviews always on top of the page
+            // If user is not in his account, then fetch all reviews
+            IQueryable<Review> query;
+            if(userId is null)
+            {
+                query = _dbContext.Reviews
+                        .Where(r => r.GameIgdbId == gameId)
+                        .OrderByDescending(x => x.CreatedAt)
+                        .ThenByDescending(x => x.Id) //tiebreaker if the reviews were created at the same second
+                        .AsQueryable();
+            }
+            else
+            {
+                query = _dbContext.Reviews
+                        .Where(r => r.GameIgdbId == gameId && r.UserId != userId)
+                        .OrderByDescending(x => x.CreatedAt)
+                        .ThenByDescending(x => x.Id) //tiebreaker if the reviews were created at the same second
+                        .AsQueryable();
+            }
+
+
 
             if (lastCreatedAt.HasValue && lastId.HasValue)
             {
@@ -41,6 +58,17 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
 
             return reviews;
         }
+
+        public async Task<List<Review>> GetMyReviewsByGameAsync(
+            int gameId,
+            string userId
+        )
+        {
+            return await _dbContext.Reviews
+                .Where(r => r.GameIgdbId == gameId && r.UserId == userId).ToListAsync();
+        }
+
+
 
         public async Task<Review> CreateReviewByGameAsync(
             string userId,
@@ -73,5 +101,6 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
 
             return createdReviewWithUser;
         }
+
     }
 }

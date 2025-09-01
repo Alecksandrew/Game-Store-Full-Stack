@@ -22,7 +22,7 @@ namespace GameStoreAPI.Features.Reviews
             _reviewService = reviewService;
         }
 
-        [HttpGet("/api/games/{gameId}/reviews")]
+        [HttpGet("~/api/games/{gameId}/reviews")]
         public async Task<IActionResult> GetReviewsByGame(
             int gameId, 
             [FromQuery] DateTime? lastCreatedAt = null,
@@ -32,7 +32,14 @@ namespace GameStoreAPI.Features.Reviews
             if (pageSize <= 0)
                 return BadRequest($"{nameof(pageSize)} size must be greater than 0.");
 
-            List<Review> reviews = await _reviewService.GetMostRecentReviewsByGameAsync(gameId, lastCreatedAt, lastId, pageSize);
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            List<Review> reviews = await _reviewService.GetMostRecentReviewsByGameAsync(
+                gameId, 
+                lastCreatedAt,                
+                pageSize,
+                lastId,
+                userId);
 
             PageCursorDto? nextCursor = null;
             if (reviews.Any())
@@ -48,7 +55,7 @@ namespace GameStoreAPI.Features.Reviews
         }
 
        
-        [HttpPost("/api/games/{gameId}/reviews")]
+        [HttpPost("~/api/games/{gameId}/reviews")]
         [Authorize]
         public async Task<IActionResult> CreateReviewByGame(CreateReviewByGameRequestDto req)
         {
@@ -71,9 +78,10 @@ namespace GameStoreAPI.Features.Reviews
                     Username = userReview.User.UserName ?? "Unknown User",
 
                 };
-                return CreatedAtAction(
-                    nameof(GetReviewById),
-                    new { gameId = userReview.GameIgdbId, reviewId = userReview.Id },
+                // nameof(GetReviewById),
+                //new { gameId = userReview.GameIgdbId, reviewId = userReview.Id },
+                return Ok(
+                   
                     response
                 );
             }
@@ -85,5 +93,25 @@ namespace GameStoreAPI.Features.Reviews
         }
 
 
+        [HttpGet("~/api/games/{gameId}/reviews/me")]
+        [Authorize]
+        public async Task<IActionResult> GetMyReviewsByGame(int gameId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var review = await _reviewService.GetMyReviewsByGameAsync(gameId, userId);
+
+            if (review == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(review);
+
+        }
     }
 }
