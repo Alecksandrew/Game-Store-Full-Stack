@@ -1,0 +1,34 @@
+import { useCallback, useEffect } from "react";
+import { useApi } from "@/global/hooks/useApi";
+import { apiClient } from "@/global/services/apiClient";
+import { API_ROUTES } from "@/global/constants/BACKEND_URL";
+import type { ReviewApiResponseType } from "../types/ReviewApiResponseType";
+
+export function useGetReviewsByGame(gameId: number) {
+  
+ const getReviewsRequest = useCallback(() => { 
+    if (!gameId) {
+      return Promise.reject(new Error("gameId is not provided"));
+    }
+    
+    const options = {
+      method: "GET" as const,
+    };
+    
+   
+    return apiClient<ReviewApiResponseType>(API_ROUTES.REVIEWS.GET_BY_GAME_FUNCTION(gameId), options, false);
+
+  }, [gameId])//Avoid renders loops
+
+  
+  const { data, isLoading, execute, warningComponent, warningType } = useApi<void, ReviewApiResponseType>(getReviewsRequest);
+
+  useEffect(() => {
+   
+    if (gameId) {
+      execute();
+    }
+  }, [gameId, execute]);
+
+  return { data, isLoading, warningComponent, warningType };
+}

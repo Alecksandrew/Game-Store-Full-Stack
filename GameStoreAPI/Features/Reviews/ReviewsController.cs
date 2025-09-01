@@ -1,5 +1,6 @@
 ﻿using GameStoreAPI.Data;
 using GameStoreAPI.Features.Reviews.Dto.CreateReviewByGame;
+using GameStoreAPI.Features.Reviews.Dto.GetMyReviewByGame;
 using GameStoreAPI.Features.Reviews.ReviewsService;
 using GameStoreAPI.Models;
 using GameStoreAPI.Shared.Dtos;
@@ -57,7 +58,7 @@ namespace GameStoreAPI.Features.Reviews
        
         [HttpPost("~/api/games/{gameId}/reviews")]
         [Authorize]
-        public async Task<IActionResult> CreateReviewByGame(CreateReviewByGameRequestDto req)
+        public async Task<IActionResult> CreateReviewByGame(int gameId, CreateReviewByGameRequestDto req)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
@@ -67,7 +68,7 @@ namespace GameStoreAPI.Features.Reviews
 
             try
             {
-                var userReview = await _reviewService.CreateReviewByGameAsync(userId, req.GameIgdbId, req.Rating, req.Description);
+                var userReview = await _reviewService.CreateReviewByGameAsync(userId, gameId, req.Rating, req.Description);
 
                 CreateReviewByGameResponseDto response = new CreateReviewByGameResponseDto
                 {
@@ -103,14 +104,30 @@ namespace GameStoreAPI.Features.Reviews
                 return Unauthorized();
             }
 
-            var review = await _reviewService.GetMyReviewsByGameAsync(gameId, userId);
+            var reviews = await _reviewService.GetMyReviewsByGameAsync(gameId, userId);
 
-            if (review == null)
+            if (reviews == null)
             {
                 return NotFound();
             }
 
-            return Ok(review);
+            List<GetMyReviewByGameResponseDto> response = new();
+            foreach (var review in reviews) 
+            {
+                GetMyReviewByGameResponseDto reviewDto = new GetMyReviewByGameResponseDto
+                {
+                    Id = review.Id,
+                    UserName = review.User.UserName ?? "Unknown user",
+                    Rating = review.Rating,
+                    Description = review.Description,
+                    CreatedAt = review.CreatedAt,
+                };
+
+                response.Add(reviewDto);
+            }
+
+
+            return Ok(response);
 
         }
     }
