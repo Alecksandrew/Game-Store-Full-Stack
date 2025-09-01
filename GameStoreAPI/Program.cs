@@ -116,6 +116,9 @@ builder.Services.AddControllers()
 //Review dependency
 builder.Services.AddScoped<IReviewsService, ReviewsService>();
 
+var logger = builder.Services.BuildServiceProvider().GetService<ILogger<Program>>();
+logger.LogInformation("Aplicação iniciada");
+
 var app = builder.Build();
 
 //Add admin in database

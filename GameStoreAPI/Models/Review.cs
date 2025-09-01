@@ -12,7 +12,7 @@ namespace GameStoreAPI.Models
         public int Id { get; set; }
      
         //foreign key
-        public int GameIgdbId { get; set; }
+        public int IgdbId { get; set; }
         public GameInventory GameInventory { get; set; }
 
         [ForeignKey("UserId")]

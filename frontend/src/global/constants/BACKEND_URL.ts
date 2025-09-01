@@ -27,6 +27,7 @@ export const API_ROUTES = {
   },
   REVIEWS: {
     GET_BY_GAME_FUNCTION: (gameId:number) => `${API_BASE_URL}${API_PATHS.REVIEWS}/${gameId}/reviews`,
-    GET_MY_REVIEWS_BY_GAME_FUNCTION: (gameId:number) => `${API_BASE_URL}${API_PATHS.REVIEWS}/${gameId}/reviews/me`, 
+    GET_MY_REVIEWS_BY_GAME_FUNCTION: (gameId:number) => `${API_BASE_URL}${API_PATHS.REVIEWS}/${gameId}/reviews/me`,
+    CREATE_MY_REVIEW_BY_GAME_FUNCTION: (gameId:number) => `${API_BASE_URL}${API_PATHS.REVIEWS}/${gameId}/reviews`, 
   }
 };

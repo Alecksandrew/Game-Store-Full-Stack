@@ -55,13 +55,13 @@ namespace GameStoreAPI.Data
             {
                 entity.HasKey(e => e.Id);
 
-                entity.Property(e => e.GameIgdbId)
+                entity.Property(e => e.IgdbId)
                       .IsRequired();
 
-                entity.HasOne<GameInventory>()
+                entity.HasOne(e => e.GameInventory)
                       .WithMany()
-                      .HasForeignKey(e => e.GameIgdbId)
-                      .OnDelete(DeleteBehavior.NoAction); ;
+                      .HasForeignKey(e => e.IgdbId)
+                      .OnDelete(DeleteBehavior.NoAction); 
 
 
                 entity.HasOne(e => e.User)

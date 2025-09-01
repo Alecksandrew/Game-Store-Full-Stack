@@ -17,10 +17,12 @@ namespace GameStoreAPI.Features.Reviews
     public class ReviewsController : ControllerBase
     {
         private readonly IReviewsService _reviewService;
+        private readonly ILogger<ReviewsController> _logger;
 
-        public ReviewsController(IReviewsService reviewService)
+        public ReviewsController(IReviewsService reviewService, ILogger<ReviewsController> logger)
         {
             _reviewService = reviewService;
+            _logger = logger;
         }
 
         [HttpGet("~/api/games/{gameId}/reviews")]
@@ -60,16 +62,23 @@ namespace GameStoreAPI.Features.Reviews
         [Authorize]
         public async Task<IActionResult> CreateReviewByGame(int gameId, CreateReviewByGameRequestDto req)
         {
+             _logger.LogInformation("Iniciando criação de review para o jogo {GameId}", gameId);
+             _logger.LogDebug("Dados da requisição: {@RequestData}", new { gameId, req.Rating, req.Description });
+
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
             {
+                 _logger.LogWarning("Tentativa de criar review sem usuário autenticado");
                 return Unauthorized();
             }
 
+_logger.LogInformation("Usuário autenticado: {UserId}", userId);
             try
             {
+                _logger.LogInformation("Chamando serviço para criar review...");
                 var userReview = await _reviewService.CreateReviewByGameAsync(userId, gameId, req.Rating, req.Description);
-
+ _logger.LogInformation("Review criada com sucesso. ReviewId: {ReviewId}", userReview.Id);
                 CreateReviewByGameResponseDto response = new CreateReviewByGameResponseDto
                 {
                     Id = userReview.Id,
@@ -88,6 +97,7 @@ namespace GameStoreAPI.Features.Reviews
             }
             catch (KeyNotFoundException ex) 
             {
+                 _logger.LogWarning(ex, "Jogo não encontrado. GameId: {GameId}, UserId: {UserId}", gameId, userId);
                 return NotFound(new { message = ex.Message });
             }
 
@@ -132,3 +142,4 @@ namespace GameStoreAPI.Features.Reviews
         }
     }
 }
+

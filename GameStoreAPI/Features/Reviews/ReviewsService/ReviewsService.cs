@@ -9,10 +9,12 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
     {
 
         private readonly AppDbContext _dbContext;
+        private readonly ILogger<ReviewsService> _logger;
 
-        public ReviewsService(AppDbContext dbContext)
+        public ReviewsService(AppDbContext dbContext, ILogger<ReviewsService> logger)
         {
             _dbContext = dbContext;
+            _logger = logger;
         }
 
         public async Task<List<Review>> GetMostRecentReviewsByGameAsync(
@@ -29,7 +31,7 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
             if(userId is null)
             {
                 query = _dbContext.Reviews
-                        .Where(r => r.GameIgdbId == gameId)
+                        .Where(r => r.IgdbId == gameId)
                         .OrderByDescending(x => x.CreatedAt)
                         .ThenByDescending(x => x.Id) //tiebreaker if the reviews were created at the same second
                         .AsQueryable();
@@ -37,7 +39,7 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
             else
             {
                 query = _dbContext.Reviews
-                        .Where(r => r.GameIgdbId == gameId && r.UserId != userId)
+                        .Where(r => r.IgdbId == gameId && r.UserId != userId)
                         .OrderByDescending(x => x.CreatedAt)
                         .ThenByDescending(x => x.Id) //tiebreaker if the reviews were created at the same second
                         .AsQueryable();
@@ -65,7 +67,7 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
         )
         {
             return await _dbContext.Reviews
-                .Where(r => r.GameIgdbId == gameId && r.UserId == userId).ToListAsync();
+                .Where(r => r.IgdbId == gameId && r.UserId == userId).ToListAsync();
         }
 
 
@@ -77,16 +79,21 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
             string? description
             )
         {
+            _logger.LogInformation("Iniciando criação de review para o jogo {GameId}", gameId);
+            _logger.LogDebug("Dados da requisição: {@RequestData}", new { gameId, rating, description });
+
             var game = await _dbContext.GamesInventory.AnyAsync(g => g.IgdbId == gameId);
             if(!game)
             {
+                _logger.LogWarning("Jogo não encontrado. GameId: {GameId}, UserId: {UserId}", gameId, userId);
                 throw new KeyNotFoundException($"Game with IGDB ID '{gameId}' not found.");
             }
+            _logger.LogInformation("Jogo encontrado. GameId: {GameId}, UserId: {UserId}", gameId, userId);
 
             Review userReview = new Review
             {
                 UserId = userId,
-                GameIgdbId = gameId,
+                IgdbId = gameId,
                 Rating = rating,
                 Description = description
 
@@ -94,6 +101,7 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
 
             await _dbContext.Reviews.AddAsync(userReview);
             await _dbContext.SaveChangesAsync();
+            _logger.LogInformation("Review criada com sucesso. ReviewId: {ReviewId}", userReview.Id);
 
             var createdReviewWithUser = await _dbContext.Reviews
                                               .Include(r => r.User)
