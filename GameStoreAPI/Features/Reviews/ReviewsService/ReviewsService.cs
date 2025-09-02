@@ -31,6 +31,7 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
             if(userId is null)
             {
                 query = _dbContext.Reviews
+                        .Include(r => r.User)
                         .Where(r => r.IgdbId == gameId)
                         .OrderByDescending(x => x.CreatedAt)
                         .ThenByDescending(x => x.Id) //tiebreaker if the reviews were created at the same second
@@ -39,6 +40,7 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
             else
             {
                 query = _dbContext.Reviews
+                        .Include(r => r.User)
                         .Where(r => r.IgdbId == gameId && r.UserId != userId)
                         .OrderByDescending(x => x.CreatedAt)
                         .ThenByDescending(x => x.Id) //tiebreaker if the reviews were created at the same second

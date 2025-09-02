@@ -50,7 +50,22 @@ namespace GameStoreAPI.Features.Reviews
                 nextCursor = new(reviews.Last().CreatedAt, reviews.Last().Id);
             }
 
-            PagedResponseDto<Review> response = new(reviews, nextCursor);
+            List<GetMyReviewByGameResponseDto> reviewsDto = new();
+            foreach (var review in reviews)
+            {
+                GetMyReviewByGameResponseDto newReview = new GetMyReviewByGameResponseDto
+                {
+                    Id = review.Id,
+                    UserName = review?.User?.UserName ?? "Uknown user",
+                    Rating = review.Rating,
+                    Description = review.Description,
+                    CreatedAt = review.CreatedAt,
+
+                };
+                reviewsDto.Add(newReview);
+            }
+
+            PagedResponseDto<GetMyReviewByGameResponseDto> response = new(reviewsDto, nextCursor);
 
 
             return Ok(response);
