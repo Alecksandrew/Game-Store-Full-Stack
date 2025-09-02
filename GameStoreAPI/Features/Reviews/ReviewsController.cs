@@ -1,6 +1,7 @@
 ﻿using GameStoreAPI.Data;
 using GameStoreAPI.Features.Reviews.Dto.CreateReviewByGame;
 using GameStoreAPI.Features.Reviews.Dto.GetMyReviewByGame;
+using GameStoreAPI.Features.Reviews.Dto.GetReviewByGame;
 using GameStoreAPI.Features.Reviews.Dto.UpdateReview;
 using GameStoreAPI.Features.Reviews.ReviewsService;
 using GameStoreAPI.Models;
@@ -49,22 +50,23 @@ namespace GameStoreAPI.Features.Reviews
                 nextCursor = new(reviews.Last().CreatedAt, reviews.Last().Id);
             }
 
-            List<GetMyReviewByGameResponseDto> reviewsDto = new();
+            List<GetReviewByGameResponseDto> reviewsDto = new();
             foreach (var review in reviews)
             {
-                GetMyReviewByGameResponseDto newReview = new GetMyReviewByGameResponseDto
+                GetReviewByGameResponseDto newReview = new GetReviewByGameResponseDto
                 {
                     Id = review.Id,
                     UserName = review?.User?.UserName ?? "Uknown user",
                     Rating = review.Rating,
                     Description = review.Description,
                     CreatedAt = review.CreatedAt,
+                    LastUpdatedAt = review.LastUpdatedAt
 
                 };
                 reviewsDto.Add(newReview);
             }
 
-            PagedResponseDto<GetMyReviewByGameResponseDto> response = new(reviewsDto, nextCursor);
+            PagedResponseDto<GetReviewByGameResponseDto> response = new(reviewsDto, nextCursor);
 
 
             return Ok(response);
@@ -99,6 +101,7 @@ namespace GameStoreAPI.Features.Reviews
                     Rating = review.Rating,
                     Description = review.Description,
                     CreatedAt = review.CreatedAt,
+                    LastUpdatedAt = review.LastUpdatedAt
                 };
 
                 response.Add(reviewDto);

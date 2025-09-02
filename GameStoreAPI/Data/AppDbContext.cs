@@ -26,11 +26,14 @@ namespace GameStoreAPI.Data
 
             foreach (var entry in entries)
             {
-                entry.Entity.LastUpdatedAt = DateTime.UtcNow;
-
                 if (entry.State == EntityState.Added)
                 {
                     entry.Entity.CreatedAt = DateTime.UtcNow;
+                    entry.Entity.LastUpdatedAt = null;
+                }
+                else if (entry.State == EntityState.Modified)
+                {
+                    entry.Entity.LastUpdatedAt = DateTime.UtcNow;
                 }
             }
 
@@ -43,11 +46,14 @@ namespace GameStoreAPI.Data
 
             foreach (var entry in entries)
             {
-                entry.Entity.LastUpdatedAt = DateTime.UtcNow;
-
                 if (entry.State == EntityState.Added)
                 {
                     entry.Entity.CreatedAt = DateTime.UtcNow;
+                    entry.Entity.LastUpdatedAt = null; 
+                }
+                else if (entry.State == EntityState.Modified)
+                {
+                    entry.Entity.LastUpdatedAt = DateTime.UtcNow;
                 }
             }
 
@@ -117,10 +123,7 @@ namespace GameStoreAPI.Data
 
                 entity.Property(r => r.CreatedAt)
                       .IsRequired();
-
-                entity.Property(r => r.LastUpdatedAt)
-                      .IsRequired();
-
+            
 
             });
             modelBuilder.Entity<Review>()
