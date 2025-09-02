@@ -4,7 +4,7 @@ import { apiClient } from "@/global/services/apiClient";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 import type { ReviewApiResponseType } from "../types/ReviewApiResponseType";
 
-export function useGetReviewsByGame(gameId: number) {
+export function useGetReviewsByGame(gameId: number, version?: number) {
   
  const getReviewsRequest = useCallback(() => { 
     if (!gameId) {
@@ -28,7 +28,7 @@ export function useGetReviewsByGame(gameId: number) {
     if (gameId) {
       execute();
     }
-  }, [gameId, execute]);
+  }, [gameId, execute, version]);
 
   return { data, isLoading, warningComponent, warningType };
 }

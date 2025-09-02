@@ -10,17 +10,26 @@ interface ReviewFormData {
   description: string;
 }
 
-export default function ReviewForm() {
+interface ReviewFormProps {
+  onReviewSubmitSuccess: () => void; // 1. Defina a tipagem para a nova prop
+}
+
+export default function ReviewForm({onReviewSubmitSuccess}:ReviewFormProps) {
   const data = useContext(GameDetailsDataContext);
   const gameId = data.id;
-  const {execute, isLoading, warningComponent} = useCreateReviewByGame(gameId);
+  const {execute, isLoading, warningComponent, warningType} = useCreateReviewByGame(gameId);
 
+  function onFormSubmit(data:ReviewFormData){
+    execute(data);
+    onReviewSubmitSuccess();
+
+  }
   
 console.log("renderizaçao");
   return (
     <div className="bg-bg-secondary rounded ring-2 ring-primary  p-4">
-      {warningComponent}
-      <Form<ReviewFormData> submitText="Submit review" onSubmit={execute}>
+      { warningType == "error" && warningComponent}
+      <Form<ReviewFormData> submitText="Submit review" onSubmit={onFormSubmit}>
         <h2 className="text-2xl text-text-primary">Write a review</h2>
 
         <label className="font-inter font-bold text-text-primary md:text-lg block mb-3">

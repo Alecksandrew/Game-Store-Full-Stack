@@ -4,7 +4,7 @@ export type ReviewApiResponseType = {
     rating: number;
     description: string;
     createdAt: string;
-    username: string;
+    userName: string;
   }[];
   nextCursor: {
     lastCreatedAt: string;
