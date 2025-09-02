@@ -23,7 +23,7 @@ export function useApi<TData, TResponse>(
 
       try {
         const response = await apiRequest(requestData);
-
+  console.log("%cAPI Call Succeeded:", "color: green; font-weight: bold;", response);
         setData(response);
 
         const successMessage =

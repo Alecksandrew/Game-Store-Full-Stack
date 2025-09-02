@@ -31,6 +31,7 @@ export default function GameDetailsPage() {
     null,
     GameDetailsApiResponse
   >(getGameDetails);
+  console.log("pagina de detalhes" + JSON.stringify(data))
 
   useEffect(() => {
     execute(null);
