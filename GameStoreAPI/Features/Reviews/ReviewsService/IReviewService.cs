@@ -1,4 +1,5 @@
-﻿using GameStoreAPI.Models;
+﻿using GameStoreAPI.Features.Reviews.Dto.UpdateReview;
+using GameStoreAPI.Models;
 using GameStoreAPI.Shared;
 
 namespace GameStoreAPI.Features.Reviews.ReviewsService
@@ -26,5 +27,7 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
             );
 
         public Task<Result<Review>> DeleteMyReviewAsync(int reviewId, string userId);
+
+        Task<Result<Review>> UpdateMyReviewAsync(int reviewId, string userId, UpdateReviewRequestDto updateDto);
     }
 }

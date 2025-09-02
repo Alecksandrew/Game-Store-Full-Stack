@@ -1,4 +1,5 @@
 ﻿using GameStoreAPI.Models;
+using GameStoreAPI.Models.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,44 @@ namespace GameStoreAPI.Data
         public DbSet<GameInventory> GamesInventory { get; set; }
         public DbSet<GameKey> GameKeys { get; set; }
         public DbSet<Review> Reviews { get; set; }
+
+        //CreatedAt and UpdatedAt properties will be always created when save in database automatically
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker.Entries<IAuditable>()
+                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
+
+            foreach (var entry in entries)
+            {
+                entry.Entity.LastUpdatedAt = DateTime.UtcNow;
+
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Entity.CreatedAt = DateTime.UtcNow;
+                }
+            }
+
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+        public override int SaveChanges()
+        {
+            var entries = ChangeTracker.Entries<IAuditable>()
+                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
+
+            foreach (var entry in entries)
+            {
+                entry.Entity.LastUpdatedAt = DateTime.UtcNow;
+
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Entity.CreatedAt = DateTime.UtcNow;
+                }
+            }
+
+            return base.SaveChanges();
+        }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -74,11 +113,13 @@ namespace GameStoreAPI.Data
                       .HasPrecision(2, 1);
 
                 entity.Property(e => e.Description)
-                       .HasMaxLength(1000);
+                      .HasMaxLength(1000);
 
                 entity.Property(r => r.CreatedAt)
-                      .IsRequired()
-                      .HasDefaultValueSql("GETUTCDATE()");
+                      .IsRequired();
+
+                entity.Property(r => r.LastUpdatedAt)
+                      .IsRequired();
 
 
             });

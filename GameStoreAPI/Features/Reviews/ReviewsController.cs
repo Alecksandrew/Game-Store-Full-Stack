@@ -1,6 +1,7 @@
 ﻿using GameStoreAPI.Data;
 using GameStoreAPI.Features.Reviews.Dto.CreateReviewByGame;
 using GameStoreAPI.Features.Reviews.Dto.GetMyReviewByGame;
+using GameStoreAPI.Features.Reviews.Dto.UpdateReview;
 using GameStoreAPI.Features.Reviews.ReviewsService;
 using GameStoreAPI.Models;
 using GameStoreAPI.Shared.Dtos;
@@ -70,44 +71,6 @@ namespace GameStoreAPI.Features.Reviews
 
         }
 
-       
-        [HttpPost("~/api/games/{gameId}/reviews")]
-        [Authorize]
-        public async Task<IActionResult> CreateReviewByGame(int gameId, CreateReviewByGameRequestDto req)
-        {
-           
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Unauthorized();
-            }
-
-            try
-            {
-                var userReview = await _reviewService.CreateReviewByGameAsync(userId, gameId, req.Rating, req.Description);
-                CreateReviewByGameResponseDto response = new CreateReviewByGameResponseDto
-                {
-                    Id = userReview.Id,
-                    Rating = userReview.Rating,
-                    Description = userReview.Description,
-                    CreatedAt = userReview.CreatedAt,
-                    Username = userReview.User.UserName ?? "Unknown User",
-
-                };
-                // nameof(GetReviewById),
-                //new { gameId = userReview.GameIgdbId, reviewId = userReview.Id },
-                return Ok(
-                   
-                    response
-                );
-            }
-            catch (KeyNotFoundException ex) 
-            {
-                return NotFound(new { message = ex.Message });
-            }
-
-        }
-
 
         [HttpGet("~/api/games/{gameId}/reviews/me")]
         [Authorize]
@@ -145,6 +108,73 @@ namespace GameStoreAPI.Features.Reviews
             return Ok(response);
 
         }
+
+
+        [HttpPost("~/api/games/{gameId}/reviews")]
+        [Authorize]
+        public async Task<IActionResult> CreateReviewByGame(int gameId, CreateReviewByGameRequestDto req)
+        {
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var userReview = await _reviewService.CreateReviewByGameAsync(userId, gameId, req.Rating, req.Description);
+                CreateReviewByGameResponseDto response = new CreateReviewByGameResponseDto
+                {
+                    Id = userReview.Id,
+                    Rating = userReview.Rating,
+                    Description = userReview.Description,
+                    CreatedAt = userReview.CreatedAt,
+                    Username = userReview.User.UserName ?? "Unknown User",
+
+                };
+                // nameof(GetReviewById),
+                //new { gameId = userReview.GameIgdbId, reviewId = userReview.Id },
+                return Ok(
+
+                    response
+                );
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+
+        }
+
+
+        [HttpPatch("/{reviewId}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateMyReview(int reviewId, UpdateReviewRequestDto req)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var result = await _reviewService.UpdateMyReviewAsync(reviewId, userId, req);
+
+            if (result.IsSuccess)
+            {
+               
+                return NoContent();
+            }
+
+ 
+            return result.Error?.Code switch
+            {
+                "Review.NotFound" => NotFound(result.Error),
+                "Review.Forbidden" => Forbid(),
+                _ => BadRequest(result.Error)
+            };
+        }
+
 
         [HttpDelete("/{reviewId}")]
         [Authorize]

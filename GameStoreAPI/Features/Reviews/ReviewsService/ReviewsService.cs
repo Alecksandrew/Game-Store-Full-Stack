@@ -1,4 +1,5 @@
 ﻿using GameStoreAPI.Data;
+using GameStoreAPI.Features.Reviews.Dto.UpdateReview;
 using GameStoreAPI.Models;
 using GameStoreAPI.Shared;
 using Microsoft.AspNetCore.Mvc;
@@ -106,6 +107,28 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
             return createdReviewWithUser;
         }
 
+
+        public async Task<Result<Review>> UpdateMyReviewAsync(int reviewId, string userId, UpdateReviewRequestDto updateDto)
+        {
+            var review = await _dbContext.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId);
+
+            if (review == null)
+            {
+                return Result<Review>.Fail(new Error("Review.NotFound", "Review not found."));
+            }
+
+            if (review.UserId != userId)
+            {
+                return Result<Review>.Fail(new Error("Review.Forbidden", "You don't have permission to update this review."));
+            }
+
+            review.Rating = updateDto.Rating;
+            review.Description = updateDto.Description;
+          
+            await _dbContext.SaveChangesAsync();
+
+            return Result<Review>.Ok(review);
+        }
 
         public async Task<Result<Review>> DeleteMyReviewAsync(int reviewId, string userId)
         {

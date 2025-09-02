@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameStoreAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250901235128_FixedReviewTableRelationship")]
-    partial class FixedReviewTableRelationship
+    [Migration("20250902175607_AddedAuditableTimestamps")]
+    partial class AddedAuditableTimestamps
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -111,9 +111,7 @@ namespace GameStoreAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETUTCDATE()");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasMaxLength(1000)
@@ -121,6 +119,9 @@ namespace GameStoreAPI.Migrations
 
                     b.Property<int>("IgdbId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("LastUpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("Rating")
                         .HasPrecision(2, 1)

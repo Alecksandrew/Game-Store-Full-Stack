@@ -1,4 +1,5 @@
-﻿using GameStoreAPI.Shared.Validation;
+﻿using GameStoreAPI.Models.Interfaces;
+using GameStoreAPI.Shared.Validation;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace GameStoreAPI.Models
 {
  
-    public class Review
+    public class Review: IAuditable
     {
      
         public int Id { get; set; }
@@ -28,6 +29,7 @@ namespace GameStoreAPI.Models
         public string? Description { get; set; }
 
         public DateTime CreatedAt { get; set; }
+        public DateTime LastUpdatedAt { get; set; }
 
     }
 
