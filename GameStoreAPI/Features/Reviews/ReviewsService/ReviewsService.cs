@@ -1,5 +1,6 @@
 ﻿using GameStoreAPI.Data;
 using GameStoreAPI.Models;
+using GameStoreAPI.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,12 +10,10 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
     {
 
         private readonly AppDbContext _dbContext;
-        private readonly ILogger<ReviewsService> _logger;
 
         public ReviewsService(AppDbContext dbContext, ILogger<ReviewsService> logger)
         {
             _dbContext = dbContext;
-            _logger = logger;
         }
 
         public async Task<List<Review>> GetMostRecentReviewsByGameAsync(
@@ -81,16 +80,12 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
             string? description
             )
         {
-            _logger.LogInformation("Iniciando criação de review para o jogo {GameId}", gameId);
-            _logger.LogDebug("Dados da requisição: {@RequestData}", new { gameId, rating, description });
 
             var game = await _dbContext.GamesInventory.AnyAsync(g => g.IgdbId == gameId);
             if(!game)
             {
-                _logger.LogWarning("Jogo não encontrado. GameId: {GameId}, UserId: {UserId}", gameId, userId);
                 throw new KeyNotFoundException($"Game with IGDB ID '{gameId}' not found.");
             }
-            _logger.LogInformation("Jogo encontrado. GameId: {GameId}, UserId: {UserId}", gameId, userId);
 
             Review userReview = new Review
             {
@@ -103,7 +98,6 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
 
             await _dbContext.Reviews.AddAsync(userReview);
             await _dbContext.SaveChangesAsync();
-            _logger.LogInformation("Review criada com sucesso. ReviewId: {ReviewId}", userReview.Id);
 
             var createdReviewWithUser = await _dbContext.Reviews
                                               .Include(r => r.User)
@@ -112,5 +106,26 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
             return createdReviewWithUser;
         }
 
+
+        public async Task<Result<Review>> DeleteMyReviewAsync(int reviewId, string userId)
+        {
+            var reviewExists = await _dbContext.Reviews.AnyAsync(r => r.Id == reviewId);
+            if (!reviewExists)
+            {
+                return Result<Review>.Ok(null);
+
+            }
+
+            var myReview = await _dbContext.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId && r.UserId == userId);
+            if (myReview == null)
+            {
+                return Result<Review>.Fail(new Error("Review.Forbidden", "You don't have permission to delete this review."));
+            }
+
+            _dbContext.Reviews.Remove(myReview);
+            await _dbContext.SaveChangesAsync();
+
+            return Result<Review>.Ok(null);
+        }
     }
 }

@@ -8,7 +8,7 @@ export default function ReviewCard({
 }) {
   return (
     <div className="bg-bg-secondary rounded ring-2 ring-primary min-h-20 p-4">
-      <div className="flex gap-1 text-text-primary items-center">
+      <div className="flex flex-wrap gap-1 text-text-primary items-center">
         <span className="font-orbitron text-text-primary text-2xl font-bold">
           {userName}
         </span>
@@ -16,7 +16,7 @@ export default function ReviewCard({
           {" "}
           <DisplayRatingStars ratingValue={rating} />{" "}
         </span>
-        <span className="-ml-3 text-text-secondary font-medium">
+        <span className=" text-text-secondary font-medium">
           {createdAt}
         </span>
       </div>
