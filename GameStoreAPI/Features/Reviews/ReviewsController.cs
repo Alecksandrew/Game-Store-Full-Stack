@@ -151,7 +151,7 @@ namespace GameStoreAPI.Features.Reviews
         }
 
 
-        [HttpPatch("/{reviewId}")]
+        [HttpPatch("{reviewId}")]
         [Authorize]
         public async Task<IActionResult> UpdateMyReview(int reviewId, UpdateReviewRequestDto req)
         {
@@ -179,7 +179,7 @@ namespace GameStoreAPI.Features.Reviews
         }
 
 
-        [HttpDelete("/{reviewId}")]
+        [HttpDelete("{reviewId}")]
         [Authorize]
         public async Task<IActionResult> DeleteMyReview(int reviewId)
         {

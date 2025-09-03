@@ -1,9 +1,10 @@
 import Form from "@/global/components/Form";
 import RatingStars from "./RatingStars";
 import { TextArea } from "@/global/components/TextArea";
-import { useContext } from "react";
-import { GameDetailsDataContext } from "../contexts/GameDetailsDataContext";
 import { useCreateReviewByGame } from "../hooks/useCreateReviewByGame";
+import { useParams } from "react-router";
+import { useUpdateReviewByGame } from "../hooks/useUpdateReviewByGame";
+import Button from "@/global/components/Button";
 
 interface ReviewFormData {
   rating: number;
@@ -11,26 +12,45 @@ interface ReviewFormData {
 }
 
 interface ReviewFormProps {
-  onReviewSubmitSuccess: () => void; // 1. Defina a tipagem para a nova prop
+  onReviewSubmitSuccess: () => void;
+  mode: "create" | "update";
+  initialData?: ReviewFormData;
+  onCancel?: () => void;
+  reviewId?: number;
 }
 
-export default function ReviewForm({onReviewSubmitSuccess}:ReviewFormProps) {
-  const data = useContext(GameDetailsDataContext);
-  const gameId = data.id;
-  const {execute, isLoading, warningComponent, warningType} = useCreateReviewByGame(gameId);
+export default function ReviewForm({
+  onReviewSubmitSuccess,
+  mode,
+  initialData,
+  onCancel,
+  reviewId,
+}: ReviewFormProps) {
+  const params = useParams();
+  const gameId = Number(params.id);
+  const createReview = useCreateReviewByGame(gameId);
+  const updateReview = useUpdateReviewByGame(reviewId || 0);
 
-  function onFormSubmit(data:ReviewFormData){
+  const { execute, isLoading, warningComponent, warningType } =
+    mode === "create" ? createReview : updateReview;
+
+  function onFormSubmit(data: ReviewFormData) {
     execute(data);
     onReviewSubmitSuccess();
-
   }
-  
-console.log("renderizaçao");
+
   return (
     <div className="bg-bg-secondary rounded ring-2 ring-primary  p-4">
-      { warningType == "error" && warningComponent}
-      <Form<ReviewFormData> submitText="Submit review" onSubmit={onFormSubmit}>
-        <h2 className="text-2xl text-text-primary">Write a review</h2>
+      {warningType == "error" && warningComponent}
+      <Form<ReviewFormData>
+        submitText={mode === "create" ? "Submit review" : "Update review"}
+        onSubmit={onFormSubmit}
+        isLoading={isLoading}
+        defaultValues={initialData}
+      >
+        <h2 className="text-2xl text-text-primary">
+          {mode === "create" ? "Write a review" : "Edit your review"}
+        </h2>
 
         <label className="font-inter font-bold text-text-primary md:text-lg block mb-3">
           Rating
@@ -51,7 +71,17 @@ console.log("renderizaçao");
           }}
           placeholder="What did you think of the game?"
         />
+        
       </Form>
+      {mode === "update" && (
+          <Button
+            title="Cancel"
+            type="button"
+            onClick={onCancel}
+            className="text-white bg-red-500 hover:bg-red-600..."
+          />
+
+        )}
     </div>
   );
 }

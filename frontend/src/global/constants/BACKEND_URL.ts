@@ -4,7 +4,8 @@ const API_PATHS = {
   AUTH: "/api/Auth",
   ACCOUNT: "/api/account",
   GAMES: "/api/Games",
-  REVIEWS: "/api/games",
+  REVIEWS:"/api/Reviews",
+  REVIEWS_NOT_STANDARD_URL: "/api/games",
 };
 
 
@@ -26,8 +27,9 @@ export const API_ROUTES = {
     GET_BY_ID: `${API_BASE_URL}${API_PATHS.GAMES}`,//path parameter gameId
   },
   REVIEWS: {
-    GET_BY_GAME_FUNCTION: (gameId:number) => `${API_BASE_URL}${API_PATHS.REVIEWS}/${gameId}/reviews`,
-    GET_MY_REVIEWS_BY_GAME_FUNCTION: (gameId:number) => `${API_BASE_URL}${API_PATHS.REVIEWS}/${gameId}/reviews/me`,
-    CREATE_MY_REVIEW_BY_GAME_FUNCTION: (gameId:number) => `${API_BASE_URL}${API_PATHS.REVIEWS}/${gameId}/reviews`, 
+    GET_BY_GAME_FUNCTION: (gameId:number) => `${API_BASE_URL}${API_PATHS.REVIEWS_NOT_STANDARD_URL}/${gameId}/reviews`,
+    GET_MY_REVIEWS_BY_GAME_FUNCTION: (gameId:number) => `${API_BASE_URL}${API_PATHS.REVIEWS_NOT_STANDARD_URL}/${gameId}/reviews/me`,
+    CREATE_MY_REVIEW_BY_GAME_FUNCTION: (gameId:number) => `${API_BASE_URL}${API_PATHS.REVIEWS_NOT_STANDARD_URL}/${gameId}/reviews`, 
+    UPDATE_MY_REVIEW_BY_GAME_FUNCTION: (reviewId:number) => `${API_BASE_URL}${API_PATHS.REVIEWS}/${reviewId}`
   }
 };

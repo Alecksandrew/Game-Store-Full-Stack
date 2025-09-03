@@ -33,8 +33,8 @@ export default function ReviewSection({ className }: { className?: string }) {
   return (
     <section className={className}>
       <h2 className="text-text-primary text-3xl mb-3">Reviews</h2>
-      <ReviewForm onReviewSubmitSuccess={handleReviewSuccess} />
-      {reviewData?.data && reviewData?.data?.[0] && <ReviewCardEditable data={reviewData?.data[0]}/>}
+      <ReviewForm mode="create" onReviewSubmitSuccess={handleReviewSuccess} />
+      {reviewData?.data && reviewData?.data?.[0] && <ReviewCardEditable onReviewUpdate={handleReviewSuccess} data={reviewData?.data[0]}/>}
       <ul className="flex flex-col gap-4 mt-5">
         {listReviewCards(reviewData)}
       </ul>

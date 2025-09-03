@@ -1,12 +1,11 @@
 import DisplayRatingStars from "../DisplayRatingStars";
-import { useContext, type ReactNode } from "react";
+import { useContext, type ButtonHTMLAttributes, type ReactNode } from "react";
 import {
   ReviewCardContext,
   type ReviewCardContextType,
 } from "./ReviewCardContext";
 import { RiPencilFill } from "react-icons/ri";
 import { FaTrash } from "react-icons/fa";
-
 
 /*
 export default function ReviewCard({
@@ -89,8 +88,8 @@ export function ReviewCardRatingStars() {
 //==============================================DATE COMPONENT=======================================================
 export function ReviewCardDate() {
   const data = useContext(ReviewCardContext);
-  if(!data) return;
-  console.log("REVIEW CARD DATE" + JSON.stringify(data))
+  if (!data) return;
+  console.log("REVIEW CARD DATE" + JSON.stringify(data));
   function formatDataFromAPI(date: string): string {
     const dateObject = new Date(date);
 
@@ -103,13 +102,17 @@ export function ReviewCardDate() {
     return formattedDate;
   }
 
+  const wasUpdated = data?.lastUpdatedAt == null
+      ? formatDataFromAPI(data.createdAt)
+      : formatDataFromAPI(data.lastUpdatedAt);
+
   const dateToDisplay =
     data?.lastUpdatedAt == null
       ? formatDataFromAPI(data.createdAt)
       : formatDataFromAPI(data.lastUpdatedAt);
 
   return (
-    <span className=" text-text-secondary font-medium">{dateToDisplay}</span>
+    <span className=" text-text-secondary font-medium">{wasUpdated ? `Updated at ${dateToDisplay}` : dateToDisplay}</span>
   );
 }
 
@@ -126,20 +129,30 @@ export function ReviewCardDescription() {
 }
 
 //==============================================ACTIONS COMPONENT=======================================================
-export function ReviewCardActions({children}:{children:ReactNode}) {
-  return <div className="flex items-center gap-5 absolute top-4 right-4">{children}</div>;
+export function ReviewCardActions({ children }: { children: ReactNode }) {
+  return (
+    <div className="flex items-center gap-5 absolute top-4 right-4">
+      {children}
+    </div>
+  );
 }
 
-
-export function ReviewCardEditButton(){
-  return(
-    <RiPencilFill color="white" size={"1.7rem"}/>
-  )
+export function ReviewCardEditButton({
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button {...props}>
+      <RiPencilFill color="white" size={"1.7rem"} />
+    </button>
+  );
 }
 
-export function ReviewCardDeleteButton(){
-  return(
-    <FaTrash color="red"  size={"1.4rem"}/>
-
-  )
+export function ReviewCardDeleteButton({
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button {...props}>
+      <FaTrash color="red" size={"1.4rem"} />
+    </button>
+  );
 }
