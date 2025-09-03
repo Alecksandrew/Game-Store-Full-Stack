@@ -3,9 +3,12 @@ import type { Swiper as SwiperClass } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { GameDetailsDataContext } from "../contexts/GameDetailsDataContext";
+import { useMediaQuery } from "@/global/hooks/useMediaQuery";
 
 export default function GameMediaGallery({className}: {className?:string}) {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
+  const isAboveTablet = useMediaQuery('(min-width: 768px)');
+  const isAboveDesktop = useMediaQuery('(min-width: 1024px)');
   
   const data = useContext(GameDetailsDataContext);
   const screenshotsUrls = data.screenshotsImageUrl;
@@ -13,6 +16,8 @@ export default function GameMediaGallery({className}: {className?:string}) {
   if (!screenshotsUrls || screenshotsUrls.length === 0) {
     return <div className="text-text-primary">No media available.</div>;
   }
+
+  
 
   return (
     <div className={`w-full ${className}`}>
@@ -51,7 +56,7 @@ export default function GameMediaGallery({className}: {className?:string}) {
         onSwiper={setThumbsSwiper}
         loop={false}
         spaceBetween={10}
-        slidesPerView={4}
+        slidesPerView={isAboveDesktop ? 5 : isAboveTablet ? 4 : 3}
         freeMode={true}
         watchSlidesProgress={true}
         modules={[FreeMode, Navigation, Thumbs]}

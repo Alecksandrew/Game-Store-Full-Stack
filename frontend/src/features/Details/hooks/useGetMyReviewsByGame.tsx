@@ -3,8 +3,11 @@ import { useApi } from "@/global/hooks/useApi";
 import { apiClient } from "@/global/services/apiClient";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 import type { MyReviewApiResponseType } from "../types/ReviewApiResponseType";
+import isUserLogged from "@/global/utils/isUserLogged";
 
 export function useGetMyReviewsByGame(gameId: number, version?: number) {
+   
+  
   const getReviewsRequest = useCallback(() => {
     if (!gameId) {
       return Promise.reject(new Error("gameId is not provided"));
@@ -21,13 +24,14 @@ export function useGetMyReviewsByGame(gameId: number, version?: number) {
     );
   }, [gameId]); //Avoid renders loops
 
+  
   const { data, isLoading, execute, warningComponent, warningType } = useApi<
     void,
     MyReviewApiResponseType
   >(getReviewsRequest);
 
   useEffect(() => {
-    if (gameId) {
+    if (gameId && isUserLogged()) {
       execute();
     }
   }, [gameId, execute, version]);

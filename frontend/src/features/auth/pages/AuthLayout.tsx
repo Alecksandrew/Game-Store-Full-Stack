@@ -5,8 +5,10 @@ export default function AuthLayout() {
 
 
   return (
+    <>
     <BackgroundPage>
       <Outlet />
     </BackgroundPage>
+    </>
   );
 }
