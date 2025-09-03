@@ -89,7 +89,7 @@ Este projeto foi uma oportunidade para aplicar conceitos cruciais de desenvolvim
 - [x] Integração Frontend-Backend para Autenticação
 - [X] Proxy no Backend para API da IGDB
 - [X] Desenvolvimento da Home Page e listagem de jogos
-- [ ] Página de Detalhes do Jogo com sistema de Reviews
+- [X] Página de Detalhes do Jogo com sistema de Reviews
 - [ ] Funcionalidade de Wishlist
 - [ ] Funcionalidade de Carrinho e Checkout Simulado
 - [ ] Página de Histórico de Compras
