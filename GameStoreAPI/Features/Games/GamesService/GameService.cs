@@ -123,13 +123,75 @@ namespace GameStoreAPI.Features.Games.GamesService
                 formattedDate = date.ToString("MM/dd/yyyy");
             }
 
+            InvolvedCompanies InvolvedCompaniesResponse = new InvolvedCompanies();
+            if( igdbGame.InvolvedCompanies != null )
+            {
+                foreach (var company in igdbGame.InvolvedCompanies)
+                {
+                    if (company?.Company?.Name == null) continue;
+                    string companyName = company.Company.Name;
+                   
+
+                    if (company.Publisher)
+                    {
+                        InvolvedCompaniesResponse.Publishers.Add(companyName);
+                    }
+                    if (company.Developer)
+                    {
+                        InvolvedCompaniesResponse.Developers.Add(companyName);
+                    }
+
+                }
+            }
+           
+
+            List<string>? GameModes = new();
+            if(igdbGame?.GameModes != null)
+            {
+                foreach (var gameMode in igdbGame.GameModes)
+                {
+                    string gameModeName = gameMode.Name;
+                    if (gameModeName == null) continue;
+
+                    GameModes.Add(gameModeName);
+                }
+
+            }
+           
+
+
+            List<string> genres = new();
+            if(igdbGame?.Genres != null)
+            {
+                foreach (var genre in igdbGame.Genres)
+                {
+                    if (genre.Name == null) continue;
+                    genres.Add(genre.Name);
+                }
+            }
+
+            List<SimilarGameResponse> similarGameResponse = new();
+            if (igdbGame?.SimilarGames != null)
+            {
+                foreach (var similarGame in igdbGame?.SimilarGames)
+                {
+                    SimilarGameResponse similarGameFinalResponse = new SimilarGameResponse
+                    {
+                        Id = similarGame.Id,
+                        Name = similarGame.Name,
+                        CoverUrl = $"https://images.igdb.com/igdb/image/upload/t_cover_big/{similarGame.Cover.ImageId}.jpg"
+                    };
+                    similarGameResponse.Add(similarGameFinalResponse);
+                }
+            }
+
 
             GameDetailsResponseDto response = new GameDetailsResponseDto
             {
                 Id = gameInventory.IgdbId,
                 Name = igdbGame.Name,
                 Summary = igdbGame.Summary,
-                Genres = igdbGame.Genres, 
+                Genres = genres, 
                 FirstReleaseDate = formattedDate,
                 CoverUrl = coverUrl,
                 ScreenshotsImageUrl = screenshotsUrls,
@@ -139,6 +201,10 @@ namespace GameStoreAPI.Features.Games.GamesService
                 DiscountPrice = gameInventory.DiscountPrice,
                 TotalSells = gameInventory.TotalSells,
                 AvailableKeysStock = availableStock,
+                InvolvedCompanies = InvolvedCompaniesResponse,
+                GameModes = GameModes,
+                SimilarGames = similarGameResponse,
+
 
             };
 

@@ -3,7 +3,6 @@ import { type FormProps } from '../types/FormType';
 import Button from './Button';
 
 
-
 export default function Form<T extends FieldValues>({
   onSubmit,
   children,
@@ -14,7 +13,7 @@ export default function Form<T extends FieldValues>({
 }: FormProps<T>) {
 
   const methods = useForm<T>({defaultValues:defaultValues});
-
+ 
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>

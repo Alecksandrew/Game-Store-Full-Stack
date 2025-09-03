@@ -16,31 +16,34 @@ export function useApi<TData, TResponse>(
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<TResponse | null>(null);
 
-  const execute = useCallback( async (requestData: TData) => {
-    setIsLoading(true);
-    setWarning(emptyWarningState);
+  const execute = useCallback(
+    async (requestData: TData) => {
+      setIsLoading(true);
+      setWarning(emptyWarningState);
 
-    try {
-      const response = await apiRequest(requestData);
+      try {
+        const response = await apiRequest(requestData);
+  console.log("%cAPI Call Succeeded:", "color: green; font-weight: bold;", response);
+        setData(response);
 
-      setData(response);
+        const successMessage =
+          (response as ApiResponse)?.message || "Operation successful!";
 
-      const successMessage =
-        (response as ApiResponse)?.message || "Operation successful!";
+        setWarning({ message: successMessage, type: "success" });
 
-      setWarning({ message: successMessage, type: "success" });
-
-      return response;
-    } catch (error) {
-      if (error instanceof Error) {
-        setWarning({ message: error.message, type: "error" });
-      } else {
-        setWarning({ message: "An unknown error occurred.", type: "error" });
+        return response;
+      } catch (error) {
+        if (error instanceof Error) {
+          setWarning({ message: error.message, type: "error" });
+        } else {
+          setWarning({ message: "An unknown error occurred.", type: "error" });
+        }
+      } finally {
+        setIsLoading(false);
       }
-    } finally {
-      setIsLoading(false);
-    }
-  }, [apiRequest]);
+    },
+    [apiRequest]
+  );
 
   const warningComponent =
     warning.message !== "" ? (
@@ -51,5 +54,12 @@ export function useApi<TData, TResponse>(
       />
     ) : null;
 
-  return { data, isLoading, execute, warningComponent, warningType: warning.type, setData };
+  return {
+    data,
+    isLoading,
+    execute,
+    warningComponent,
+    warningType: warning.type,
+    setData,
+  };
 }

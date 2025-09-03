@@ -1,4 +1,4 @@
-import GameCard from "../components/GameCard";
+import  { GameCardWithPrice } from "../components/GameCard/GameCardPresets";
 import SearchGameForm from "../components/SearchGameForm";
 import type { GameCardData } from "../types/GameCardType";
 import Pagination from "@mui/material/Pagination";
@@ -37,7 +37,7 @@ export default function HomePage() {
     return gamesData.map((game) => {
       return (
         <li key={game.name}>
-          <GameCard gameData={game} />
+          <GameCardWithPrice gameData={game} className="h-full"/>
         </li>
       );
     });

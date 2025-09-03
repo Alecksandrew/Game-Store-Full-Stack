@@ -1,20 +1,26 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import type { Swiper as SwiperClass } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode, Navigation, Thumbs } from "swiper/modules";
-import type { GameMediaGalleryProps } from "../types/GameMediaGalleryType";
+import { Autoplay, FreeMode, Navigation, Thumbs } from "swiper/modules";
+import { GameDetailsDataContext } from "../contexts/GameDetailsDataContext";
+import { useMediaQuery } from "@/global/hooks/useMediaQuery";
 
-export default function GameMediaGallery({
-  screenshotUrls,
-}: GameMediaGalleryProps) {
+export default function GameMediaGallery({className}: {className?:string}) {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
-
-  if (!screenshotUrls || screenshotUrls.length === 0) {
+  const isAboveTablet = useMediaQuery('(min-width: 768px)');
+  const isAboveDesktop = useMediaQuery('(min-width: 1024px)');
+  
+  const data = useContext(GameDetailsDataContext);
+  const screenshotsUrls = data.screenshotsImageUrl;
+ 
+  if (!screenshotsUrls || screenshotsUrls.length === 0) {
     return <div className="text-text-primary">No media available.</div>;
   }
 
+  
+
   return (
-    <div className="w-1/2">
+    <div className={`w-full ${className}`}>
       {/* MAIN IMAGE */}
       <Swiper
         style={
@@ -23,21 +29,23 @@ export default function GameMediaGallery({
             "--swiper-pagination-color": "#FFFFFF",
           } as React.CSSProperties
         }
-        loop={true}
+        loop={false}
         spaceBetween={0}
         navigation={true}
         thumbs={{
           swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
         }}
-        modules={[FreeMode, Navigation, Thumbs]}
+        modules={[FreeMode, Navigation, Thumbs, Autoplay]}
         className="mySwiperMain rounded-lg mb-4"
+        style={{padding: "3px"}}
+        autoplay={{ delay: 4000, disableOnInteraction: false }}
       >
-        {screenshotUrls.map((url, index) => (
+        {screenshotsUrls.map((url, index) => (
           <SwiperSlide key={index}>
             <img
               src={url}
               alt={`Screenshot ${index + 1}`}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover ring-3 ring-primary bg-gray"
             />
           </SwiperSlide>
         ))}
@@ -46,20 +54,21 @@ export default function GameMediaGallery({
       {/* SECONDARY IMAGES */}
       <Swiper
         onSwiper={setThumbsSwiper}
-        loop={true}
+        loop={false}
         spaceBetween={10}
-        slidesPerView={4}
+        slidesPerView={isAboveDesktop ? 5 : isAboveTablet ? 4 : 3}
         freeMode={true}
         watchSlidesProgress={true}
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiperThumbs"
         style={{padding: "4px"}}
+       
       >
-        {screenshotUrls.map((url, index) => (
+        {screenshotsUrls.map((url, index) => (
           <SwiperSlide
             key={index}
-            className="group cursor-pointer rounded-md overflow-hidden bg-primary relative transition-all duration-300
-             [&.swiper-slide-thumb-active]:ring-4 
+            className="group cursor-pointer rounded-md overflow-hidden bg-text-primary relative transition-all duration-300 ring-3 ring-text-primary
+             [&.swiper-slide-thumb-active]:ring-3
              [&.swiper-slide-thumb-active]:ring-primary"
           >
             {/* O 'swiper-slide-thumb-active' é uma classe que o próprio Swiper adiciona à miniatura ativa! */}

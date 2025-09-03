@@ -6,4 +6,5 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     name: string;
     rules?: RegisterOptions; 
     icon?: ReactElement;
+    type: string,
 };
