@@ -69,7 +69,11 @@ namespace GameStoreAPI.Features.Reviews.ReviewsService
         )
         {
             return await _dbContext.Reviews
-                .Where(r => r.IgdbId == gameId && r.UserId == userId).ToListAsync();
+                .Include(r => r.User)
+                .Where(r => r.IgdbId == gameId && r.UserId == userId)
+                .OrderByDescending(x => x.CreatedAt)
+                .ThenByDescending(x => x.Id)
+                .ToListAsync();
         }
 
 

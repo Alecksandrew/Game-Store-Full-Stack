@@ -102,9 +102,7 @@ export function ReviewCardDate() {
     return formattedDate;
   }
 
-  const wasUpdated = data?.lastUpdatedAt == null
-      ? formatDataFromAPI(data.createdAt)
-      : formatDataFromAPI(data.lastUpdatedAt);
+  const wasUpdated = data?.lastUpdatedAt != null;
 
   const dateToDisplay =
     data?.lastUpdatedAt == null

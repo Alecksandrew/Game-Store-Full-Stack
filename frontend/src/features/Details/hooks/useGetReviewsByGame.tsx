@@ -4,7 +4,7 @@ import { apiClient } from "@/global/services/apiClient";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 import type { ReviewApiResponseType } from "../types/ReviewApiResponseType";
 
-export function useGetReviewsByGame(gameId: number, version?: number) {
+export function useGetReviewsByGame(gameId: number, isUserLogged:boolean, version?: number, ) {
   
  const getReviewsRequest = useCallback(() => { 
     if (!gameId) {
@@ -16,7 +16,8 @@ export function useGetReviewsByGame(gameId: number, version?: number) {
     };
     
    
-    return apiClient<ReviewApiResponseType>(API_ROUTES.REVIEWS.GET_BY_GAME_FUNCTION(gameId), options, false);
+    return apiClient<ReviewApiResponseType>(API_ROUTES.REVIEWS.GET_BY_GAME_FUNCTION(gameId), options, isUserLogged);//This endpoint either will return all reviews 
+                                                                                                                    // or all reviews without review of the user logged
 
   }, [gameId])//Avoid renders loops
 

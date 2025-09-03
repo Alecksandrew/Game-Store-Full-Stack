@@ -12,3 +12,13 @@ export type ReviewApiResponseType = {
     lastId: number;
   } | null;
 };
+
+
+export type MyReviewApiResponseType = {
+    id: number;
+    rating: number;
+    description: string;
+    createdAt: string;
+    lastUpdatedAt: string,
+    userName: string;
+}[];
