@@ -12,21 +12,22 @@ import AuthLayout from "./features/auth/pages/AuthLayout.tsx";
 import { PAGE_ROUTES } from "./global/constants/FRONTEND_URL.ts";
 import HomePage from "./features/Home/page/HomePage.tsx";
 import GameDetailsPage from "./features/Details/pages/GameDetailsPage.tsx";
+import { WishlistProvider } from "./features/Wishlist/context/WishlistProvider.tsx";
 
 const router = createBrowserRouter([
   {
-    path:"/",
-    element:<HomePage/>
+    path: "/",
+    element: <HomePage />,
   },
   {
-    path:"/games/:id",
-    element:<GameDetailsPage/>
+    path: "/games/:id",
+    element: <GameDetailsPage />,
   },
   {
     element: <AuthLayout />,
     children: [
       {
-        path: PAGE_ROUTES.AUTH.LOGIN, 
+        path: PAGE_ROUTES.AUTH.LOGIN,
         element: <AuthPage />,
       },
       {
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
         element: <ForgotPasswordPage />,
       },
       {
-        path: PAGE_ROUTES.AUTH.RESET_PASSWORD, 
+        path: PAGE_ROUTES.AUTH.RESET_PASSWORD,
         element: <ResetPasswordPage />,
       },
       {
@@ -55,6 +56,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <WishlistProvider>
+      <RouterProvider router={router} />
+    </WishlistProvider>
   </StrictMode>
 );

@@ -6,6 +6,7 @@ const API_PATHS = {
   GAMES: "/api/Games",
   REVIEWS:"/api/Reviews",
   REVIEWS_NOT_STANDARD_URL: "/api/games",
+  WISHLIST: "/api/Wishlist"
 };
 
 
@@ -32,5 +33,10 @@ export const API_ROUTES = {
     CREATE_MY_REVIEW_BY_GAME_FUNCTION: (gameId:number) => `${API_BASE_URL}${API_PATHS.REVIEWS_NOT_STANDARD_URL}/${gameId}/reviews`, 
     UPDATE_MY_REVIEW_BY_GAME_FUNCTION: (reviewId:number) => `${API_BASE_URL}${API_PATHS.REVIEWS}/${reviewId}`,
     DELETE_MY_REVIEW_BY_GAME_FUNCTION:(reviewId:number) => `${API_BASE_URL}${API_PATHS.REVIEWS}/${reviewId}`,
-  }
+  },
+   WISHLIST: {
+    GET: `${API_BASE_URL}${API_PATHS.WISHLIST}`,
+    ADD_FUNCTION: (gameId:number) => `${API_BASE_URL}${API_PATHS.WISHLIST}/${gameId}`, 
+    REMOVE_FUNCTION:(gameId:number) => `${API_BASE_URL}${API_PATHS.WISHLIST}/${gameId}`,
+  },
 };

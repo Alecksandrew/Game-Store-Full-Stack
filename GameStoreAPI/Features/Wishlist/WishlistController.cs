@@ -25,7 +25,7 @@ namespace GameStoreAPI.Features.Wishlist
             if (userId is null) return Unauthorized();
 
             var result = await _wishlistService.GetWishlistedGamesAsync(userId);
-            return Ok(result);
+            return Ok(result.Value);
         }
 
         [HttpPost("{gameId}")]

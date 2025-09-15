@@ -14,7 +14,7 @@ export default function Button({
 }: ButtonProps) {
 
   return (
-    <button type={type} className={`font-semibold p-1 rounded w-full mt-2 ${className}`} {...props}>
+    <button type={type} className={`font-semibold p-0.5 sm:p-1 rounded w-full mt-2 ${className}`} {...props}>
       {title}
     </button>
   );
