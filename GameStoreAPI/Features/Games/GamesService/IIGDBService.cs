@@ -8,6 +8,8 @@ namespace GameStoreAPI.Features.Games.GamesService
     {
         Task<GameDetailsResponseIGDBDto?> GetGameByIdAsync(int igdbId);
         Task<List<GameDetailsResponseIGDBDto>> GetGamesAsync(GetGamesRequestDto parameters);
+
+        public Task<List<GameDetailsResponseIGDBDto>> GetGamesByIdsAsync(IEnumerable<int> ids);
     }
 
 

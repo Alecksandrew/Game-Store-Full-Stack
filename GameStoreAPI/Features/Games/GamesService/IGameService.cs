@@ -11,5 +11,8 @@ namespace GameStoreAPI.Features.Games.GamesService
     {
         public Task<Result<GameDetailsResponseDto>> GetGameDetailsAsync(int igdbId);
         Task<Result<object>> GetGamesAsync(GetGamesRequestDto parameters);
+
+        Task<Result<List<GameSummaryResponseDto>>> GetGamesSummariesByIdsAsync(List<int> ids);
     }
+
 }

@@ -283,7 +283,33 @@ namespace GameStoreAPI.Features.Games.GamesService
             }
         }
 
-    
+
+        public async Task<Result<List<GameSummaryResponseDto>>> GetGamesSummariesByIdsAsync(List<int> ids)
+        {
+            var igdbGames = await _igdbService.GetGamesByIdsAsync(ids);
+            if (igdbGames is null || !igdbGames.Any())
+            {
+                return Result<List<GameSummaryResponseDto>>.Ok(new List<GameSummaryResponseDto>());
+            }
+
+            var gameIds = igdbGames.Select(g => g.Id).ToList();
+            var inventories = await GetOrCreateInventoriesForGamesAsync(gameIds);
+
+            var gameSummaryList = igdbGames.Select(igdbGame =>
+            {
+                var inventory = inventories[igdbGame.Id];
+                return new GameSummaryResponseDto
+                {
+                    Id = igdbGame.Id,
+                    Name = igdbGame.Name,
+                    CoverUrl = $"https://images.igdb.com/igdb/image/upload/t_cover_big/{igdbGame.Cover?.ImageId}.jpg" ?? string.Empty,
+                    Price = inventory.Price,
+                    DiscountPrice = inventory.DiscountPrice
+                };
+            }).ToList();
+
+            return Result<List<GameSummaryResponseDto>>.Ok(gameSummaryList);
+        }
     }
         
 }

@@ -3,6 +3,7 @@ using GameStoreAPI.Features.Authentication.AuthService;
 using GameStoreAPI.Features.Games.GamesService;
 using GameStoreAPI.Features.MyAccount.AccountService;
 using GameStoreAPI.Features.Reviews.ReviewsService;
+using GameStoreAPI.Features.Wishlist.WishlistService;
 using GameStoreAPI.Services;
 using GameStoreAPI.Services.EmailService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -115,6 +116,9 @@ builder.Services.AddControllers()
                                                                                                                                   // JSON go back PascalCase -> CamelCase
 //Review dependency
 builder.Services.AddScoped<IReviewsService, ReviewsService>();
+
+//Wishlist dependecy
+builder.Services.AddScoped<IWishlistService, WishlistService>();
 
 var app = builder.Build();
 

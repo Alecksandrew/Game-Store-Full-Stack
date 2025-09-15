@@ -170,7 +170,21 @@ namespace GameStoreAPI.Features.Games.GamesService
             return result ?? new List<GameDetailsResponseIGDBDto>();
         }
 
+        public async Task<List<GameDetailsResponseIGDBDto>> GetGamesByIdsAsync(IEnumerable<int> ids)
+        {
+            if (ids == null || !ids.Any())
+            {
+                return new List<GameDetailsResponseIGDBDto>();
+            }
 
+            var idsString = string.Join(",", ids);
+            var query = $"fields name, platforms.name, screenshots.image_id, cover.image_id, first_release_date, summary, videos.video_id, genres.name, " +
+                        $"involved_companies.company.name, involved_companies.developer, involved_companies.publisher, game_modes.name, similar_games.name, similar_games.cover.image_id; " +
+                        $"where id = ({idsString}); limit {ids.Count()};";
+
+            var gamesList = await ExecuteIgdbQueryAsync(query);
+            return gamesList ?? new List<GameDetailsResponseIGDBDto>();
+        }
 
     }
 }
