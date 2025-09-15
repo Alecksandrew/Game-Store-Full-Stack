@@ -37,8 +37,8 @@ export default function ReviewForm({
   const { execute, isLoading, warningComponent, warningType } =
     mode === "create" ? createReview : updateReview;
 
-  function onFormSubmit(data: ReviewFormData) {
-    execute(data);
+  async function onFormSubmit(data: ReviewFormData) {
+    await execute(data);
     onReviewSubmitSuccess();
   }
 

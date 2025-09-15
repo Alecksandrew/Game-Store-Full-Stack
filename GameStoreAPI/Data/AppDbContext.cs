@@ -17,6 +17,8 @@ namespace GameStoreAPI.Data
         public DbSet<GameInventory> GamesInventory { get; set; }
         public DbSet<GameKey> GameKeys { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<WishlistedGame> WishlistedGames { get; set; }
+
 
         //CreatedAt and UpdatedAt properties will be always created when save in database automatically
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -106,13 +108,13 @@ namespace GameStoreAPI.Data
                 entity.HasOne(e => e.GameInventory)
                       .WithMany()
                       .HasForeignKey(e => e.IgdbId)
-                      .OnDelete(DeleteBehavior.NoAction); 
+                      .OnDelete(DeleteBehavior.Cascade); 
 
 
                 entity.HasOne(e => e.User)
                       .WithMany()
                       .HasForeignKey(e => e.UserId)
-                      .OnDelete(DeleteBehavior.NoAction); ;
+                      .OnDelete(DeleteBehavior.Cascade);
 
                 entity.Property(e => e.Rating)
                       .IsRequired()
@@ -130,6 +132,25 @@ namespace GameStoreAPI.Data
                         .ToTable("Reviews", t =>
                         t.HasCheckConstraint("CK_Review_Rating_Increments",
                         "[Rating] >= 0.5 AND [Rating] <= 5.0 AND ([Rating] * 2) = CAST(([Rating] * 2) AS INT)"));
+
+
+            modelBuilder.Entity<WishlistedGame>(entity =>
+            {
+                // chave primária composta
+                entity.HasKey(wg => new { wg.UserId, wg.IgdbId });
+
+                
+                entity.HasOne(wg => wg.User)
+                      .WithMany()
+                      .HasForeignKey(wg => wg.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+               
+                entity.HasOne(wg => wg.GameInventory)
+                      .WithMany()
+                      .HasForeignKey(wg => wg.IgdbId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
         }
 
 
