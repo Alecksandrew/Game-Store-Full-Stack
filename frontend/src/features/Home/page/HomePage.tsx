@@ -14,8 +14,8 @@ export default function HomePage() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const { data, isLoading, warningComponent, warningType } = usePaginatedGames({
-    searchTerm,
     currentPage,
+    searchTerm,
   });
 
   const handleSearchSubmit = (data: { gameName: string }) => {

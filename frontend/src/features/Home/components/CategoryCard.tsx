@@ -2,7 +2,109 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Link } from "react-router";
 
+type GenreCardProps = {
+  route: string;
+  imageURL: string;
+  name: string;
+};
+
 export default function CategoryCard() {
+  const genreCardsData: GenreCardProps[] = [
+    {
+      route: "/games?genre=Sport",
+      imageURL:
+        "https://images.igdb.com/igdb/image/upload/t_screenshot_big/scb1p5.jpg",
+      name: "Sport",
+    },
+    {
+      route: "/games?genre=Strategy",
+      imageURL:
+        "https://images.igdb.com/igdb/image/upload/t_screenshot_big/sc81ff.jpg",
+      name: "Strategy",
+    },
+    {
+      route: "/games?genre=Adventure",
+      imageURL:
+        "https://images.igdb.com/igdb/image/upload/t_screenshot_big/scagdm.jpg",
+      name: "Adventure",
+    },
+    {
+      route: "/games?genre=Indie",
+      imageURL:
+        "https://images.igdb.com/igdb/image/upload/t_screenshot_big/scdpfd.jpg",
+      name: "Indie",
+    },
+    {
+      route: "/games?genre=Arcade",
+      imageURL:
+        "https://images.igdb.com/igdb/image/upload/t_screenshot_big/scsmrs.jpg",
+      name: "Arcade",
+    },
+    {
+      route: "/games?genre=MOBA",
+      imageURL:
+        "https://images.igdb.com/igdb/image/upload/t_screenshot_big/sc7frs.jpg",
+      name: "MOBA",
+    },
+    {
+      route: "/games?genre=Role-playing (RPG)",
+      imageURL:
+        "https://images.igdb.com/igdb/image/upload/t_screenshot_big/scq4s3.jpg",
+      name: "Role-playing (RPG)",
+    },
+    {
+      route: "/games?genre=Simulator",
+      imageURL:
+        "https://images.igdb.com/igdb/image/upload/t_screenshot_big/sc97qb.jpg",
+      name: "Simulator",
+    },
+    {
+      route: "/games?genre=Racing",
+      imageURL:
+        "https://images.igdb.com/igdb/image/upload/t_screenshot_big/scahho.jpg",
+      name: "Racing",
+    },
+    {
+      route: "/games?genre=Shooter",
+      imageURL:
+        "https://images.igdb.com/igdb/image/upload/t_screenshot_big/sc7da9.jpg",
+      name: "Shooter",
+    },
+    {
+      route: "/games?genre=Platform",
+      imageURL:
+        "https://images.igdb.com/igdb/image/upload/t_screenshot_big/scha02.jpg",
+      name: "Platform",
+    },
+    {
+      route: "/games?genre=Puzzle",
+      imageURL:
+        "https://images.igdb.com/igdb/image/upload/t_screenshot_big/scaoj9.jpg",
+      name: "Puzzle",
+    },
+  ];
+
+  function renderGenreCards(genreCardsData: GenreCardProps[]) {
+    return genreCardsData.map((cardData) => {
+
+       const route = `/games/genres/${encodeURIComponent(cardData.name)}`;
+      return (
+        <SwiperSlide className="text-text-primary rounded ring-2 ring-primary ">
+          <Link to={route} className="w-full h-full">
+            <img
+              className="object-no-repeat object-cover w-full h- opacity-15 grayscale mix-blend-luminosity"
+              src={cardData.imageURL}
+              alt={`${cardData.name} category`}
+            />
+            <span className="absolute top-1/2 left-1/2 -translate-1/2">
+              {cardData.name}
+            </span>
+          </Link>
+        </SwiperSlide>
+      );
+    });
+  }
+
   return (
     <Swiper
       freeMode={true}
@@ -28,164 +130,12 @@ export default function CategoryCard() {
           slidesPerView: 5,
         },
       }}
-      style={{ 
-        padding: '2px',
-      }} 
+      style={{
+        padding: "2px",
+      }}
       className="bg-bg-secondary rounded my-10 text-center"
     >
-      <SwiperSlide className="text-text-primary rounded ring-2 ring-primary ">
-        <Link to={"/games?genre=Sport"} className="w-full h-full">
-          <img
-            className="object-no-repeat object-cover w-full h- opacity-15 grayscale mix-blend-luminosity"
-            src="https://images.igdb.com/igdb/image/upload/t_screenshot_big/scb1p5.jpg"
-            alt="Sport category"
-          />
-          <span className="absolute top-1/2 left-1/2 -translate-1/2">
-            Sport
-          </span>
-        </Link>
-      </SwiperSlide>
-
-      <SwiperSlide className="text-text-primary rounded ring-2 ring-primary ">
-        <Link to={"/games?genre=Strategy"} className="w-full h-full">
-          <img
-            className="object-no-repeat object-cover w-full h- opacity-15 grayscale mix-blend-luminosity"
-            src="https://images.igdb.com/igdb/image/upload/t_screenshot_big/sc81ff.jpg"
-            alt="Strategy category"
-          />
-          <span className="absolute top-1/2 left-1/2 -translate-1/2">
-            Strategy
-          </span>
-        </Link>
-      </SwiperSlide>
-
-      <SwiperSlide className="text-text-primary rounded ring-2 ring-primary ">
-        <Link to={"/games?genre=Adventure"} className="w-full h-full">
-          <img
-            className="object-no-repeat object-cover w-full h- opacity-15 grayscale mix-blend-luminosity"
-            src="https://images.igdb.com/igdb/image/upload/t_screenshot_big/scagdm.jpg"
-            alt="Adventure category"
-          />
-          <span className="absolute top-1/2 left-1/2 -translate-1/2">
-            Adventure
-          </span>
-        </Link>
-      </SwiperSlide>
-
-      <SwiperSlide className="text-text-primary rounded ring-2 ring-primary ">
-        <Link to={"/games?genre=Indie"} className="w-full h-full">
-          <img
-            className="object-no-repeat object-cover w-full h- opacity-15 grayscale mix-blend-luminosity"
-            src="https://images.igdb.com/igdb/image/upload/t_screenshot_big/scdpfd.jpg"
-            alt="Indie category"
-          />
-          <span className="absolute top-1/2 left-1/2 -translate-1/2">
-            Indie
-          </span>
-        </Link>
-      </SwiperSlide>
-
-      <SwiperSlide className="text-text-primary rounded ring-2 ring-primary ">
-        <Link to={"/games?genre=Arcade"} className="w-full h-full">
-          <img
-            className="object-no-repeat object-cover w-full h- opacity-15 grayscale mix-blend-luminosity"
-            src="https://images.igdb.com/igdb/image/upload/t_screenshot_big/scsmrs.jpg"
-            alt="Arcade category"
-          />
-          <span className="absolute top-1/2 left-1/2 -translate-1/2">
-            Arcade
-          </span>
-        </Link>
-      </SwiperSlide>
-
-      <SwiperSlide className="text-text-primary rounded ring-2 ring-primary ">
-        <Link to={"/games?genre=MOBA"} className="w-full h-full">
-          <img
-            className="object-no-repeat object-cover w-full h- opacity-15 grayscale mix-blend-luminosity"
-            src="https://images.igdb.com/igdb/image/upload/t_screenshot_big/sc7frs.jpg"
-            alt="MOBA category"
-          />
-          <span className="absolute top-1/2 left-1/2 -translate-1/2">MOBA</span>
-        </Link>
-      </SwiperSlide>
-
-      <SwiperSlide className="text-text-primary rounded ring-2 ring-primary ">
-        <Link to={"/games?genre=Role-playing (RPG)"} className="w-full h-full">
-          <img
-            className="object-no-repeat object-cover w-full h- opacity-15 grayscale mix-blend-luminosity"
-            src="https://images.igdb.com/igdb/image/upload/t_screenshot_big/scq4s3.jpg"
-            alt="Role-playing (RPG) category"
-          />
-          <span className="absolute top-1/2 left-1/2 -translate-1/2">
-            Role-playing (RPG)
-          </span>
-        </Link>
-      </SwiperSlide>
-
-      <SwiperSlide className="text-text-primary rounded ring-2 ring-primary ">
-        <Link to={"/games?genre=Simulator"} className="w-full h-full">
-          <img
-            className="object-no-repeat object-cover w-full h- opacity-15 grayscale mix-blend-luminosity"
-            src="https://images.igdb.com/igdb/image/upload/t_screenshot_big/sc97qb.jpg"
-            alt="Simulator category"
-          />
-          <span className="absolute top-1/2 left-1/2 -translate-1/2">
-            Simulator
-          </span>
-        </Link>
-      </SwiperSlide>
-
-      <SwiperSlide className="text-text-primary rounded ring-2 ring-primary ">
-        <Link to={"/games?genre=Racing"} className="w-full h-full">
-          <img
-            className="object-no-repeat object-cover w-full h- opacity-15 grayscale mix-blend-luminosity"
-            src="https://images.igdb.com/igdb/image/upload/t_screenshot_big/scahho.jpg"
-            alt="Racing category"
-          />
-          <span className="absolute top-1/2 left-1/2 -translate-1/2">
-            Racing
-          </span>
-        </Link>
-      </SwiperSlide>
-
-      <SwiperSlide className="text-text-primary rounded ring-2 ring-primary ">
-        <Link to={"/games?genre=Shooter"} className="w-full h-full">
-          <img
-            className="object-no-repeat object-cover w-full h- opacity-15 grayscale mix-blend-luminosity"
-            src="https://images.igdb.com/igdb/image/upload/t_screenshot_big/sc7da9.jpg"
-            alt="Shooter category"
-          />
-          <span className="absolute top-1/2 left-1/2 -translate-1/2">
-            Shooter
-          </span>
-        </Link>
-      </SwiperSlide>
-
-      <SwiperSlide className="text-text-primary rounded ring-2 ring-primary ">
-        <Link to={"/games?genre=Platform"} className="w-full h-full">
-          <img
-            className="object-no-repeat object-cover w-full h- opacity-15 grayscale mix-blend-luminosity"
-            src="https://images.igdb.com/igdb/image/upload/t_screenshot_big/scha02.jpg"
-            alt="Platform category"
-          />
-          <span className="absolute top-1/2 left-1/2 -translate-1/2">
-            Platform
-          </span>
-        </Link>
-      </SwiperSlide>
-
-      <SwiperSlide className="text-text-primary rounded ring-2 ring-primary ">
-        <Link to={"/"} className="w-full h-full">
-          <img
-            className="object-no-repeat object-cover w-full h- opacity-15 grayscale mix-blend-luminosity"
-            src="https://images.igdb.com/igdb/image/upload/t_screenshot_big/scaoj9.jpg"
-            alt="Puzzle category"
-          />
-          <span className="absolute top-1/2 left-1/2 -translate-1/2">
-            Puzzle
-          </span>
-        </Link>
-      </SwiperSlide>
+      {renderGenreCards(genreCardsData)}
     </Swiper>
   );
 }

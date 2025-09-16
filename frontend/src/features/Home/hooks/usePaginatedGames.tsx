@@ -5,24 +5,37 @@ import { useApi } from "@/global/hooks/useApi";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 
 export function usePaginatedGames({
-  searchTerm,
+
   currentPage,
+  searchTerm,
+  genre
 }: {
-  searchTerm: string;
+  searchTerm?: string;
   currentPage: number;
+  genre?:string;
 }) {
 
   const fetchGamesForPage = useCallback(() => {
-    let url = "";
+    const params = new URLSearchParams({
+      page: String(currentPage),
+      pageSize: "12",
+    });
 
-    if (searchTerm.trim()) {
-      url = `${API_ROUTES.GAMES.GET}?search=${searchTerm}&page=${currentPage}&pageSize=12`;
+    if (genre) {
+      params.append("genre", genre);
+      params.append("rating", "80");
+      params.append("yearFrom", "2014");
+    } else if (searchTerm?.trim()) {
+      params.append("search", searchTerm);
     } else {
-      url = `${API_ROUTES.GAMES.GET}?page=${currentPage}&pageSize=12&yearFrom=2018&rating=88`;
+      params.append("yearFrom", "2018");
+      params.append("rating", "88");
     }
 
+    const url = `${API_ROUTES.GAMES.GET}?${params.toString()}`;
+
     return apiClient<GameCardData[]>(url);
-  }, [currentPage, searchTerm]);
+  }, [currentPage, searchTerm, genre]);
 
   const { data, isLoading, execute, warningComponent, warningType } =
     useApi<void, GameCardData[]>(fetchGamesForPage);

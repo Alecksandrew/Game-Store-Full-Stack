@@ -1,7 +1,8 @@
 export const PAGE_ROUTES = {
   STORE: {
     HOME: "/", 
-    GAME_DETAILS: (id: string) => `/game/${id}`,
+    GAME_DETAILS: (id: string) => `/games/${id}`,
+    GENRES:"/games/genres/:genre"
   },
   AUTH: {
     LOGIN: "/auth",
