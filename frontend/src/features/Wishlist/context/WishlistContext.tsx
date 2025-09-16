@@ -5,4 +5,5 @@ export const WishlistContext = createContext<WishlistContextType>({
   wishlist: [],
   isLoading: true,
   refetchWishlist: () => {},
+  removeGameFromWishlist: () => {},
 });

@@ -12,7 +12,7 @@ export default function GameCardWishlist() {
     return null;
   }
 
-  const isWishlisted = wishlist.includes(gameData.id);
+  const isWishlisted = wishlist.some(game => game.id == gameData.id);
 
   return (
     <ToggleWishlist

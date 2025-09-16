@@ -13,6 +13,7 @@ import { PAGE_ROUTES } from "./global/constants/FRONTEND_URL.ts";
 import HomePage from "./features/Home/page/HomePage.tsx";
 import GameDetailsPage from "./features/Details/pages/GameDetailsPage.tsx";
 import { WishlistProvider } from "./features/Wishlist/context/WishlistProvider.tsx";
+import WishlistPage from "./features/Wishlist/pages/WishlistPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: "/games/:id",
     element: <GameDetailsPage />,
+  },
+  {
+    path:"/wishlist",
+    element:<WishlistPage/>
   },
   {
     element: <AuthLayout />,

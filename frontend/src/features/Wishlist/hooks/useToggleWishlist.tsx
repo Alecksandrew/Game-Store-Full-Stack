@@ -6,7 +6,7 @@ export function useToggleWishlist(gameId: number, initialIsWishlisted: boolean) 
   const [isWishlisted, setIsWishlisted] = useState<boolean>(initialIsWishlisted);
   const { execute: addToWishlist, isLoading: isAdding } = useAddToWishlist();
   const { execute: removeFromWishlist, isLoading: isRemoving } = useRemoveFromWishlist();
-  const { refetchWishlist } = useContext(WishlistContext);
+  const { refetchWishlist, removeGameFromWishlist } = useContext(WishlistContext);
 
   useEffect(() => {
     setIsWishlisted(initialIsWishlisted);
@@ -19,12 +19,14 @@ export function useToggleWishlist(gameId: number, initialIsWishlisted: boolean) 
 
     if (isWishlisted) {
       await removeFromWishlist(gameId);
+      removeGameFromWishlist(gameId);
     } else {
       await addToWishlist(gameId);
+      refetchWishlist();
     }
     
     setIsWishlisted(!isWishlisted);
-    refetchWishlist();
+    
   };
 
   return { isWishlisted, isDisabled, handleToggle };

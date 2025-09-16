@@ -1,8 +1,9 @@
-import { createContext } from "react";
+import type { GameCardData } from "@/features/Home/types/GameCardType";
 
 export type WishlistContextType = {
-  wishlist: number[];
+  wishlist: GameCardData[];
   isLoading: boolean;
   refetchWishlist: () => void;
+  removeGameFromWishlist: (gameId: number) => void;
 };
 
