@@ -8,7 +8,7 @@ export default function GameCardWishlist() {
   const gameData = useContext(GameCardContext);
   const { wishlist, isLoading } = useContext(WishlistContext);
 
-  if (!isUserLogged() || (isLoading && wishlist.length === 0)) {
+  if (!isUserLogged()) {
     return null;
   }
 

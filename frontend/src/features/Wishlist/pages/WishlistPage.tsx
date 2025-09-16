@@ -53,7 +53,8 @@ const { wishlist, isLoading } = useContext(WishlistContext);
       <Header />
       <div className="bg-bg-primary min-h-screen py-10">
         <div className="w-9/10 max-w-[1200px] mx-auto">
-          <h1 className="text-4xl text-text-primary mb-5">Your wishlist</h1>
+          <h1 className="text-4xl text-text-primary">Your wishlist</h1>
+          <p className="font-inter font-light italic text-text-primary mb-5">{wishlist?.length !== 0 && wishlist.length + " games saved for later"}</p>
           {renderContent()}
         </div>
       </div>
