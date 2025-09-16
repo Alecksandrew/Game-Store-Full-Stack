@@ -8,7 +8,7 @@ import { GameDetailsDataContext } from "@/features/Details/contexts/GameDetailsD
 export default function BuyAndWishlistBtns() {
    const gameData = useContext(GameDetailsDataContext);
     const { wishlist} = useContext(WishlistContext);
-   const isWishlisted = wishlist.includes(gameData.id);
+   const isWishlisted = wishlist.some(game => game.id == gameData.id);
 
   return (
     <div className={`flex gap-2`}>
