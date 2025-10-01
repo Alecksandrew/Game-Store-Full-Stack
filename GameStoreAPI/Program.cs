@@ -1,5 +1,6 @@
 using GameStoreAPI.Data;
 using GameStoreAPI.Features.Authentication.AuthService;
+using GameStoreAPI.Features.Checkout.CheckoutService;
 using GameStoreAPI.Features.Games.GamesService;
 using GameStoreAPI.Features.MyAccount.AccountService;
 using GameStoreAPI.Features.Reviews.ReviewsService;
@@ -119,6 +120,9 @@ builder.Services.AddScoped<IReviewsService, ReviewsService>();
 
 //Wishlist dependecy
 builder.Services.AddScoped<IWishlistService, WishlistService>();
+
+//Checkout dependecy
+builder.Services.AddScoped<ICheckoutService, CheckoutService>();
 
 var app = builder.Build();
 
