@@ -1,4 +1,5 @@
 import CartItem from "../components/CartItem";
+import OrderSummary from "../components/OrderSummary";
 
 
 
@@ -17,6 +18,7 @@ export default function CartPage(){
     <ul>
         <CartItem game={gameDataMockTest}/>
     </ul>
+    <OrderSummary/>
     
     </>
 }
