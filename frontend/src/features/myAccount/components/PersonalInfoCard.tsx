@@ -1,43 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import FormHeader from "@/global/components/FormHeader";
 import InputOnlyDisplayInfo from "@/global/components/InputOnlyDisplayInfo";
-import { fetchWithAuth } from "@/global/services/fetchWithAuth";
-import { API_ROUTES } from "../../../global/constants/BACKEND_URL";
 
-type userDataType = {
-  userName: string;
-  email: string;
-};
+import { MyAccountContext } from "../context/MyAccountContext";
 
-const emptyUserData = {
-  userName: "",
-  email: "",
-};
 
 export default function PersonalnfoCard() {
-  const [userData, setUserData] = useState<userDataType>(emptyUserData);
+  const { myAccountData, isLoading } = useContext(MyAccountContext);
 
-  useEffect(() => {
-    async function getUserInfos() {
-      try {
-        const response = await fetchWithAuth(API_ROUTES.ACCOUNT.ME, {
-          method: "GET",
-        });
 
-        console.log(response);
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-
-        const data = await response.json();
-        console.log(data);
-        setUserData(data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getUserInfos();
-  }, []);
+  if (isLoading) {
+    return <div>Loading user information...</div>;
+  }
 
   return (
     <form className="form h-[400px] max-h-fit">
@@ -47,12 +21,12 @@ export default function PersonalnfoCard() {
       />
       <InputOnlyDisplayInfo
         title="User name"
-        inputValue={userData?.userName}
+        inputValue={myAccountData?.userName}
         disabled={true}
       />
       <InputOnlyDisplayInfo
         title="E-mail"
-        inputValue={userData?.email}
+        inputValue={myAccountData?.email}
         disabled={true}
       />
     </form>

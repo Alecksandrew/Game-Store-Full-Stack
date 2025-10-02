@@ -17,6 +17,7 @@ import WishlistPage from "./features/Wishlist/pages/WishlistPage.tsx";
 import CategoryPage from "./features/Category/pages/CategoryPage.tsx";
 import { CartProvider } from "./features/Cart/context/CartProvider.tsx";
 import CartPage from "./features/Cart/pages/CartPage.tsx";
+import { MyAccountProvider } from "./features/myAccount/context/MyAccountProvider.tsx";
 
 const router = createBrowserRouter([
   {
@@ -72,10 +73,12 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <WishlistProvider>
-      <CartProvider>
-        <RouterProvider router={router} />
-      </CartProvider>
-    </WishlistProvider>
+    <MyAccountProvider>
+      <WishlistProvider>
+        <CartProvider>
+          <RouterProvider router={router} />
+        </CartProvider>
+      </WishlistProvider>
+    </MyAccountProvider>
   </StrictMode>
 );
