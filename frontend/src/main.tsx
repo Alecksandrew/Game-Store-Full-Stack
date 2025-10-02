@@ -16,6 +16,7 @@ import { WishlistProvider } from "./features/Wishlist/context/WishlistProvider.t
 import WishlistPage from "./features/Wishlist/pages/WishlistPage.tsx";
 import CategoryPage from "./features/Category/pages/CategoryPage.tsx";
 import { CartProvider } from "./features/Cart/context/CartProvider.tsx";
+import CartPage from "./features/Cart/pages/CartPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: "/wishlist",
     element: <WishlistPage />,
+  },
+  {
+    path: "/cart",
+    element: <CartPage />,
   },
   {
     path: PAGE_ROUTES.STORE.GENRES,
