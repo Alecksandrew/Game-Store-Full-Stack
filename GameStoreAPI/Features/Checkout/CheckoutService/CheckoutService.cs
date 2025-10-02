@@ -88,7 +88,7 @@ namespace GameStoreAPI.Features.Checkout.CheckoutService
             }
 
           
-            await SendPurchaseEmailAsync(user.Email, request.Name, purchasedGamesInfo);
+            await SendPurchaseEmailAsync(user.Email, user.UserName, purchasedGamesInfo);
 
             return Result<object>.Ok(new { message = "Purchase made successfully! Game keys were sent to your email" });
         }

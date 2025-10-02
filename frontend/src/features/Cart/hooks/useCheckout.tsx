@@ -8,8 +8,6 @@ import type { CreditCardFormData } from '@/features/Checkout/types/CreditCardFor
 
 // O tipo de dado que nosso backend espera
 type CheckoutRequestData = {
-  name: string;
-  email: string;
   gameIds: number[];
   cardDetails: CreditCardFormData;
 };
@@ -29,20 +27,20 @@ export function useCheckout() {
     }
   );
 
-  const executeCheckout = async (cardData: CreditCardFormData, name: string, email: string) => {
+  const executeCheckout = async (cardData: CreditCardFormData) => {
     const gameIds = cartItems.map(item => item.id);
 
     if (gameIds.length === 0) return;
 
     const requestData: CheckoutRequestData = {
-        name,
-        email,
         gameIds,
         cardDetails: cardData
     };
     
+    console.log("request data", requestData)
     const response = await checkoutApi.execute(requestData);
 
+    console.log("response", response)
     if (response) {
       clearCart();
       setTimeout(() => navigate('/'), 2000); 

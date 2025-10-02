@@ -5,25 +5,20 @@ import { useContext } from "react";
 import { CartContext } from "@/features/Cart/context/CartContext";
 import { Navigate } from "react-router";
 import { useCheckout } from "@/features/Cart/hooks/useCheckout";
-import { MyAccountContext } from "@/features/myAccount/context/MyAccountContext";
 import CreditCardForm from "../components/CreditCardForm";
+import Button from "@/global/components/Button";
 
 export default function CheckoutPage() {
   const { execute, isLoading, warningComponent } = useCheckout();
   const { cartItems } = useContext(CartContext);
-  const { myAccountData } = useContext(MyAccountContext);
 
   if (cartItems.length === 0) {
     return <Navigate to="/cart" replace />;
   }
 
   const handleCheckoutSubmit = (data: CreditCardFormData) => {
-    if (!myAccountData) {
-      console.error("User data not available for checkout");
-      return;
-    }
-
-    execute(data, myAccountData.userName, myAccountData.email);
+    console.log(data)
+    execute(data);
   };
 
   return (
@@ -44,7 +39,14 @@ export default function CheckoutPage() {
             </div>
 
             <div className="lg:col-span-1">
-              <OrderSummary buttonText="Get your key(s)"/>
+              <OrderSummary>
+                 <Button
+                  title={isLoading ? "Processing..." : "Complete Payment"}
+                  type="submit" 
+                  form="credit-card-form"
+                  disabled={isLoading}
+                />
+              </OrderSummary>
             </div>
           </div>
         </div>

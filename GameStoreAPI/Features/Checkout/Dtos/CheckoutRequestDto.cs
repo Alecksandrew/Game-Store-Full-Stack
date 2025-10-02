@@ -5,13 +5,6 @@ namespace GameStoreAPI.Features.Checkout.Dtos
     public class CheckoutRequestDto
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        [Required]
-        public string Name { get; set; }
-
-        [Required]
         public CreditCardDto CardDetails { get; set; }
 
         [Required]
@@ -21,7 +14,9 @@ namespace GameStoreAPI.Features.Checkout.Dtos
     public class CreditCardDto
     {
         [Required]
-        [CreditCard]
+        public string CardName { get; set; }
+
+        [Required]
         public string CardNumber { get; set; }
 
         [Required]

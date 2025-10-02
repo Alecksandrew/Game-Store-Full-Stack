@@ -5,6 +5,7 @@ import Button from "./Button";
 export default function Form<T extends FieldValues>({
   onSubmit,
   children,
+  id,
   submitText,
   isLoading = false,
   defaultValues,
@@ -19,7 +20,7 @@ export default function Form<T extends FieldValues>({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form onSubmit={methods.handleSubmit(onSubmit)} id={id}>
         <div className="space-y-4">{children}</div>
         {renderButton() && <div className="mt-6">{renderButton()}</div>}
       </form>

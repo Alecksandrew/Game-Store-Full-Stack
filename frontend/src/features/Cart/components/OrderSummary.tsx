@@ -1,11 +1,9 @@
-import { useContext } from 'react';
-import { useNavigate } from 'react-router';
-import Button from '@/global/components/Button';
+import { useContext, type ReactNode } from 'react';
 import { CartContext } from '../context/CartContext';
 
-export default function OrderSummary({buttonText}: {buttonText:string}) {
+export default function OrderSummary({children}: {children:ReactNode}) {
   const { total } = useContext(CartContext);
-  const navigate = useNavigate();
+
 
   return (
     <div className="bg-bg-secondary p-6 rounded-lg ring-1 ring-primary/50 h-fit sticky top-24">
@@ -19,11 +17,7 @@ export default function OrderSummary({buttonText}: {buttonText:string}) {
         <span>Total</span>
         <span>${total.toFixed(2)}</span>
       </div>
-      <Button 
-        title={buttonText} 
-        type="button" 
-        onClick={() => navigate('/checkout')} 
-      />
+      {children}
     </div>
   );
 }

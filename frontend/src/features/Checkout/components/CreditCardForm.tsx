@@ -13,6 +13,7 @@ export default function CreditCardForm({ onSubmit, isLoading }: CreditCardFormPr
     <Form<CreditCardFormData>
       onSubmit={onSubmit}
       isLoading={isLoading}
+      id="credit-card-form"
     >
       <FormHeader
         title="Credit card"
