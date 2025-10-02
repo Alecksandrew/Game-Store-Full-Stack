@@ -15,7 +15,11 @@ export default function GamePurchasePanel({
     <div className={`bg-bg-primary ${className}`}>
       <h1 className="text-4xl font-bold text-primary mt-2">{data.name}</h1>
       <Platforms heading="h3" className="mt-3" />
-      <PriceContainer className="mt-8"/>
+       <PriceContainer 
+        className="mt-8"
+        price={data.price}
+        discountPrice={data.discountPrice}
+      />
       <BuyAndWishlistBtns/>
       <PurchaseBenefitsCard heading={"h1"} className="mt-4"/>
     </div>

@@ -1,30 +1,30 @@
-import { useContext } from "react";
-import type { PriceContainerProps } from "../types/PriceContainerType";
-import { GameDetailsDataContext } from "@/features/Details/contexts/GameDetailsDataContext";
 
+interface PriceContainerProps {
+  className?: string | undefined
+  price?: number;
+  discountPrice?: number | null;
+}
 
-export default function PriceContainer({ className }: PriceContainerProps) {
-  const data = useContext(GameDetailsDataContext);
-  console.log("MEU CONTAINER DE PRICE" + JSON.stringify(data))
+export default function PriceContainer({ className, price, discountPrice }: PriceContainerProps) {
 
   function displayPrice() {
-    if (data.discountPrice != null) {
+    if (discountPrice != null && discountPrice > 0) {
       return (
         <>
-          <span>${data.discountPrice}</span>
-          <span className="text-text-secondary line-through text-lg font-light">
-            ${data.price}
+          <span>${discountPrice.toFixed(2)}</span>
+          <span className="text-text-secondary line-through font-light itaic text-lg">
+            ${price?.toFixed(2)}
           </span>
         </>
       );
     } else {
-      return <span>${data.price}</span>;
+      return <span>${price?.toFixed(2)}</span>;
     }
   }
 
   return (
     <div
-      className={`text-primary font-bold text-3xl flex items-center gap-2 ${className}`}
+      className={`text-primary mt-1 font-semibold font-inter text-2xl flex items-center gap-2 ${className}`}
     >
       {displayPrice()}
     </div>
