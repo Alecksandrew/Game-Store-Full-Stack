@@ -1,0 +1,39 @@
+import { type ReactNode, useState, useEffect } from "react";
+import { CartContext } from "./CartContext";
+import type { GameCardData } from "@/features/Home/types/GameCardType";
+
+export const CartProvider = ({ children }: { children: ReactNode }) => {
+// Persist cart in local storage
+  const [cartItems, setCartItems] = useState<GameCardData[]>(() => {
+    try {
+      const localData = localStorage.getItem('cartItems');
+      return localData ? JSON.parse(localData) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  const addToCart = (game: GameCardData) => {
+    // Dont add the same game twice, but only change amount
+    if (!cartItems.some(item => item.id === game.id)) {
+      setCartItems(prevItems => [...prevItems, game]);
+    }
+  };
+
+  const removeFromCart = (gameId: number) => {
+    setCartItems(prevItems => prevItems.filter(item => item.id !== gameId));
+  };
+
+
+  const total = cartItems.reduce((sum, item) => sum + (item.discountPrice ?? item.price ?? 0), 0);
+
+  return (
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, total }}>
+      {children}
+    </CartContext.Provider>
+  );
+};

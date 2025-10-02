@@ -15,6 +15,7 @@ import GameDetailsPage from "./features/Details/pages/GameDetailsPage.tsx";
 import { WishlistProvider } from "./features/Wishlist/context/WishlistProvider.tsx";
 import WishlistPage from "./features/Wishlist/pages/WishlistPage.tsx";
 import CategoryPage from "./features/Category/pages/CategoryPage.tsx";
+import { CartProvider } from "./features/Cart/context/CartProvider.tsx";
 
 const router = createBrowserRouter([
   {
@@ -26,8 +27,8 @@ const router = createBrowserRouter([
     element: <GameDetailsPage />,
   },
   {
-    path:"/wishlist",
-    element:<WishlistPage/>
+    path: "/wishlist",
+    element: <WishlistPage />,
   },
   {
     path: PAGE_ROUTES.STORE.GENRES,
@@ -67,7 +68,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <WishlistProvider>
-      <RouterProvider router={router} />
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
     </WishlistProvider>
   </StrictMode>
 );
