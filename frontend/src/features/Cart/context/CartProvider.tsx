@@ -28,11 +28,14 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setCartItems(prevItems => prevItems.filter(item => item.id !== gameId));
   };
 
+  const clearCart = () => {
+    setCartItems([]);
+  };
 
   const total = cartItems.reduce((sum, item) => sum + (item.discountPrice ?? item.price ?? 0), 0);
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, total }}>
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart, total }}>
       {children}
     </CartContext.Provider>
   );

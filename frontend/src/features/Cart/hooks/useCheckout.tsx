@@ -1,0 +1,57 @@
+import { useContext } from 'react';
+import { useNavigate } from 'react-router';
+import { useApi } from '@/global/hooks/useApi';
+import { apiClient } from '@/global/services/apiClient';
+import { API_ROUTES } from '@/global/constants/BACKEND_URL';
+import { CartContext } from '@/features/Cart/context/CartContext';
+import type { CreditCardFormData } from '@/features/Checkout/types/CreditCardFormType';
+
+// O tipo de dado que nosso backend espera
+type CheckoutRequestData = {
+  name: string;
+  email: string;
+  gameIds: number[];
+  cardDetails: CreditCardFormData;
+};
+
+export function useCheckout() {
+  const { cartItems, clearCart } = useContext(CartContext);
+  const navigate = useNavigate();
+
+  const checkoutApi = useApi<CheckoutRequestData, { message: string }>(
+    (data) => {
+      const options = {
+        method: 'POST' as const,
+        body: data,
+      };
+
+      return apiClient(API_ROUTES.CHECKOUT.PROCESS, options, true);
+    }
+  );
+
+  const executeCheckout = async (cardData: CreditCardFormData, name: string, email: string) => {
+    const gameIds = cartItems.map(item => item.id);
+
+    if (gameIds.length === 0) return;
+
+    const requestData: CheckoutRequestData = {
+        name,
+        email,
+        gameIds,
+        cardDetails: cardData
+    };
+    
+    const response = await checkoutApi.execute(requestData);
+
+    if (response) {
+      clearCart();
+      setTimeout(() => navigate('/'), 2000); 
+    }
+  };
+
+  return {
+    execute: executeCheckout,
+    isLoading: checkoutApi.isLoading,
+    warningComponent: checkoutApi.warningComponent,
+  };
+}
