@@ -91,7 +91,8 @@ Este projeto foi uma oportunidade para aplicar conceitos cruciais de desenvolvim
 - [X] Desenvolvimento da Home Page e listagem de jogos
 - [X] Página de Detalhes do Jogo com sistema de Reviews
 - [X] Funcionalidade de Wishlist
-- [ ] Funcionalidade de Carrinho e Checkout Simulado
+- [X] Funcionalidade de Carrinho
+- [ ] Funcionalidade de Checkout Simulado
 - [ ] Página de Histórico de Compras
 - [ ] Painel de Administração (CRUD de Inventário)
 - [ ] Deploy da aplicação na Azure
