@@ -1,7 +1,6 @@
-import { useForm, FormProvider, type FieldValues} from 'react-hook-form';
-import { type FormProps } from '../types/FormType';
-import Button from './Button';
-
+import { useForm, FormProvider, type FieldValues } from "react-hook-form";
+import { type FormProps } from "../types/FormType";
+import Button from "./Button";
 
 export default function Form<T extends FieldValues>({
   onSubmit,
@@ -9,24 +8,20 @@ export default function Form<T extends FieldValues>({
   submitText,
   isLoading = false,
   defaultValues,
-
 }: FormProps<T>) {
+  const methods = useForm<T>({ defaultValues: defaultValues });
 
-  const methods = useForm<T>({defaultValues:defaultValues});
- 
+  function renderButton() {
+    if (submitText == undefined || submitText == "") return;
+
+    return <Button title={submitText} type="submit" disabled={isLoading} />;
+  }
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <div className="space-y-4">
-          {children}
-        </div>
-        <div className="mt-6">
-          <Button
-            title={submitText}
-            type="submit"
-            disabled={isLoading}
-          />
-        </div>
+        <div className="space-y-4">{children}</div>
+        {renderButton() && <div className="mt-6">{renderButton()}</div>}
       </form>
     </FormProvider>
   );

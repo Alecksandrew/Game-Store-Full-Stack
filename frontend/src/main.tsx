@@ -18,6 +18,7 @@ import CategoryPage from "./features/Category/pages/CategoryPage.tsx";
 import { CartProvider } from "./features/Cart/context/CartProvider.tsx";
 import CartPage from "./features/Cart/pages/CartPage.tsx";
 import { MyAccountProvider } from "./features/myAccount/context/MyAccountProvider.tsx";
+import CheckoutPage from "./features/Checkout/pages/CheckoutPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
   {
     path: "/cart",
     element: <CartPage />,
+  },
+  {
+    path: "/checkout",
+    element: <CheckoutPage />,
   },
   {
     path: PAGE_ROUTES.STORE.GENRES,

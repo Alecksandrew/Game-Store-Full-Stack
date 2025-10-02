@@ -21,12 +21,12 @@ export default function PersonalnfoCard() {
       />
       <InputOnlyDisplayInfo
         title="User name"
-        inputValue={myAccountData?.userName}
+        inputValue={myAccountData?.userName ?? "Not found"}
         disabled={true}
       />
       <InputOnlyDisplayInfo
         title="E-mail"
-        inputValue={myAccountData?.email}
+        inputValue={myAccountData?.email ?? "Not found"}
         disabled={true}
       />
     </form>

@@ -6,6 +6,7 @@ import { CartContext } from "@/features/Cart/context/CartContext";
 import { Navigate } from "react-router";
 import { useCheckout } from "@/features/Cart/hooks/useCheckout";
 import { MyAccountContext } from "@/features/myAccount/context/MyAccountContext";
+import CreditCardForm from "../components/CreditCardForm";
 
 export default function CheckoutPage() {
   const { execute, isLoading, warningComponent } = useCheckout();
@@ -43,7 +44,7 @@ export default function CheckoutPage() {
             </div>
 
             <div className="lg:col-span-1">
-              <OrderSummary />
+              <OrderSummary buttonText="Get your key(s)"/>
             </div>
           </div>
         </div>

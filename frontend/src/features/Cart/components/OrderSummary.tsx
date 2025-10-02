@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import Button from '@/global/components/Button';
 import { CartContext } from '../context/CartContext';
 
-export default function OrderSummary() {
+export default function OrderSummary({buttonText}: {buttonText:string}) {
   const { total } = useContext(CartContext);
   const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ export default function OrderSummary() {
         <span>${total.toFixed(2)}</span>
       </div>
       <Button 
-        title="Proceed to Checkout" 
+        title={buttonText} 
         type="button" 
         onClick={() => navigate('/checkout')} 
       />

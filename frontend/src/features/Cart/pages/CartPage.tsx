@@ -38,7 +38,7 @@ export default function CartPage() {
 
              
               <div className="lg:col-span-1">
-                <OrderSummary />
+                <OrderSummary  buttonText="Proceed to Checkout"/>
               </div>
             </div>
           )}
