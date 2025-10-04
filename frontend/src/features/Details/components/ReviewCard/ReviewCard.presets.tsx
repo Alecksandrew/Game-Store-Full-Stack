@@ -17,32 +17,21 @@ export function ReviewCardStandard({ data }: { data: ReviewCardContextType }) {
   );
 }
 
+
+interface ReviewCardEditableProps {
+  data: ReviewCardContextType;
+  onEditClick: () => void;
+  onDeleteClick: () => void;
+  isLoading: boolean;
+}
+
 export function ReviewCardEditable({
   data,
-  onReviewUpdate,
-}: {
-  data: ReviewCardContextType;
-  onReviewUpdate: () => void; // This gonna help re render the state of the father component on sucess of update or delete review
-}) {
-  const { execute, isLoading } = useDeleteReviewByGame(data.id);
-
-  const [isEditing, setIsEditing] = useState(false);
-
-  if (isEditing) {
-    return (
-      <ReviewForm
-        mode="update"
-        initialData={data}
-        reviewId={data.id}
-        onReviewSubmitSuccess={() => {
-          setIsEditing(false);
-          onReviewUpdate();
-        }}
-        onCancel={() => setIsEditing(false)}
-      />
-    );
-  }
-
+  onEditClick,
+  onDeleteClick,
+  isLoading,
+}: ReviewCardEditableProps) {
+  
   return (
     <ReviewCard.Root data={data}>
       <ReviewCard.Header>
@@ -51,15 +40,9 @@ export function ReviewCardEditable({
         <ReviewCard.Date />
       </ReviewCard.Header>
       <ReviewCard.Actions>
-        <ReviewCard.EditButton
-          onClick={() => setIsEditing(true)}
-          disabled={isLoading}
-        />
+        <ReviewCard.EditButton onClick={onEditClick} disabled={isLoading} />
         <ReviewCard.DeleteButton
-          onClick={() => {
-            execute(null);
-            onReviewUpdate();
-          }}
+          onClick={onDeleteClick}
           disabled={isLoading}
         />
       </ReviewCard.Actions>
