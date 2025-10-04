@@ -9,6 +9,7 @@ import SimilarGamesSection from "../components/SimilarGamesSection";
 import ReviewSection from "../components/ReviewSection";
 import Header from "@/features/Home/components/Header";
 import { useGameDetails } from "../hooks/useGameDetails";
+import ExpandableText from "@/global/components/ExpandableText";
 
 export default function GameDetailsPage() {
    const { gameDetails, isLoading, warningType, warningComponent } = useGameDetails();
@@ -28,7 +29,7 @@ export default function GameDetailsPage() {
             <div className="grid grid-cols-1 lg:grid-cols-[65%_35%] gap-4">
               <GameMediaGallery className="bg-bg-primary" />
               <GamePurchasePanel />
-              <About />
+              <ExpandableText title="About" text={gameDetails.summary}/>
               <ColumnInfo />
               <SimilarGamesSection />
               <ReviewSection className="lg:col-span-2 mt-10" />
