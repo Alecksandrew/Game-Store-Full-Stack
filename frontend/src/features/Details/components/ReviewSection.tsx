@@ -1,14 +1,39 @@
 import ReviewForm from "./ReviewForm";
 import useReviewManagement from "../hooks/useReviewManagement";
+import type { MyReviewApiResponseType, ReviewApiResponseType } from "../types/ReviewApiResponseType";
+import { ReviewCardEditable, ReviewCardStandard } from "./ReviewCard/ReviewCard.presets";
 
 export default function ReviewSection({ className }: { className?: string }) {
   const {
     handleReviewSuccess,
-    listMyReviewCards,
-    listReviewCards,
     reviewData,
     myReviewData
   } = useReviewManagement();
+
+
+  function listMyReviewCards(myReviewData:MyReviewApiResponseType | null){
+     if (reviewData == null) return;
+
+    return myReviewData?.map((review, index) => {
+      return (
+        <li key={index}>
+          <ReviewCardEditable data={review} onReviewUpdate={handleReviewSuccess} />
+        </li>
+      );
+    });
+  }
+
+  function listReviewCards(reviewData: ReviewApiResponseType | null) {
+    if (reviewData == null) return;
+
+    return reviewData?.data?.map((review, index) => {
+      return (
+        <li key={index}>
+          <ReviewCardStandard data={review} />
+        </li>
+      );
+    });
+  }
 
   return (
     <section className={className}>
