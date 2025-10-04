@@ -9,11 +9,11 @@ export default function GameCardImage() {
   }
 
   return (
-    <div className="w-full h-65/100 bg-amber-300">
+    <div className="w-full aspect-[3/4] bg-text-secondary">
       <img
         src={gameData.coverUrl}
         alt={`Image of the game ${gameData.name}`}
-        className="w-full h-full"
+        className="w-full h-full object-cover"
       />
     </div>
   );

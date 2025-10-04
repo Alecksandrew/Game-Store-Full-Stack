@@ -10,8 +10,8 @@ export default function GameMediaGallery({className}: {className?:string}) {
   const isAboveTablet = useMediaQuery('(min-width: 768px)');
   const isAboveDesktop = useMediaQuery('(min-width: 1024px)');
   
-  const data = useContext(GameDetailsDataContext);
-  const screenshotsUrls = data.screenshotsImageUrl;
+  const {gameDetails} = useContext(GameDetailsDataContext);
+  const screenshotsUrls = gameDetails.screenshotsImageUrl;
  
   if (!screenshotsUrls || screenshotsUrls.length === 0) {
     return <div className="text-text-primary">No media available.</div>;

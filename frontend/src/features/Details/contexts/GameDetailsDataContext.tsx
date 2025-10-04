@@ -1,19 +1,15 @@
 import { createContext } from "react";
 import { type GameDetailsApiResponse } from "../types/GameDetailsType";
 
-export const placeholderGameData = {
+
+export const placeholderGameData: GameDetailsApiResponse = {
   id: 0,
-  name: "Game not found",
-  summary:
-    "No data was returned for this game. Please check your connection or try again later.",
+  name: "Loading...",
+  summary: "Loading game details...",
   genres: [],
   firstReleaseDate: null,
-  coverUrl: "https://placehold.co/600x400?text=No+Image",
-  screenshotsImageUrl: [
-    "https://placehold.co/600x400?text=No+Screenshot+1",
-    "https://placehold.co/600x400?text=No+Screenshot+2",
-    "https://placehold.co/600x400?text=No+Screenshot+3",
-  ],
+  coverUrl: "",
+  screenshotsImageUrl: [],
   platforms: [],
   videos: [],
   involvedCompanies: {
@@ -25,15 +21,19 @@ export const placeholderGameData = {
   discountPrice: 0,
   totalSells: 0,
   availableKeysStock: 0,
-  similarGames: [
-    {
-      id: 0,
-      name: "",
-      coverUrl: "",
-    },
-    
-  ],
+  similarGames: [],
+};
+
+export type GameDetailsContextType = {
+  isLoading: boolean;
+  gameDetails: GameDetailsApiResponse;
+};
+
+
+const initialContextValue: GameDetailsContextType = {
+  isLoading: false,
+  gameDetails: placeholderGameData,
 };
 
 export const GameDetailsDataContext =
-  createContext<GameDetailsApiResponse>(placeholderGameData);
+  createContext<GameDetailsContextType>(initialContextValue);

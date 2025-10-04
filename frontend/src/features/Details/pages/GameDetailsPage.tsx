@@ -42,13 +42,18 @@ export default function GameDetailsPage() {
     data = placeholderGameData;
   }
 
+  const gameDetailsContextValue = {
+    isLoading,
+    gameDetails: data,
+  }
+
   return (
     <>
       <Header />
       <div className="min-h-screen bg-bg-primary py-15">
         <div className="w-9/10 max-w-[1100px] mx-auto">
           {warningType == "error" && warningComponent}
-          <GameDetailsDataContext.Provider value={data}>
+          <GameDetailsDataContext.Provider value={gameDetailsContextValue}>
             <div className="grid grid-cols-1 lg:grid-cols-[65%_35%] gap-4">
               <GameMediaGallery className="bg-bg-primary" />
               <GamePurchasePanel />

@@ -10,8 +10,8 @@ export default function Platforms({
   heading,
   className,
 }: PlatformsProps) {
-  const data = useContext(GameDetailsDataContext)
-  const platforms:string[] = data.platforms;
+  const {gameDetails} = useContext(GameDetailsDataContext)
+  const platforms:string[] = gameDetails.platforms;
   
   function listPlatforms(platforms: string[]) {
     return platforms.map((platform) => {

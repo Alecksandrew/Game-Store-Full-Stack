@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { GameDetailsDataContext } from "../contexts/GameDetailsDataContext";
 
 export default function About({className}: {className?:string}) {
-  const data = useContext(GameDetailsDataContext);
+  const {gameDetails} = useContext(GameDetailsDataContext);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -13,7 +13,7 @@ export default function About({className}: {className?:string}) {
           !isOpen ? "line-clamp-3" : null
         }`}
       >
-        {data.summary}
+        {gameDetails.summary}
       </p>
       <button
         type="button"

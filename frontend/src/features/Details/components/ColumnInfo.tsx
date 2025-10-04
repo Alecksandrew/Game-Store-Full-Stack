@@ -2,15 +2,15 @@ import { useContext } from "react";
 import { GameDetailsDataContext } from "../contexts/GameDetailsDataContext";
 
 export default function ColumnInfo() {
-  const data = useContext(GameDetailsDataContext);
+  const {gameDetails} = useContext(GameDetailsDataContext);
 
   const infos: string[][] = [
-    ["Release date", data?.firstReleaseDate?.toString() || "Unknown"],
-    ["Genres", data.genres?.join(", ") || "Unknown"],
-    ["Developers", data.involvedCompanies?.developers.join(", ") || "Unknown"],
-    ["Publishers", data?.involvedCompanies?.publishers.join(", ") || "Unknown"],
-    ["Game modes", data?.gameModes?.join(", ") || "Unknown"],
-    ["Keys remaining", data.availableKeysStock.toString() || "Unknown"],
+    ["Release date", gameDetails?.firstReleaseDate?.toString() || "Unknown"],
+    ["Genres", gameDetails.genres?.join(", ") || "Unknown"],
+    ["Developers", gameDetails.involvedCompanies?.developers.join(", ") || "Unknown"],
+    ["Publishers", gameDetails?.involvedCompanies?.publishers.join(", ") || "Unknown"],
+    ["Game modes", gameDetails?.gameModes?.join(", ") || "Unknown"],
+    ["Keys remaining", gameDetails.availableKeysStock.toString() || "Unknown"],
   ];
 
   function listInfos(infos: string[][]) {

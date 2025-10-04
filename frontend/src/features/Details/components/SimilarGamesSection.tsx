@@ -1,22 +1,38 @@
 import { useContext } from "react";
 import { GameDetailsDataContext } from "../contexts/GameDetailsDataContext";
-import { GameCardNoPrice } from "@/features/Home/components/GameCard/GameCardPresets";
+import {
+  GameCardNoPrice,
+  GameCardSkeleton,
+} from "@/features/Home/components/GameCard/GameCardPresets";
 
 export default function SimilarGamesSection() {
-  const data = useContext(GameDetailsDataContext);
+  const { isLoading, gameDetails } = useContext(GameDetailsDataContext);
 
-  function listSimilarGames() {
-    return data.similarGames.slice(0, 3).map((similarGame) => {
-      return <GameCardNoPrice gameData={similarGame} />;
-    });
+  
+  function renderContent() {
+   
+    if (isLoading) {
+      return Array.from({ length: 3 }).map((_, index) => (
+        <GameCardSkeleton key={index} />
+      ));
+    }
+
+    if (!gameDetails?.similarGames || gameDetails.similarGames.length === 0) {
+      return <p className="text-text-primary col-span-full">No similar games found.</p>;
+    }
+
+    return gameDetails.similarGames.slice(0, 3).map((similarGame) => (
+      <GameCardNoPrice key={similarGame.id} gameData={similarGame} />
+    ));
   }
 
   return (
     <div>
       <h2 className="text-text-primary text-3xl">Similar games</h2>
       <div className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-2 w-full mt-3">
-        {listSimilarGames()}
+        {renderContent()}
       </div>
     </div>
   );
 }
+
