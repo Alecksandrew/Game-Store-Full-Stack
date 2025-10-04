@@ -3,7 +3,6 @@ import GamePurchasePanel from "../components/GamePurchasePanel";
 import {
   GameDetailsDataContext,
 } from "../contexts/GameDetailsDataContext";
-import About from "../components/About";
 import ColumnInfo from "../components/ColumnInfo";
 import SimilarGamesSection from "../components/SimilarGamesSection";
 import ReviewSection from "../components/ReviewSection";
