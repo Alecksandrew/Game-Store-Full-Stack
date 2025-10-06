@@ -1,4 +1,5 @@
 using GameStoreAPI.Data;
+using GameStoreAPI.Features.Admin.AdminService;
 using GameStoreAPI.Features.Authentication.AuthService;
 using GameStoreAPI.Features.Checkout.CheckoutService;
 using GameStoreAPI.Features.Games.GamesService;
@@ -123,6 +124,9 @@ builder.Services.AddScoped<IWishlistService, WishlistService>();
 
 //Checkout dependecy
 builder.Services.AddScoped<ICheckoutService, CheckoutService>();
+
+//Admin dashboard dependency
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 var app = builder.Build();
 
