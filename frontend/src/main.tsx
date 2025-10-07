@@ -19,6 +19,7 @@ import { CartProvider } from "./features/Cart/context/CartProvider.tsx";
 import CartPage from "./features/Cart/pages/CartPage.tsx";
 import { MyAccountProvider } from "./features/myAccount/context/MyAccountProvider.tsx";
 import CheckoutPage from "./features/Checkout/pages/CheckoutPage.tsx";
+import AdminPage from "./features/admin/pages/AdminPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -74,6 +75,10 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
+  {
+    path:"/admin",
+    element: <AdminPage/>
+  }
 ]);
 
 createRoot(document.getElementById("root")!).render(
