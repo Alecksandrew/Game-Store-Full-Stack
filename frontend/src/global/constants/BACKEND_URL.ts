@@ -7,7 +7,8 @@ const API_PATHS = {
   REVIEWS:"/api/Reviews",
   REVIEWS_NOT_STANDARD_URL: "/api/games",
   WISHLIST: "/api/Wishlist",
-  CHECKOUT: "/api/Checkout" 
+  CHECKOUT: "/api/Checkout" ,
+  ADMIN: "/api/admin"
 };
 
 
@@ -42,5 +43,8 @@ export const API_ROUTES = {
   },
   CHECKOUT: {
     PROCESS: `${API_BASE_URL}${API_PATHS.CHECKOUT}`
+  },
+  ADMIN: {
+    GET_INVENTORY: `${API_BASE_URL}${API_PATHS.ADMIN}/inventory`,
   }
 };

@@ -1,8 +1,8 @@
 import type { tRow } from "../../../types/TableTypes/tRow";
 
 
-export function TRow({children}:tRow){
+export function TRow({children, ...props}:tRow){
 
-    return <tr>{children}</tr>
+    return <tr {...props}>{children}</tr>
 
 }
