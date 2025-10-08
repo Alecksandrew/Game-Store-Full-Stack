@@ -4,4 +4,4 @@ export type gameTableRowProps = {
   price: number;
   discountPrice: number;
   availableKeys: number;
-};
+} ;

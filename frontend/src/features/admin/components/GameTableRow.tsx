@@ -5,7 +5,7 @@ export default function GameTableRow({gameInfo}:{gameInfo: gameTableRowProps}) {
   const { igdbId, name, price, discountPrice, availableKeys } = gameInfo;
 
   return (
-    <Table.Row className="font-extralight">
+    <Table.Row className="border-t-1 border-blue-gray">
       <Table.Td>{igdbId}</Table.Td>
       <Table.Td>{name}</Table.Td>
       <Table.Td>{price}</Table.Td>

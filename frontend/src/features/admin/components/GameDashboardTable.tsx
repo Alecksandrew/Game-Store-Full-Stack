@@ -47,16 +47,17 @@ export function GameDashboardTable() {
   };
 
   return (
-    <div className="p-4 bg-bg-secondary rounded-lg">
+    <div className="p-4 bg-bg-secondary rounded-lg border-blue-gray w-fit">
       {warningType === "error" && warningComponent}
-      <h1 className="text-2xl text-text-primary mb-4">Games Management</h1>
+      <h1 className="text-2xl text-text-primary ">Games Management</h1>
+      <p className="text-blue-gray mb-6">Manage your game catalog and inventory</p>
       
     
       {/* <SearchBar onSearch={handleSearch} /> */}
 
       <Table.Root className="text-text-primary">
         <Table.Head>
-          <Table.Row>
+          <Table.Row className="text-blue-gray">
             {/* Adiciona evento de clique para ordenação e um indicador visual */}
             <Table.Th onClick={() => handleSort("igdbId")} className="cursor-pointer">
               ID {sortBy === 'igdbId' && (isAscending ? '🔼' : '🔽')}
@@ -65,10 +66,10 @@ export function GameDashboardTable() {
               Name {sortBy === 'name' && (isAscending ? '🔼' : '🔽')}
             </Table.Th>
             <Table.Th onClick={() => handleSort("price")} className="cursor-pointer">
-              Price {sortBy === 'price' && (isAscending ? '🔼' : '🔽')}
+              Price ($){sortBy === 'price' && (isAscending ? '🔼' : '🔽')}
             </Table.Th>
             <Table.Th onClick={() => handleSort("discountPrice")} className="cursor-pointer">
-              Discount {sortBy === 'discountPrice' && (isAscending ? '🔼' : '🔽')}
+              Price with Discount ($) {sortBy === 'discountPrice' && (isAscending ? '🔼' : '🔽')}
             </Table.Th>
             <Table.Th onClick={() => handleSort("availableKeys")} className="cursor-pointer">
               Keys available {sortBy === 'availableKeys' && (isAscending ? '🔼' : '🔽')}
@@ -82,11 +83,12 @@ export function GameDashboardTable() {
       </Table.Root>
 
       {totalPages > 1 && (
-        <div className="mt-4 flex justify-center">
+        <div className="mx-auto flex justify-center bg-primary rounded w-fit p-2">
           <Pagination
             count={totalPages}
             page={currentPage}
             onPageChange={(e, value) => handlePageChange(value)}
+            
           />
         </div>
       )}
