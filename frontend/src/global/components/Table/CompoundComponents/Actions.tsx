@@ -1,5 +1,5 @@
-import type { ActionsType } from "@/global/types/TableTypes/ActionsType";
+import type { ActionsType } from "@/global/types/TableTypes/actionsType";
 
-export default function Actions({ children }: ActionsType) {
-  return <div>{children}</div>;
+export default function Actions({ children, ...props }: ActionsType) {
+  return <div {...props}>{children}</div>;
 }

@@ -1,7 +1,16 @@
 import { Table } from "@/global/components/Table/index";
 import type { gameTableRowProps } from "../types/gameTableRowType";
+import { FaEdit, FaKey, FaTrashAlt } from "react-icons/fa";
 
-export default function GameTableRow({gameInfo}:{gameInfo: gameTableRowProps}) {
+
+
+import Button from "@/global/components/Table/CompoundComponents/Button";
+
+export default function GameTableRow({
+  gameInfo,
+}: {
+  gameInfo: gameTableRowProps;
+}) {
   const { igdbId, name, price, discountPrice, availableKeys } = gameInfo;
 
   return (
@@ -11,6 +20,19 @@ export default function GameTableRow({gameInfo}:{gameInfo: gameTableRowProps}) {
       <Table.Td>{price}</Table.Td>
       <Table.Td>{discountPrice}</Table.Td>
       <Table.Td>{availableKeys}</Table.Td>
+      <Table.Td>
+        <Table.Actions className="flex gap-6">
+          <Button className="cursor-pointer">
+            <FaEdit />
+          </Button>
+          <Button className="cursor-pointer">
+            <FaTrashAlt />
+          </Button>
+          <Button className="cursor-pointer">
+              <FaKey />
+          </Button>
+        </Table.Actions>
+      </Table.Td>
     </Table.Row>
   );
 }

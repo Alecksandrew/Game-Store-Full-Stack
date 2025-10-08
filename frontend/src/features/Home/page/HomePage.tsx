@@ -1,13 +1,13 @@
-import  { GameCardWithPrice } from "../components/GameCard/GameCardPresets";
+import { GameCardWithPrice } from "../components/GameCard/GameCardPresets";
 import SearchGameForm from "../components/SearchGameForm";
 import type { GameCardData } from "../types/GameCardType";
-import Pagination from "@mui/material/Pagination";
 import CircularProgress from "@mui/material/CircularProgress";
 import { usePaginatedGames } from "../hooks/usePaginatedGames";
 import { useState } from "react";
 import MainSection from "../components/MainSection";
 import CategoryCard from "../components/CategoryCard";
 import Header from "../components/Header";
+import PaginationRounded from "@/global/components/PaginationRounded";
 
 export default function HomePage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,7 +37,7 @@ export default function HomePage() {
     return gamesData.map((game) => {
       return (
         <li key={game.name}>
-          <GameCardWithPrice gameData={game} className="h-full"/>
+          <GameCardWithPrice gameData={game} className="h-full" />
         </li>
       );
     });
@@ -46,7 +46,7 @@ export default function HomePage() {
   return (
     <>
       {warningType == "error" ? warningComponent : null}
-      <Header/>
+      <Header />
       <div className="bg-bg-primary min-h-screen py-4">
         <div className="w-8/10 max-w-[1000px] mx-auto">
           <MainSection />
@@ -56,39 +56,21 @@ export default function HomePage() {
             <div className="flex justify-center items-center min-h-100">
               <CircularProgress size="4rem" className="mx-auto" />
             </div>
-          ) : (data?.length == 0 || data?.length == null) ? (
-            <p className="min-[40dvh] text-text-primary text-center my-50 text-3xl italic">No game was found! :(</p>
+          ) : data?.length == 0 || data?.length == null ? (
+            <p className="min-[40dvh] text-text-primary text-center my-50 text-3xl italic">
+              No game was found! :(
+            </p>
           ) : (
             <>
               <ul className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4 mt-5">
                 {data != null ? listGameCards(data) : null}
               </ul>
-              <div className="mx-auto mt-10 bg-primary rounded w-fit p-2 ">
-                <Pagination
-                  color="standard"
+              <div className="mx-auto mt-10 rounded w-fit p-2">
+                <PaginationRounded
                   count={10}
                   page={currentPage}
                   onChange={handlePageChange}
-                  sx={{
-                    ".MuiPagination-ul": {
-                      "& .MuiPaginationItem-root": {
-                        color: "#fff",
-                        borderColor: "rgba(255, 255, 255, 0.25)",
-                        "&:hover": {
-                          backgroundColor: "rgba(65, 105, 225, 0.1)",
-                        },
-                      },
-                      "& .Mui-selected": {
-                        backgroundColor: "#05080f",
-                        color: "#fff",
-                        borderColor: "#4169e1",
-                        fontWeight: "bold",
-                        "&:hover": {
-                          backgroundColor: "#3557b7",
-                        },
-                      },
-                    },
-                  }}
+                  theme="light"
                 />
               </div>
             </>

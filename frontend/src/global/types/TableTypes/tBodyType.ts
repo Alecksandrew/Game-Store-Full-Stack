@@ -1,6 +1,6 @@
-import type { ReactNode } from "react"
+import type { HTMLAttributes, ReactNode } from "react"
 
 
 export type TBodyProps = {
     children: ReactNode
-}
+} & HTMLAttributes<HTMLTableSectionElement>;
