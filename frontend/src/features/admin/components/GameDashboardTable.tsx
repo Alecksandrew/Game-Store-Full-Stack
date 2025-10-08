@@ -4,6 +4,7 @@ import GameTableRow from "./GameTableRow";
 import PaginationRounded from "@/global/components/PaginationRounded"; // Verifique se o caminho está correto
 import CircularProgress from "@mui/material/CircularProgress";
 import { Skeleton } from "@/global/components/Skeleton";
+import SearchGameForm from "@/features/Home/components/SearchGameForm";
 
 
 function GameTableRowSkeleton() {
@@ -89,7 +90,7 @@ export function GameDashboardTable() {
       <p className="text-blue-gray mb-6">Manage your game catalog and inventory</p>
       
     
-      {/* <SearchBar onSearch={handleSearch} /> */}
+      <SearchGameForm onSubmit={() => {}} className="flex"/>
 
       <Table.Root className="text-text-primary">
         <Table.Head>

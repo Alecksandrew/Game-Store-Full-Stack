@@ -8,4 +8,5 @@ export type FormProps<T extends FieldValues> = {
   submitText?: string;
   isLoading?: boolean;
   defaultValues?: T;
+  className?:string,
 };

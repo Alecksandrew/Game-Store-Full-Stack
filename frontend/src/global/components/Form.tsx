@@ -9,6 +9,7 @@ export default function Form<T extends FieldValues>({
   submitText,
   isLoading = false,
   defaultValues,
+  className
 }: FormProps<T>) {
   const methods = useForm<T>({ defaultValues: defaultValues });
 
@@ -20,7 +21,7 @@ export default function Form<T extends FieldValues>({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} id={id}>
+      <form onSubmit={methods.handleSubmit(onSubmit)} id={id} className={className}>
         <div className="space-y-4">{children}</div>
         {renderButton() && <div className="mt-6">{renderButton()}</div>}
       </form>
