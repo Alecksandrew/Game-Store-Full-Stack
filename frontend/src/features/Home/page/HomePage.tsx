@@ -1,5 +1,4 @@
 import { GameCardWithPrice } from "../components/GameCard/GameCardPresets";
-import SearchGameForm from "../components/SearchGameForm";
 import type { GameCardData } from "../types/GameCardType";
 import CircularProgress from "@mui/material/CircularProgress";
 import { usePaginatedGames } from "../hooks/usePaginatedGames";
@@ -8,6 +7,9 @@ import MainSection from "../components/MainSection";
 import CategoryCard from "../components/CategoryCard";
 import Header from "../components/Header";
 import PaginationRounded from "@/global/components/PaginationRounded";
+import { SearchForm } from "@/global/components/SearchForm";
+import type { SubmitHandler } from "react-hook-form";
+import type { SearchFormData } from "@/global/types/searchFormType";
 
 export default function HomePage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,7 +20,7 @@ export default function HomePage() {
     searchTerm,
   });
 
-  const handleSearchSubmit = (data: { gameName: string }) => {
+  const handleSearchSubmit: SubmitHandler<SearchFormData> = (data) => {
     setSearchTerm(data.gameName);
     setCurrentPage(1);
   };
@@ -51,7 +53,10 @@ export default function HomePage() {
         <div className="w-8/10 max-w-[1000px] mx-auto">
           <MainSection />
           <CategoryCard />
-          <SearchGameForm onSubmit={handleSearchSubmit} />
+          <SearchForm 
+  onSubmit={handleSearchSubmit} 
+/>
+
           {isLoading ? (
             <div className="flex justify-center items-center min-h-100">
               <CircularProgress size="4rem" className="mx-auto" />

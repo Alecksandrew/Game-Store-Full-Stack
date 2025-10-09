@@ -1,37 +1,11 @@
 import { Table } from "@/global/components/Table/index";
 import useGameDashboardTable from "../hooks/useGameDashboardTable";
-import GameTableRow from "./GameTableRow";
-import PaginationRounded from "@/global/components/PaginationRounded"; // Verifique se o caminho está correto
-import CircularProgress from "@mui/material/CircularProgress";
-import { Skeleton } from "@/global/components/Skeleton";
-import SearchGameForm from "@/features/Home/components/SearchGameForm";
+import GameTableRow from "./GameTableRow/GameTableRow";
+import PaginationRounded from "@/global/components/PaginationRounded";
 import { Form } from "@/global/components/Form/index";
 import { Input } from "@/global/components/Input";
-
-function GameTableRowSkeleton() {
-  return (
-    <Table.Row className="border-t py-10  border-blue-gray">
-      <Table.Td>
-        <Skeleton className="h-6 w-full" />
-      </Table.Td>
-      <Table.Td>
-        <Skeleton className="h-6 w-full" />
-      </Table.Td>
-      <Table.Td>
-        <Skeleton className="h-6 w-full" />
-      </Table.Td>
-      <Table.Td>
-        <Skeleton className="h-6 w-full" />
-      </Table.Td>
-      <Table.Td>
-        <Skeleton className="h-6 w-full" />
-      </Table.Td>
-      <Table.Td>
-        <Skeleton className="h-6 w-full" />
-      </Table.Td>
-    </Table.Row>
-  );
-}
+import GameTableRowSkeleton from "./GameTableRow/GameTableRowSkeleton";
+import { SearchForm } from "@/global/components/SearchForm";
 
 export function GameDashboardTable() {
   const {
@@ -66,7 +40,7 @@ export function GameDashboardTable() {
         <>
           <Table.Row>
             <Table.Td colSpan={6} className="text-center py-10 italic">
-              Nenhum jogo encontrado.
+              Game not found.
             </Table.Td>
           </Table.Row>
           {/* Preenche o resto do espaço com linhas vazias para manter a altura */}
@@ -107,19 +81,15 @@ export function GameDashboardTable() {
         Manage your game catalog and inventory
       </p>
 
-      <Form.Root onSubmit={handleSearch} className="flex gap-4 mb-4">
-        <Form.Content className="w-full">
-          <Input name="gameName" type="text"/>
-        </Form.Content>
-        <Form.Actions className="mt-0">
-          <Form.Button title="Search games" type="submit" className="whitespace-nowrap mt-0" />
-        </Form.Actions>
-      </Form.Root>
+      <SearchForm
+        onSubmit={handleSearch}
+        className="flex gap-4 mb-4"
+        placeholder="Search in admin panel..."
+      />
 
       <Table.Root className="text-text-primary table-fixed">
         <Table.Head>
           <Table.Row className="text-blue-gray">
-            {/* Adiciona evento de clique para ordenação e um indicador visual */}
             <Table.Th
               onClick={() => handleSort("igdbId")}
               className="cursor-pointer w-30"

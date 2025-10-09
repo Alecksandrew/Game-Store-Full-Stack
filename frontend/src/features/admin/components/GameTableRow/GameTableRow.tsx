@@ -1,5 +1,5 @@
 import { Table } from "@/global/components/Table/index";
-import type { gameTableRowProps } from "../types/gameTableRowType";
+import type { gameTableRowProps } from "../../types/gameTableRowType";
 import { FaEdit, FaKey, FaTrashAlt } from "react-icons/fa";
 
 
