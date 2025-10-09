@@ -8,14 +8,14 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export default function Button({
-  className = "bg-primary text-text-primary",
+  className,
   title,
   type,
   ...props
 }: ButtonProps) {
 
   return (
-    <button type={type} className={twMerge(`font-semibold p-0.5 sm:p-1 rounded w-full mt-2`, className)} {...props}>
+    <button type={type} className={twMerge(`font-semibold p-0.5 sm:p-1 rounded w-full mt-2 bg-primary text-text-primary`, className)} {...props}>
       {title}
     </button>
   );

@@ -3,6 +3,7 @@ import { useApi } from "@/global/hooks/useApi";
 import { apiClient } from "@/global/services/apiClient";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 import type { AdminGame, PaginatedResponse } from "../types/gameDashboardTypes";
+import type { FieldValues, SubmitHandler } from "react-hook-form";
 
 export default function useGameDashboardTable() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -47,8 +48,9 @@ export default function useGameDashboardTable() {
     setCurrentPage(newPage);
   };
 
-  const handleSearch = (term: string) => {
-    setSearchTerm(term);
+  const handleSearch: SubmitHandler<FieldValues> = (data) => {
+    console.log(data)
+    setSearchTerm(data.gameName ?? "");
     setCurrentPage(1); 
   };
 
