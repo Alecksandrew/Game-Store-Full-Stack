@@ -20,7 +20,6 @@ export default function GameDetailsPage() {
 
   return (
     <>
-      <Header />
       <div className="min-h-screen bg-bg-primary py-15">
         <div className="w-9/10 max-w-[1100px] mx-auto">
           {warningType == "error" && warningComponent}

@@ -50,7 +50,6 @@ const { wishlist, isLoading } = useContext(WishlistContext);
 
   return (
     <>
-      <Header />
       <div className="bg-bg-primary min-h-screen py-10">
         <div className="w-9/10 max-w-[1200px] mx-auto">
           <h1 className="text-4xl text-text-primary">Your wishlist</h1>

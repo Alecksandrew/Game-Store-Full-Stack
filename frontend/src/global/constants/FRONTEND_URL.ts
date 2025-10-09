@@ -1,8 +1,12 @@
+// src/global/constants/FRONTEND_URL.ts
 export const PAGE_ROUTES = {
   STORE: {
-    HOME: "/", 
-    GAME_DETAILS: (id: string) => `/games/${id}`,
-    GENRES:"/games/genres/:genre"
+    HOME: "/",
+    GAME_DETAILS_FUNCTION: (id: string) => `/games/${id}`,
+    GENRES: "/games/genres/:genre",
+    WISHLIST: "/wishlist",
+    CART: "/cart",
+    CHECKOUT: "/checkout",
   },
   AUTH: {
     LOGIN: "/auth",
@@ -10,7 +14,8 @@ export const PAGE_ROUTES = {
     RESET_PASSWORD: "/reset-password",
     CONFIRM_EMAIL: "/confirm-email",
   },
-  ACCOUNT: {
-    DASHBOARD: "/my-account",
+  ACCOUNT:  "/my-account",
+  ADMIN: {
+    DASHBOARD: "/admin",
   },
 };

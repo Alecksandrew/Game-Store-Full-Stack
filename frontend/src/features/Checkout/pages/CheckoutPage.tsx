@@ -23,7 +23,6 @@ export default function CheckoutPage() {
 
   return (
     <>
-      <Header />
       {warningComponent}
       <div className="bg-bg-primary min-h-screen py-10">
         <div className="w-9/10 max-w-[1200px] mx-auto">

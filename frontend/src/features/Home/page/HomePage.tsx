@@ -48,7 +48,6 @@ export default function HomePage() {
   return (
     <>
       {warningType == "error" ? warningComponent : null}
-      <Header />
       <div className="bg-bg-primary min-h-screen py-4">
         <div className="w-8/10 max-w-[1000px] mx-auto">
           <MainSection />
