@@ -1,7 +1,7 @@
 import { useFormContext } from "react-hook-form";
 import Form from "@/global/components/Form";
 import { Input } from "@/global/components/Input";
-import FormHeader from "@/global/components/FormHeader";
+import FormHeader from "@/global/components/Form/CompoundComponents/FormHeader";
 import { useUpdatePassword } from "../hooks/useUpdatePassword";
 import { type UpdatePasswordFormData } from "../types/UpdatePasswordFormType";
 

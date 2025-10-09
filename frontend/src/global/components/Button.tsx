@@ -1,4 +1,5 @@
 import { type ButtonHTMLAttributes } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   type: "submit" | "button";
@@ -14,7 +15,7 @@ export default function Button({
 }: ButtonProps) {
 
   return (
-    <button type={type} className={`font-semibold p-0.5 sm:p-1 rounded w-full mt-2 ${className}`} {...props}>
+    <button type={type} className={twMerge(`font-semibold p-0.5 sm:p-1 rounded w-full mt-2`, className)} {...props}>
       {title}
     </button>
   );

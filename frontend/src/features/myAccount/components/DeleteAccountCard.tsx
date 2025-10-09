@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Button from "@/global/components/Button";
-import FormHeader from "@/global/components/FormHeader";
+import FormHeader from "@/global/components/Form/CompoundComponents/FormHeader";
 import ConfirmationModal from "./ConfirmationModal";
 
 import { useDeleteAccount } from "../hooks/useDeleteAccount";

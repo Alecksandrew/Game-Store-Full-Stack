@@ -5,7 +5,7 @@ import { useRegister } from "../hooks/useAuth";
 
 import { type RegisterFormProps } from "../types/RegisterFormType";
 import { type RegisterFormData } from "../types/RegisterFormType";
-import FormHeader from "@/global/components/FormHeader";
+import FormHeader from "@/global/components/Form/CompoundComponents/FormHeader";
 import Form from "@/global/components/Form";
 
 export default function RegisterForm({ className }: RegisterFormProps) {

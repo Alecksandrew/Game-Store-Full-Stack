@@ -1,4 +1,4 @@
-import FormHeader from "@/global/components/FormHeader";
+import FormHeader from "@/global/components/Form/CompoundComponents/FormHeader";
 import { Input } from "@/global/components/Input";
 import { type ForgotPassswordFormProps } from "../types/ForgotPasswordFormType";
 import { useForgotPassword } from "../hooks/useAuth";
