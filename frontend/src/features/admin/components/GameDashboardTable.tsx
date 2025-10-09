@@ -6,6 +6,8 @@ import { Form } from "@/global/components/Form/index";
 import { Input } from "@/global/components/Input";
 import GameTableRowSkeleton from "./GameTableRow/GameTableRowSkeleton";
 import { SearchForm } from "@/global/components/SearchForm";
+import GameDashboardHeader from "./GameDashboardTable/GameDashboardHeader";
+import { GameDashboardTableHeader } from "./GameDashboardTable/GameDashboardTableHeader";
 
 export function GameDashboardTable() {
   const {
@@ -76,55 +78,17 @@ export function GameDashboardTable() {
   return (
     <div className="p-4 bg-bg-secondary rounded-lg border-blue-gray w-fit min-h-[762px]">
       {warningType === "error" && warningComponent}
-      <h1 className="text-2xl text-text-primary ">Games Management</h1>
-      <p className="text-blue-gray mb-6">
-        Manage your game catalog and inventory
-      </p>
+      <GameDashboardHeader />
 
       <SearchForm
         onSubmit={handleSearch}
-        className="flex gap-4 mb-4"
         placeholder="Search in admin panel..."
       />
 
       <Table.Root className="text-text-primary table-fixed">
-        <Table.Head>
-          <Table.Row className="text-blue-gray">
-            <Table.Th
-              onClick={() => handleSort("igdbId")}
-              className="cursor-pointer w-30"
-            >
-              ID {sortBy === "igdbId" && (isAscending ? "🔼" : "🔽")}
-            </Table.Th>
-            <Table.Th
-              onClick={() => handleSort("name")}
-              className="cursor-pointer w-64"
-            >
-              Name {sortBy === "name" && (isAscending ? "🔼" : "🔽")}
-            </Table.Th>
-            <Table.Th
-              onClick={() => handleSort("price")}
-              className="cursor-pointer w-38"
-            >
-              Price ($){sortBy === "price" && (isAscending ? "🔼" : "🔽")}
-            </Table.Th>
-            <Table.Th
-              onClick={() => handleSort("discountPrice")}
-              className="cursor-pointer w-48"
-            >
-              Price with Discount ($){" "}
-              {sortBy === "discountPrice" && (isAscending ? "🔼" : "🔽")}
-            </Table.Th>
-            <Table.Th
-              onClick={() => handleSort("availableKeys")}
-              className="cursor-pointer w-50"
-            >
-              Keys available{" "}
-              {sortBy === "availableKeys" && (isAscending ? "🔼" : "🔽")}
-            </Table.Th>
-            <Table.Th className="cursor-pointer w-[144px]">Actions</Table.Th>
-          </Table.Row>
-        </Table.Head>
+        <GameDashboardTableHeader onSort={handleSort}
+          sortBy={sortBy}
+          isAscending={isAscending}/>
         <Table.Body className="">{renderTableBody()}</Table.Body>
       </Table.Root>
 

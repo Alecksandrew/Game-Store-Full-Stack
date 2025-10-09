@@ -8,7 +8,7 @@ import CategoryCard from "../components/CategoryCard";
 import Header from "../components/Header";
 import PaginationRounded from "@/global/components/PaginationRounded";
 import { SearchForm } from "@/global/components/SearchForm";
-import type { SubmitHandler } from "react-hook-form";
+import type { FieldValues, SubmitHandler } from "react-hook-form";
 import type { SearchFormData } from "@/global/types/searchFormType";
 
 export default function HomePage() {
@@ -20,7 +20,7 @@ export default function HomePage() {
     searchTerm,
   });
 
-  const handleSearchSubmit: SubmitHandler<SearchFormData> = (data) => {
+  const handleSearchSubmit: SubmitHandler<FieldValues> = (data) => {
     setSearchTerm(data.gameName);
     setCurrentPage(1);
   };
@@ -53,9 +53,7 @@ export default function HomePage() {
         <div className="w-8/10 max-w-[1000px] mx-auto">
           <MainSection />
           <CategoryCard />
-          <SearchForm 
-  onSubmit={handleSearchSubmit} 
-/>
+          <SearchForm onSubmit={handleSearchSubmit} />
 
           {isLoading ? (
             <div className="flex justify-center items-center min-h-100">
