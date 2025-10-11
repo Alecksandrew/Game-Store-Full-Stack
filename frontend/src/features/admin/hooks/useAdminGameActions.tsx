@@ -19,12 +19,3 @@ export function useUpdateGame(gameId: number) {
     return apiClient(`${API_ROUTES.ADMIN.GET_INVENTORY}/${gameId}/price`, options, true);
   });
 }
-
-export function useDeleteGame() {
-  return useApi<number, void>((gameId) => {
-    const options = {
-      method: "DELETE" as const,
-    };
-    return apiClient(`${API_ROUTES.ADMIN.GET_INVENTORY}/${gameId}`, options, true);
-  });
-}

@@ -11,7 +11,6 @@ import { SimpleInput } from "@/global/components/SimpleInput";
 type GameTableRowComponentProps = {
   gameInfo: gameTableRowProps;
   onEdit: (id: number) => void;
-  onDelete: (id: number) => void;
   onCancel: (id: number) => void;
   isEditing: boolean;
   onSaveSuccess?: () => void; // Callback para quando salvar com sucesso
@@ -20,7 +19,6 @@ type GameTableRowComponentProps = {
 export default function GameTableRow({
   gameInfo,
   onEdit, 
-  onDelete,
   onCancel,
   isEditing,
   onSaveSuccess
@@ -127,9 +125,6 @@ export default function GameTableRow({
               <>
                 <Button onClick={() => onEdit(igdbId)} className="cursor-pointer">
                   <FaEdit />
-                </Button>
-                <Button onClick={() => onDelete(igdbId)} className="cursor-pointer">
-                  <FaTrashAlt />
                 </Button>
                 <Button className="cursor-pointer">
                   <FaKey />

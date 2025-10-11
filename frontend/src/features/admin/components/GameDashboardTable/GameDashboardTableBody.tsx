@@ -10,7 +10,6 @@ type GameDashboardTableBodyProps = {
   pageSize: number;
   editingGameId: number | null;
   onEdit: (id: number) => void;
-  onDelete: (id: number) => void;
   onCancel: (id: number) => void;
   onSaveSuccess: () => void; // Callback para quando salvar com sucesso
 };
@@ -21,7 +20,6 @@ export function GameDashboardTableBody({
   pageSize,
   editingGameId,
   onEdit,
-  onDelete,
   onCancel,
   onSaveSuccess,
 }: GameDashboardTableBodyProps) {
@@ -51,7 +49,6 @@ export function GameDashboardTableBody({
         key={game.igdbId}
         gameInfo={game}
         onEdit={onEdit}
-        onDelete={onDelete}
         onCancel={onCancel}
         isEditing={editingGameId === game.igdbId}
         onSaveSuccess={onSaveSuccess}

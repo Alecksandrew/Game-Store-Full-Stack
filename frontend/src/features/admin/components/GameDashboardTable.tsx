@@ -8,7 +8,6 @@ import { GameDashboardTableHeader } from "./GameDashboardTable/GameDashboardTabl
 import { Table } from "@/global/components/Table";
 import useGameDashboardTable from "../hooks/useGameDashboardTable";
 import { useState } from "react";
-import { useDeleteGame } from "../hooks/useAdminGameActions";
 import PaginationRounded from "@/global/components/PaginationRounded";
 
 export function GameDashboardTable() {
@@ -28,15 +27,6 @@ export function GameDashboardTable() {
   } = useGameDashboardTable();
 
   const [editingGameId, setEditingGameId] = useState<number | null>(null);
-
-  const { execute: deleteGame, isLoading: isDeleting } = useDeleteGame();
-
-  const handleDelete = async (gameId: number) => {
-    if (window.confirm("Are you sure you want to delete this game?")) {
-      await deleteGame(gameId);
-      refetch();
-    }
-  };
 
   const handleCancel = (gameId: number) => {
     setEditingGameId(null);
@@ -67,11 +57,11 @@ export function GameDashboardTable() {
         />
         <GameDashboardTableBody
           gamesData={gamesData}
-          isLoading={isLoading || isDeleting}
+          isLoading={isLoading}
           pageSize={10}
           editingGameId={editingGameId}
           onEdit={setEditingGameId}
-          onDelete={handleDelete}
+    
           onCancel={handleCancel}
           onSaveSuccess={handleSaveSuccess}
         />
