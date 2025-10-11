@@ -6,6 +6,7 @@ import type { AdminGame, PaginatedResponse } from "../types/gameDashboardTypes";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 
 export default function useGameDashboardTable() {
+  const [version, setVersion] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("igdbId");
@@ -39,8 +40,9 @@ export default function useGameDashboardTable() {
 
   useEffect(() => {
     execute();
-  }, [execute]);
+  }, [execute, version]);
 
+  const refetch = () => setVersion((v) => v + 1);
 
 
   //Component which is using the hook can handle internal state
@@ -76,5 +78,6 @@ export default function useGameDashboardTable() {
     handleSort,
     sortBy,
     isAscending,
+    refetch
   };
 }

@@ -1,10 +1,15 @@
-import { Table } from "@/global/components/Table/index";
-import useGameDashboardTable from "../hooks/useGameDashboardTable";
-import PaginationRounded from "@/global/components/PaginationRounded";
+// src/features/admin/components/GameDashboardTable.tsx
+// ... existing imports ...
+
 import { SearchForm } from "@/global/components/SearchForm";
 import GameDashboardHeader from "./GameDashboardTable/GameDashboardHeader";
-import { GameDashboardTableHeader } from "./GameDashboardTable/GameDashboardTableHeader";
 import { GameDashboardTableBody } from "./GameDashboardTable/GameDashboardTableBody";
+import { GameDashboardTableHeader } from "./GameDashboardTable/GameDashboardTableHeader";
+import { Table } from "@/global/components/Table";
+import useGameDashboardTable from "../hooks/useGameDashboardTable";
+import { useState } from "react";
+import { useDeleteGame } from "../hooks/useAdminGameActions";
+import PaginationRounded from "@/global/components/PaginationRounded";
 
 export function GameDashboardTable() {
   const {
@@ -19,7 +24,28 @@ export function GameDashboardTable() {
     handleSort,
     sortBy,
     isAscending,
+    refetch
   } = useGameDashboardTable();
+
+  const [editingGameId, setEditingGameId] = useState<number | null>(null);
+
+  const { execute: deleteGame, isLoading: isDeleting } = useDeleteGame();
+
+  const handleDelete = async (gameId: number) => {
+    if (window.confirm("Are you sure you want to delete this game?")) {
+      await deleteGame(gameId);
+      refetch();
+    }
+  };
+
+  const handleCancel = (gameId: number) => {
+    setEditingGameId(null);
+  };
+
+  const handleSaveSuccess = () => {
+    // Recarrega os dados da tabela após salvar
+    refetch();
+  };
 
   const totalPages = Math.ceil(totalCount / 10);
 
@@ -41,13 +67,18 @@ export function GameDashboardTable() {
         />
         <GameDashboardTableBody
           gamesData={gamesData}
-          isLoading={isLoading}
+          isLoading={isLoading || isDeleting}
           pageSize={10}
+          editingGameId={editingGameId}
+          onEdit={setEditingGameId}
+          onDelete={handleDelete}
+          onCancel={handleCancel}
+          onSaveSuccess={handleSaveSuccess}
         />
       </Table.Root>
 
       {totalPages > 1 && (
-        <div className="mt-4 flex justify-center  rounded w-fit p-2 mx-auto">
+        <div className="mt-4 flex justify-center rounded w-fit p-2 mx-auto">
           <PaginationRounded
             count={totalPages}
             page={currentPage}
