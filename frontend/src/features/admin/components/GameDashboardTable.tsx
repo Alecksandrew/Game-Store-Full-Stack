@@ -9,6 +9,7 @@ import { Table } from "@/global/components/Table";
 import useGameDashboardTable from "../hooks/useGameDashboardTable";
 import { useState } from "react";
 import PaginationRounded from "@/global/components/PaginationRounded";
+import SectionHeader from "@/global/components/SectionHeader/SectionHeader";
 
 export function GameDashboardTable() {
   const {
@@ -40,7 +41,8 @@ export function GameDashboardTable() {
   const totalPages = Math.ceil(totalCount / 10);
 
   return (
-    <div className="p-4 bg-bg-secondary rounded-lg border-blue-gray w-fit min-h-[762px]">
+    <>
+    <div className="p-4 bg-bg-secondary rounded-lg border-blue-gray w-fit min-h-[762px] ring-2 ring-primary">
       {warningType === "error" && warningComponent}
       <GameDashboardHeader />
 
@@ -77,5 +79,7 @@ export function GameDashboardTable() {
         </div>
       )}
     </div>
+    </>
+    
   );
 }
