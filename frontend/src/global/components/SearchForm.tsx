@@ -2,7 +2,7 @@
 import { twMerge } from "tailwind-merge";
 import type { SearchFormProps } from "../types/searchFormType";
 import { Form } from "./Form/index";
-import { Input } from "./Input";
+import { Input } from "./Input/Input";
 
 
 export function SearchForm({

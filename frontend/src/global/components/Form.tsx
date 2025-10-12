@@ -1,6 +1,6 @@
 import { useForm, FormProvider, type FieldValues } from "react-hook-form";
 import { type FormProps } from "../types/FormType";
-import Button from "./Button";
+import Button from "./Button/Button";
 
 export default function Form<T extends FieldValues>({
   onSubmit,

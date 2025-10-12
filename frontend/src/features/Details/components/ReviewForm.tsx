@@ -1,8 +1,8 @@
 
 import Form from "@/global/components/Form";
 import RatingStars from "./RatingStars";
-import { TextArea } from "@/global/components/TextArea";
-import Button from "@/global/components/Button";
+import { TextArea } from "@/global/components/TextArea/TextArea";
+import Button from "@/global/components/Button/Button";
 
 export interface ReviewFormData {
   rating: number;

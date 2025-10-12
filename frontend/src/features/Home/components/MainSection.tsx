@@ -1,4 +1,4 @@
-import Button from "@/global/components/Button";
+import Button from "@/global/components/Button/Button";
 
 export default function MainSection() {
   return (

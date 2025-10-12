@@ -6,7 +6,7 @@ import Button from "@/global/components/Table/CompoundComponents/Button";
 import { useState } from "react";
 
 import { useUpdateGame } from "../../hooks/useAdminGameActions";
-import { SimpleInput } from "@/global/components/SimpleInput";
+import { SimpleInput } from "@/global/components/SimpleInput/SimpleInput";
 import KeysModal from "../KeysModal/KeysModal";
 
 

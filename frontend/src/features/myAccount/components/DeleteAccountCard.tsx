@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Button from "@/global/components/Button";
+import Button from "@/global/components/Button/Button";
 import FormHeader from "@/global/components/Form/CompoundComponents/FormHeader";
 import ConfirmationModal from "./ConfirmationModal";
 

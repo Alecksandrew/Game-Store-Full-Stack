@@ -1,6 +1,6 @@
-import Button from "@/global/components/Button";
+import Button from "@/global/components/Button/Button";
 import { Form } from "@/global/components/Form/index";
-import { TextArea } from "@/global/components/TextArea";
+import { TextArea } from "@/global/components/TextArea/TextArea";
 import { useAddKeys } from "../../hooks/useAdminGameActions";
 
 type KeysFormProps = {

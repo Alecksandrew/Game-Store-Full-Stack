@@ -1,4 +1,4 @@
-import { Skeleton } from "@/global/components/Skeleton";
+import { Skeleton } from "@/global/components/Skeleton/Skeleton";
 import { Table } from "@/global/components/Table/index";
 
 export default function GameTableRowSkeleton() {

@@ -1,4 +1,4 @@
-import { Input } from "@/global/components/Input";
+import { Input } from "@/global/components/Input/Input";
 import { useLogin } from "../hooks/useAuth";
 import FormHeader from "@/global/components/Form/CompoundComponents/FormHeader";
 

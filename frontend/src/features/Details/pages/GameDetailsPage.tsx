@@ -8,7 +8,7 @@ import SimilarGamesSection from "../components/SimilarGamesSection";
 import ReviewSection from "../components/ReviewSection";
 import Header from "@/features/Home/components/Header";
 import { useGameDetails } from "../hooks/useGameDetails";
-import ExpandableText from "@/global/components/ExpandableText";
+import ExpandableText from "@/global/components/ExpandableText/ExpandableText";
 
 export default function GameDetailsPage() {
    const { gameDetails, isLoading, warningType, warningComponent } = useGameDetails();

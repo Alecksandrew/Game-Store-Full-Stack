@@ -1,6 +1,6 @@
 import { useToggleWishlist } from "@/features/Wishlist/hooks/useToggleWishlist";
 import { MdOutlineFavoriteBorder, MdOutlineFavorite } from "react-icons/md";
-import Button from "../Button";
+import Button from "../Button/Button";
 
 export type ToggleWishlistProps = {
   className?: string;

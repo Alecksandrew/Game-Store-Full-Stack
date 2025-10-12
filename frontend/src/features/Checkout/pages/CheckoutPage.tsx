@@ -6,7 +6,7 @@ import { CartContext } from "@/features/Cart/context/CartContext";
 import { Navigate } from "react-router";
 import { useCheckout } from "@/features/Cart/hooks/useCheckout";
 import CreditCardForm from "../components/CreditCardForm";
-import Button from "@/global/components/Button";
+import Button from "@/global/components/Button/Button";
 
 export default function CheckoutPage() {
   const { execute, isLoading, warningComponent } = useCheckout();

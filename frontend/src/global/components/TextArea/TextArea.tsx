@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import type { TextAreaProps } from '../types/textAreaType';
+import type { TextAreaProps } from './types';
 
 
 export const TextArea = (

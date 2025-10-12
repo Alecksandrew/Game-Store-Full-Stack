@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
-import { type warningState } from "../types/warningType";
+import { type warningState } from "../components/Warning/types";
 import { type ApiResponse } from "../types/responseApiType";
-import { Warning } from "@/global/components/Warning";
+import { Warning } from "@/global/components/Warning/Warning";
 
 const emptyWarningState: warningState = {
   message: "",

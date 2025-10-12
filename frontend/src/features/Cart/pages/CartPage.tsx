@@ -5,7 +5,7 @@ import CartItem from "../components/CartItem";
 import OrderSummary from "../components/OrderSummary";
 import { Link, useNavigate } from "react-router";
 import { MdOutlineShoppingCart } from "react-icons/md";
-import Button from "@/global/components/Button";
+import Button from "@/global/components/Button/Button";
 
 export default function CartPage() {
   const { cartItems } = useContext(CartContext);

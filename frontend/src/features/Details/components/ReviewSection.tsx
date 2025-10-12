@@ -5,7 +5,7 @@ import {
   ReviewCardStandard,
 } from "./ReviewCard/ReviewCard.presets";
 import { useNavigate } from "react-router";
-import Button from "@/global/components/Button";
+import Button from "@/global/components/Button/Button";
 import { PAGE_ROUTES } from "@/global/constants/FRONTEND_URL";
 import { useCreateReviewByGame } from "../hooks/useCreateReviewByGame";
 import { useUpdateReviewByGame } from "../hooks/useUpdateReviewByGame";

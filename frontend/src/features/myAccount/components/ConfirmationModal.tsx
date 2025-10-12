@@ -1,4 +1,4 @@
-import Button from "@/global/components/Button";
+import Button from "@/global/components/Button/Button";
 
 type ConfirmationModalProps = {
   title: string;

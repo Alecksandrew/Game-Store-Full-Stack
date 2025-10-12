@@ -1,5 +1,5 @@
 import { Form } from "@/global/components/Form/index";
-import { Input } from "@/global/components/Input";
+import { Input } from "@/global/components/Input/Input";
 import { Table } from "@/global/components/Table/index";
 import type { AdminGame } from "../../types/gameDashboardTypes";
 import { FaSave, FaTimes } from "react-icons/fa";

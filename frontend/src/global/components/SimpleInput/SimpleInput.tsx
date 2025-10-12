@@ -1,6 +1,9 @@
 //INPUT WITHOUT REACT HOOK FORM
-import { type InputProps } from "@/global/types/inputType";
 
+import type { SimpleInputProps } from "./types";
+
+
+//No react hook form
 export const SimpleInput = ({ 
   label, 
   name, 
@@ -9,7 +12,7 @@ export const SimpleInput = ({
   icon, 
   className = "",
   ...props 
-}: InputProps & {
+}: SimpleInputProps & {
   value?: string | number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {

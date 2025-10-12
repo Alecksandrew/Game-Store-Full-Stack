@@ -1,4 +1,4 @@
-import { type WarningProps } from "../types/warningType";
+import { type WarningProps } from "./types";
 import { type FC } from "react";
 
 export const Warning: FC<WarningProps> = ({ message, type, onClose }) => {

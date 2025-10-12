@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import Button from "./Button";
+import Button from "./Button/Button";
 import ToggleWishlist from "./ToggleWishlist/ToggleWishlist";
 import { WishlistContext } from "@/features/Wishlist/context/WishlistContext";
 import { GameDetailsDataContext } from "@/features/Details/contexts/GameDetailsDataContext";

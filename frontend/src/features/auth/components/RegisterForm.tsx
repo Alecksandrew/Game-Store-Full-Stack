@@ -1,6 +1,6 @@
 import { useForm, useFormContext } from "react-hook-form";
-import { Input } from "@/global/components/Input";
-import Button from "@/global/components/Button";
+import { Input } from "@/global/components/Input/Input";
+import Button from "@/global/components/Button/Button";
 import { useRegister } from "../hooks/useAuth";
 
 import { type RegisterFormProps } from "../types/RegisterFormType";

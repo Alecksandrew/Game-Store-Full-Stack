@@ -1,5 +1,5 @@
 import FormHeader from "@/global/components/Form/CompoundComponents/FormHeader";
-import { Input } from "@/global/components/Input";
+import { Input } from "@/global/components/Input/Input";
 import { useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { useResetPassword } from "../hooks/useAuth";

@@ -1,10 +1,10 @@
-import Button from "@/global/components/Button";
+import Button from "@/global/components/Button/Button";
 import { type GameCardProps } from "../../types/GameCardType";
 import { GameCard } from "./GameCard";
 import { useNavigate } from "react-router";
 import { CartContext } from "@/features/Cart/context/CartContext";
 import { useContext } from "react";
-import { Skeleton } from "@/global/components/Skeleton";
+import { Skeleton } from "@/global/components/Skeleton/Skeleton";
 
 export function GameCardWithPrice({ gameData, className }: GameCardProps) {
   const navigate = useNavigate();

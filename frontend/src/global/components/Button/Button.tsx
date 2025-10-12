@@ -1,11 +1,5 @@
-import { type ButtonHTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
-
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  type: "submit" | "button";
-  className?: string;
-  title: string;
-}
+import type { ButtonProps } from "./types";
 
 export default function Button({
   className,

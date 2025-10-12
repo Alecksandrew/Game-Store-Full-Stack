@@ -1,6 +1,7 @@
 import { useFormContext } from 'react-hook-form';
-import { type InputProps } from "@/global/types/inputType";
+import { type InputProps } from "@/global/components/Input/types";
 
+//React hook form
 export const Input = (
   ({ label, name, rules, icon, ...props }:InputProps) => {
 

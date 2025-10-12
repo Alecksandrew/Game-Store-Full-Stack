@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { ExpandableTextProps } from "../types/expandableTextType";
+import type { ExpandableTextProps } from "./types";
 
 
 export default function ExpandableText({
