@@ -19,3 +19,19 @@ export function useUpdateGame(gameId: number) {
     return apiClient(`${API_ROUTES.ADMIN.GET_INVENTORY}/${gameId}/price`, options, true);
   });
 }
+
+
+type AddKeysData = {
+  keys: string[];
+};
+
+export function useAddKeys(gameId: number) {
+  return useApi<AddKeysData, void>((data) => {
+    const options = {
+      method: "POST" as const,
+      body: data,
+    };
+
+    return apiClient(API_ROUTES.ADMIN.ADD_KEYS_FUNCTION(gameId), options, true);
+  });
+}

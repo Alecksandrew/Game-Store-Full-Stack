@@ -46,5 +46,6 @@ export const API_ROUTES = {
   },
   ADMIN: {
     GET_INVENTORY: `${API_BASE_URL}${API_PATHS.ADMIN}/inventory`,
+    ADD_KEYS_FUNCTION: (gameId: number) => `${API_BASE_URL}${API_PATHS.ADMIN}/inventory/${gameId}/keys`,
   }
 };

@@ -12,6 +12,7 @@ type GameDashboardTableBodyProps = {
   onEdit: (id: number) => void;
   onCancel: (id: number) => void;
   onSaveSuccess: () => void; // Callback para quando salvar com sucesso
+  onOpenKeysModal: (gameId: number, gameName: string) => void;
 };
 
 export function GameDashboardTableBody({
@@ -22,6 +23,7 @@ export function GameDashboardTableBody({
   onEdit,
   onCancel,
   onSaveSuccess,
+  onOpenKeysModal
 }: GameDashboardTableBodyProps) {
   
   const renderTableContent = () => {
@@ -52,6 +54,7 @@ export function GameDashboardTableBody({
         onCancel={onCancel}
         isEditing={editingGameId === game.igdbId}
         onSaveSuccess={onSaveSuccess}
+        onOpenKeysModal={onOpenKeysModal} 
       />
     ));
   };

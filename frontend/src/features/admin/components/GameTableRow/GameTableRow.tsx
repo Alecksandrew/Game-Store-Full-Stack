@@ -4,9 +4,11 @@ import type { gameTableRowProps } from "../../types/gameTableRowType";
 import { FaEdit, FaKey, FaTrashAlt, FaSave, FaTimes } from "react-icons/fa";
 import Button from "@/global/components/Table/CompoundComponents/Button";
 import { useState } from "react";
-import { Input } from "@/global/components/Input";
+
 import { useUpdateGame } from "../../hooks/useAdminGameActions";
 import { SimpleInput } from "@/global/components/SimpleInput";
+import KeysModal from "../KeysModal/KeysModal";
+
 
 type GameTableRowComponentProps = {
   gameInfo: gameTableRowProps;
@@ -14,6 +16,7 @@ type GameTableRowComponentProps = {
   onCancel: (id: number) => void;
   isEditing: boolean;
   onSaveSuccess?: () => void; // Callback para quando salvar com sucesso
+  onOpenKeysModal?: (gameId: number, gameName: string) => void;
 };
 
 export default function GameTableRow({
@@ -21,13 +24,15 @@ export default function GameTableRow({
   onEdit, 
   onCancel,
   isEditing,
-  onSaveSuccess
+  onSaveSuccess,
+  onOpenKeysModal
 }: GameTableRowComponentProps) {
   const { igdbId, name, price, discountPrice, availableKeys } = gameInfo;
   
   // Estado local para os valores sendo editados
   const [editPrice, setEditPrice] = useState(price);
   const [editDiscountPrice, setEditDiscountPrice] = useState(discountPrice);
+  const [isKeysModalOpen, setIsKeysModalOpen] = useState(false);
 
   // Hook para fazer a requisição de update
   const { execute: updateGame, isLoading: isSaving, warningComponent } = useUpdateGame(igdbId);
@@ -56,8 +61,10 @@ export default function GameTableRow({
     onCancel(igdbId);
   };
 
+
   return (
     <>
+    
       
       <Table.Row className="border-t-1 border-blue-gray">
         <Table.Td>{igdbId}</Table.Td>
@@ -126,7 +133,10 @@ export default function GameTableRow({
                 <Button onClick={() => onEdit(igdbId)} className="cursor-pointer">
                   <FaEdit />
                 </Button>
-                <Button className="cursor-pointer">
+                <Button 
+               onClick={() => onOpenKeysModal?.(igdbId, name)}
+                  className="cursor-pointer"
+                  title="Adicionar chaves">
                   <FaKey />
                 </Button>
               </>

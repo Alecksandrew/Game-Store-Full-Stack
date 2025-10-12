@@ -10,6 +10,7 @@ import useGameDashboardTable from "../hooks/useGameDashboardTable";
 import { useState } from "react";
 import PaginationRounded from "@/global/components/PaginationRounded";
 import SectionHeader from "@/global/components/SectionHeader/SectionHeader";
+import KeysModal from "./KeysModal/KeysModal";
 
 export function GameDashboardTable() {
   const {
@@ -29,6 +30,16 @@ export function GameDashboardTable() {
 
   const [editingGameId, setEditingGameId] = useState<number | null>(null);
 
+  const [keysModal, setKeysModal] = useState<{
+    isOpen: boolean;
+    gameId: number;
+    gameName: string;
+  }>({
+    isOpen: false,
+    gameId: 0,
+    gameName: ''
+  });
+
   const handleCancel = (gameId: number) => {
     setEditingGameId(null);
   };
@@ -38,10 +49,39 @@ export function GameDashboardTable() {
     refetch();
   };
 
+  const handleOpenKeysModal = (gameId: number, gameName: string) => {
+    setKeysModal({
+      isOpen: true,
+      gameId,
+      gameName
+    });
+  };
+
+  // Função para fechar o modal de chaves
+  const handleCloseKeysModal = () => {
+    setKeysModal({
+      isOpen: false,
+      gameId: 0,
+      gameName: ''
+    });
+  };
+
+  const handleKeysSuccess = () => {
+    handleCloseKeysModal();
+    refetch(); // Atualiza a tabela
+  };
+
   const totalPages = Math.ceil(totalCount / 10);
 
   return (
     <>
+    <KeysModal
+        isOpen={keysModal.isOpen}
+        gameId={keysModal.gameId}
+        gameName={keysModal.gameName}
+        onClose={handleCloseKeysModal}
+        onSuccess={handleKeysSuccess}
+      />
     <div className="p-4 bg-bg-secondary rounded-lg border-blue-gray w-fit min-h-[762px] ring-2 ring-primary">
       {warningType === "error" && warningComponent}
       <GameDashboardHeader />
@@ -66,6 +106,7 @@ export function GameDashboardTable() {
     
           onCancel={handleCancel}
           onSaveSuccess={handleSaveSuccess}
+          onOpenKeysModal={handleOpenKeysModal}
         />
       </Table.Root>
 
