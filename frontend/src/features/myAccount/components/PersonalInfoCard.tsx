@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import FormHeader from "@/global/components/Form/components/FormHeader";
-import InputOnlyDisplayInfo from "@/global/components/InputOnlyDisplayInfo";
 
 import { MyAccountContext } from "../context/MyAccountContext";
+import DisplayField from "@/global/components/DisplayField/DisplayField";
 
 
 export default function PersonalnfoCard() {
@@ -19,7 +19,7 @@ export default function PersonalnfoCard() {
         title="Profile informations"
         subTitle="Your basic personal informations"
       />
-      <InputOnlyDisplayInfo
+      <DisplayField
         title="User name"
         inputValue={myAccountData?.userName ?? "Not found"}
         disabled={true}
