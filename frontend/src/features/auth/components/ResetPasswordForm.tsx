@@ -1,4 +1,4 @@
-import FormHeader from "@/global/components/Form/CompoundComponents/FormHeader";
+import FormHeader from "@/global/components/Form/components/FormHeader";
 import { Input } from "@/global/components/Input/Input";
 import { useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router";

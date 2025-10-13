@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import FormHeader from "@/global/components/Form/CompoundComponents/FormHeader";
+import FormHeader from "@/global/components/Form/components/FormHeader";
 import InputOnlyDisplayInfo from "@/global/components/InputOnlyDisplayInfo";
 
 import { MyAccountContext } from "../context/MyAccountContext";

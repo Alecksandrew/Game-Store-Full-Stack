@@ -1,6 +1,6 @@
 import { Input } from "@/global/components/Input/Input";
 import { useLogin } from "../hooks/useAuth";
-import FormHeader from "@/global/components/Form/CompoundComponents/FormHeader";
+import FormHeader from "@/global/components/Form/components/FormHeader";
 
 import { type LoginFormData } from "../types/LoginFormType";
 import { Link} from "react-router";

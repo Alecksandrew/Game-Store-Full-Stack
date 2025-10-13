@@ -1,8 +1,8 @@
 // src/features/admin/components/GameTableRow/GameTableRow.tsx
-import { Table } from "@/global/components/Table/index";
+import { Table } from "@/global/components/Table/Table";
 import type { gameTableRowProps } from "../../types/gameTableRowType";
 import { FaEdit, FaKey, FaTrashAlt, FaSave, FaTimes } from "react-icons/fa";
-import Button from "@/global/components/Table/CompoundComponents/Button";
+import Button from "@/global/components/Table/components/Button";
 import { useState } from "react";
 
 import { useUpdateGame } from "../../hooks/useAdminGameActions";

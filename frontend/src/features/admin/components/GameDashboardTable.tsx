@@ -5,7 +5,7 @@ import { SearchForm } from "@/global/components/SearchForm";
 import GameDashboardHeader from "./GameDashboardTable/GameDashboardHeader";
 import { GameDashboardTableBody } from "./GameDashboardTable/GameDashboardTableBody";
 import { GameDashboardTableHeader } from "./GameDashboardTable/GameDashboardTableHeader";
-import { Table } from "@/global/components/Table";
+import { Table } from "@/global/components/Table/Table";
 import useGameDashboardTable from "../hooks/useGameDashboardTable";
 import { useState } from "react";
 import PaginationRounded from "@/global/components/PaginationRounded";

@@ -1,5 +1,5 @@
 import Form from "@/global/components/Form";
-import FormHeader from "@/global/components/Form/CompoundComponents/FormHeader";
+import FormHeader from "@/global/components/Form/components/FormHeader";
 import { Input } from "@/global/components/Input/Input";
 import { type CreditCardFormData } from "../types/CreditCardFormType";
 

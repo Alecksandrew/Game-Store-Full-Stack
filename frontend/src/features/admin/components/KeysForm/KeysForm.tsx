@@ -1,5 +1,5 @@
 import Button from "@/global/components/Button/Button";
-import { Form } from "@/global/components/Form/index";
+import { Form } from "@/global/components/Form/Form";
 import { TextArea } from "@/global/components/TextArea/TextArea";
 import { useAddKeys } from "../../hooks/useAdminGameActions";
 

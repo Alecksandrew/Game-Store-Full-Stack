@@ -1,5 +1,5 @@
 // src/features/admin/components/GameDashboardTable/GameDashboardTableBody.tsx
-import { Table } from "@/global/components/Table/index";
+import { Table } from "@/global/components/Table/Table";
 import GameTableRow from "../GameTableRow/GameTableRow";
 import GameTableRowSkeleton from "../GameTableRow/GameTableRowSkeleton";
 import type { AdminGame } from "../../types/gameDashboardTypes";

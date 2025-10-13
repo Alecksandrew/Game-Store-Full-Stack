@@ -1,5 +1,5 @@
 // admin/components/GameDashboardTable/GameDashboardTableHeader.tsx
-import { Table } from "@/global/components/Table/index";
+import { Table } from "@/global/components/Table/Table";
 
 type GameDashboardTableHeaderProps = {
   onSort: (column: string) => void;

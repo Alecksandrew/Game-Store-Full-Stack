@@ -1,7 +1,7 @@
 // src/global/components/SearchForm.tsx
 import { twMerge } from "tailwind-merge";
 import type { SearchFormProps } from "../types/searchFormType";
-import { Form } from "./Form/index";
+import { Form } from "./Form/Form";
 import { Input } from "./Input/Input";
 
 
