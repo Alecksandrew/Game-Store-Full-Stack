@@ -1,7 +1,7 @@
-import Form from "@/global/components/Form";
-import FormHeader from "@/global/components/Form/components/FormHeader";
 import { Input } from "@/global/components/Input/Input";
 import { type CreditCardFormData } from "../types/CreditCardFormType";
+import { Button } from "@/global/components/Button";
+import { Form } from "@/global/components/Form";
 
 type CreditCardFormProps = {
   onSubmit: (data: CreditCardFormData) => void;
@@ -10,16 +10,16 @@ type CreditCardFormProps = {
 
 export default function CreditCardForm({ onSubmit, isLoading }: CreditCardFormProps) {
   return (
-    <Form<CreditCardFormData>
-      onSubmit={onSubmit}
-      isLoading={isLoading}
-      id="credit-card-form"
-    >
-      <FormHeader
-        title="Credit card"
-        subTitle="Enter your card details to complete the purchase."
-      />
-      
+    <Form.Root<CreditCardFormData>
+    onSubmit={onSubmit}
+    id="credit-card-form"
+  >
+    <Form.Header
+      title="Credit card"
+      subtitle="Enter your card details to complete the purchase."
+    />
+    
+    <Form.Body>
       <Input
         label="Name on Card"
         name="cardName"
@@ -73,6 +73,14 @@ export default function CreditCardForm({ onSubmit, isLoading }: CreditCardFormPr
           }}
         />
       </div>
-    </Form>
+    </Form.Body>
+
+    <Form.Actions>
+      <Button
+        type="submit"
+        disabled={isLoading}
+      >Complete Purchase</Button>
+    </Form.Actions>
+  </Form.Root>
   );
 }

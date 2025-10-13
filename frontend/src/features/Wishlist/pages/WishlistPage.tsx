@@ -1,13 +1,8 @@
-import { useContext, useEffect } from "react";
-import { GameCardWithPrice } from "@/global/components/GameCard/GameCardPresets";
-import type { GameCardData } from "@/global/components/GameCard/types";
-import { useGetWishlist } from "@/global/components/ToggleWishlist/hooks/useWishlist";
+import { useContext} from "react";
+
 import CircularProgress from "@mui/material/CircularProgress";
-import Header from "@/features/Home/components/Header";
-import isUserLogged from "@/global/utils/isUserLogged";
 import { WishlistContext } from "../context/WishlistContext";
-import { useNavigate } from "react-router";
-import { PAGE_ROUTES } from "@/global/constants/FRONTEND_URL";
+import { GameCardWithPrice, type GameCardData } from "@/global/components/GameCard";
 
 export default function WishlistPage() {
 

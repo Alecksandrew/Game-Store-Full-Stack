@@ -1,4 +1,4 @@
-import { GameCardWithPrice } from "../../../global/components/GameCard/GameCardPresets";
+import { GameCardWithPrice } from "../../../global/components/GameCard/GameCard.presets";
 import type { GameCardData } from "../../../global/components/GameCard/types";
 import CircularProgress from "@mui/material/CircularProgress";
 import { usePaginatedGames } from "../hooks/usePaginatedGames";

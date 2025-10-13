@@ -1,10 +1,11 @@
-import Button from "@/global/components/Button/Button";
+
 import { type GameCardProps } from "./types";
 import { GameCard } from "./GameCard";
 import { useNavigate } from "react-router";
 import { CartContext } from "@/features/Cart/context/CartContext";
 import { useContext } from "react";
 import { Skeleton } from "@/global/components/Skeleton/Skeleton";
+import { Button } from "../Button";
 
 export function GameCardWithPrice({ gameData, className }: GameCardProps) {
   const navigate = useNavigate();
@@ -21,15 +22,13 @@ export function GameCardWithPrice({ gameData, className }: GameCardProps) {
         <GameCard.Actions>
           <Button
             type="button"
-            title="View details"
             className="bg-text-primary text-primary"
             onClick={() => navigate(`/games/${gameData.id}`)}
-          />
+          >View details</Button>
           <Button
             type="button"
-            title="Add to cart"
             onClick={() => addToCart(gameData)}
-          />
+          >Add to cart</Button>
         </GameCard.Actions>
       </GameCard.Body>
     </GameCard.Root>
@@ -48,15 +47,13 @@ export function GameCardNoPrice({ gameData, className }: GameCardProps) {
         <GameCard.Actions>
           <Button
             type="button"
-            title="View details"
             className="bg-text-primary text-primary"
             onClick={() => navigate(`/games/${gameData.id}`)}
-          />
+          >View details</Button>
           <Button
             type="button"
-            title="Add to cart"
             onClick={() => addToCart(gameData)}
-          />
+          >Add to cart</Button>
         </GameCard.Actions>
       </GameCard.Body>
     </GameCard.Root>

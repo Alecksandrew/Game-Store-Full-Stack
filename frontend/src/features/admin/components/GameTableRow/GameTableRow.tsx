@@ -2,13 +2,13 @@
 import { Table } from "@/global/components/Table/Table";
 import type { gameTableRowProps } from "../../types/gameTableRowType";
 import { FaEdit, FaKey, FaTrashAlt, FaSave, FaTimes } from "react-icons/fa";
-import Button from "@/global/components/Table/components/Button";
+
 import { useState } from "react";
 
 import { useUpdateGame } from "../../hooks/useAdminGameActions";
 import { SimpleInput } from "@/global/components/SimpleInput/SimpleInput";
 import KeysModal from "../KeysModal/KeysModal";
-
+import { Button } from "@/global/components/Button";
 
 type GameTableRowComponentProps = {
   gameInfo: gameTableRowProps;
@@ -21,30 +21,34 @@ type GameTableRowComponentProps = {
 
 export default function GameTableRow({
   gameInfo,
-  onEdit, 
+  onEdit,
   onCancel,
   isEditing,
   onSaveSuccess,
-  onOpenKeysModal
+  onOpenKeysModal,
 }: GameTableRowComponentProps) {
   const { igdbId, name, price, discountPrice, availableKeys } = gameInfo;
-  
+
   // Estado local para os valores sendo editados
   const [editPrice, setEditPrice] = useState(price);
   const [editDiscountPrice, setEditDiscountPrice] = useState(discountPrice);
   const [isKeysModalOpen, setIsKeysModalOpen] = useState(false);
 
   // Hook para fazer a requisição de update
-  const { execute: updateGame, isLoading: isSaving, warningComponent } = useUpdateGame(igdbId);
+  const {
+    execute: updateGame,
+    isLoading: isSaving,
+    warningComponent,
+  } = useUpdateGame(igdbId);
 
   const handleSave = async () => {
     try {
       // Chama a API com os novos valores
       await updateGame({
         price: Number(editPrice),
-        discountPrice: Number(editDiscountPrice)
+        discountPrice: Number(editDiscountPrice),
       });
-      
+
       // Se chegou até aqui, foi sucesso
       onSaveSuccess?.(); // Callback para atualizar a tabela
       onCancel(igdbId); // Sai do modo de edição
@@ -62,14 +66,13 @@ export default function GameTableRow({
   };
 
 
+  const actionClass = "cursor-pointer  flex justify-center";
   return (
     <>
-    
-      
       <Table.Row className="border-t-1 border-blue-gray">
         <Table.Td>{igdbId}</Table.Td>
         <Table.Td>{name}</Table.Td>
-        
+
         {/* Price Column - Editable quando isEditing */}
         <Table.Td>
           {isEditing ? (
@@ -86,7 +89,7 @@ export default function GameTableRow({
             price
           )}
         </Table.Td>
-        
+
         {/* Discount Price Column - Editable quando isEditing */}
         <Table.Td>
           {isEditing ? (
@@ -102,25 +105,27 @@ export default function GameTableRow({
             discountPrice
           )}
         </Table.Td>
-        
+
         <Table.Td>{availableKeys}</Table.Td>
-        
+
         <Table.Td>
           <Table.Actions className="flex gap-6">
             {isEditing ? (
               // Botões de Save/Cancel quando editando
               <>
-                <Button 
-                  onClick={handleSave} 
-                  className="cursor-pointer"
+                <Button
+                  type="button"
+                  onClick={handleSave}
+                  className={actionClass}
                   disabled={isSaving}
                   title={isSaving ? "Saving..." : "Save"}
                 >
                   <FaSave />
                 </Button>
-                <Button 
-                  onClick={handleCancel} 
-                  className="cursor-pointer"
+                <Button
+                  type="button"
+                  onClick={handleCancel}
+                  className={actionClass}
                   disabled={isSaving}
                   title="Cancel"
                 >
@@ -130,13 +135,19 @@ export default function GameTableRow({
             ) : (
               // Botões normais quando não editando
               <>
-                <Button onClick={() => onEdit(igdbId)} className="cursor-pointer">
+                <Button
+                  type="button"
+                  onClick={() => onEdit(igdbId)}
+                  className={actionClass}
+                >
                   <FaEdit />
                 </Button>
-                <Button 
-               onClick={() => onOpenKeysModal?.(igdbId, name)}
-                  className="cursor-pointer"
-                  title="Adicionar chaves">
+                <Button
+                  type="button"
+                  onClick={() => onOpenKeysModal?.(igdbId, name)}
+                  className={actionClass}
+                  title="Adicionar chaves"
+                >
                   <FaKey />
                 </Button>
               </>

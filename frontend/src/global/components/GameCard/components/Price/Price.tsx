@@ -1,9 +1,9 @@
-// CÓDIGO MODIFICADO
 import { useContext } from "react";
 import PriceContainer from "@/global/components/PriceContainer";
-import { GameCardContext } from "../../../../features/Home/context/GameCardContext";
+import { GameCardContext } from "../../context/GameCardContext";
 
-export default function GameCardPrice() {
+
+export function Price() {
  
   const gameData = useContext(GameCardContext);
 

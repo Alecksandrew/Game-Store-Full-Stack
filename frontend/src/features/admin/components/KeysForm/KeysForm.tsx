@@ -1,7 +1,8 @@
-import Button from "@/global/components/Button/Button";
+
 import { Form } from "@/global/components/Form/Form";
 import { TextArea } from "@/global/components/TextArea/TextArea";
 import { useAddKeys } from "../../hooks/useAdminGameActions";
+import { Button } from "@/global/components/Button";
 
 type KeysFormProps = {
   gameId: number;
@@ -38,25 +39,23 @@ export default function KeysForm({ gameId, gameName, onSuccess, onCancel }: Keys
       {warningComponent}
       <Form.Root onSubmit={handleSubmit}>
         <Form.Header title={`Add keys to ${gameName}`} subtitle="Keys must follow the format: FAKE-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" />
-        <Form.Content>
+        <Form.Body>
           <TextArea 
             name="Keys" 
             placeholder="Paste all keys here, separated by colons: key1, key2, key3..."
             required
           />
-        </Form.Content>
+        </Form.Body>
         <Form.Actions>
           <Button 
             type="button" 
-            title="Cancel" 
             onClick={onCancel}
             className="bg-gray-500"
-          />
+          >Cancel</Button>
           <Button 
             type="submit" 
-            title={isLoading ? "Adding..." : "Add keys"}
             disabled={isLoading}
-          />
+          >{isLoading ? "Adding..." : "Add keys"}</Button>
         </Form.Actions>
       </Form.Root>
     </>

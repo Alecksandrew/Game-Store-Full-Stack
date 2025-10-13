@@ -1,7 +1,7 @@
 import type { DisplayFieldProps } from "./types";
 import { twMerge } from "tailwind-merge";
 
-export default function DisplayField({
+export function DisplayField({
   title,
   value,
   icon,

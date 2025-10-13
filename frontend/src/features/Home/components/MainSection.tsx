@@ -1,4 +1,5 @@
-import Button from "@/global/components/Button/Button";
+import { Button } from "@/global/components/Button";
+
 
 export default function MainSection() {
   return (
@@ -16,9 +17,8 @@ export default function MainSection() {
         <div className="min-w-[140px] w-6/10 md:w-6/10 max-w-40 mt-6">
           <Button
             type="button"
-            title="Explore catalog"
             className="relative bg-primary z-10"
-          />
+          >Explore catalog</Button>
         </div>
       </div>
       <div className="absolute top-0 left-0 bg-gradient-to-t md:bg-gradient-to-r from-bg-primary from-30% to-transparent w-full h-full"></div>

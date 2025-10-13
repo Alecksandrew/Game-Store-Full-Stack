@@ -5,7 +5,7 @@ import { usePaginatedGames } from "@/features/Home/hooks/usePaginatedGames";
 import CircularProgress from "@mui/material/CircularProgress";
 import Pagination from "@mui/material/Pagination";
 import type { GameCardData } from "@/global/components/GameCard/types";
-import { GameCardWithPrice } from "@/global/components/GameCard/GameCardPresets";
+import { GameCardWithPrice } from "@/global/components/GameCard/GameCard.presets";
 import { useParams } from "react-router";
 
 export default function CategoryPage() {

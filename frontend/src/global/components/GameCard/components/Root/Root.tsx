@@ -4,7 +4,7 @@ import { GameCardContext } from "../../context/GameCardContext";
 
 
 
-export default function GameCardRoot({
+export function Root({
   gameCardData,
   children,
   className,

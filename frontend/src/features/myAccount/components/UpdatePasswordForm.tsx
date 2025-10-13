@@ -1,9 +1,9 @@
 import { useFormContext } from "react-hook-form";
-import Form from "@/global/components/Form";
 import { Input } from "@/global/components/Input/Input";
-import FormHeader from "@/global/components/Form/components/FormHeader";
 import { useUpdatePassword } from "../hooks/useUpdatePassword";
 import { type UpdatePasswordFormData } from "../types/UpdatePasswordFormType";
+import { Button } from "@/global/components/Button";
+import { Form } from "@/global/components/Form";
 
 export default function UpdatePasswordForm() {
 
@@ -29,36 +29,47 @@ export default function UpdatePasswordForm() {
   return (
     <>
       {warningComponent}
-      <Form<UpdatePasswordFormData>
+      <Form.Root<UpdatePasswordFormData>
         onSubmit={execute}
-        submitText="Update Password"
-        isLoading={isLoading}
       >
-        <FormHeader title="Update Password" subTitle="Choose a new, strong password for your account."/>
-        <Input
-          label="Current Password"
-          name="currentPassword"
-          type="password"
-          placeholder="Enter your current password"
-          rules={{
-            required: "Current password is required",
-          }}
+        <Form.Header 
+          title="Update Password" 
+          subtitle="Choose a new, strong password for your account."
         />
-        <Input
-          label="New Password"
-          name="newPassword"
-          type="password"
-          placeholder="Create a new password"
-          rules={{
-            required: "New password is required",
-            minLength: {
-              value: 8,
-              message: "Password must be at least 8 characters long",
-            },
-          }}
-        />
-        <ConfirmNewPasswordField />
-      </Form>
+        
+        <Form.Body>
+          <Input
+            label="Current Password"
+            name="currentPassword"
+            type="password"
+            placeholder="Enter your current password"
+            rules={{
+              required: "Current password is required",
+            }}
+          />
+          <Input
+            label="New Password"
+            name="newPassword"
+            type="password"
+            placeholder="Create a new password"
+            rules={{
+              required: "New password is required",
+              minLength: {
+                value: 8,
+                message: "Password must be at least 8 characters long",
+              },
+            }}
+          />
+          <ConfirmNewPasswordField />
+        </Form.Body>
+
+        <Form.Actions>
+          <Button
+            type="submit"
+            disabled={isLoading}
+          >Update Password</Button>
+        </Form.Actions>
+      </Form.Root>
     </>
   );
 }

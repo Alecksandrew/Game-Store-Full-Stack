@@ -15,13 +15,12 @@ export default function Toggle<T extends string>({
       {options.map((option) => (
         <Button
           key={option.id}
-          title={option.title}
           type="button" 
           className={clsx('bg-primary', {
             'opacity-50': activedOption !== option.id,
           })}
           onClick={() => onOptionChange(option.id)}
-        />
+        >{option.title}</Button>
       ))}
     </div>
   );

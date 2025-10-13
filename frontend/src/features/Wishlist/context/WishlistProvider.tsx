@@ -1,8 +1,10 @@
 import isUserLogged from "@/global/utils/isUserLogged";
-import { useGetWishlist } from "../../../global/components/ToggleWishlist/hooks/useWishlist";
+
 import { useEffect, useState, type ReactNode } from "react";
 import { WishlistContext } from "./WishlistContext";
-import type { GameCardData } from "@/global/components/GameCard/GameCardType";
+import type { GameCardData } from "@/global/components/GameCard";
+import { useGetWishlist } from "../hooks/useWishlist";
+
 
 export const WishlistProvider = ({ children }: { children: ReactNode }) => {
   const { data, execute, isLoading } = useGetWishlist();

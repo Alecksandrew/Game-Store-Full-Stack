@@ -5,7 +5,7 @@ import {
   ReviewCardStandard,
 } from "./ReviewCard/ReviewCard.presets";
 import { useNavigate } from "react-router";
-import Button from "@/global/components/Button/Button";
+
 import { PAGE_ROUTES } from "@/global/constants/FRONTEND_URL";
 import { useCreateReviewByGame } from "../hooks/useCreateReviewByGame";
 import { useUpdateReviewByGame } from "../hooks/useUpdateReviewByGame";
@@ -13,6 +13,7 @@ import useDeleteReviewByGame from "../hooks/useDeleteReviewByGame";
 import { useContext, useState } from "react";
 import { GameDetailsDataContext } from "../contexts/GameDetailsDataContext";
 import isUserLogged from "@/global/utils/isUserLogged";
+import { Button } from "@/global/components/Button";
 
 function LoginPrompt() {
   const navigate = useNavigate();
@@ -23,10 +24,9 @@ function LoginPrompt() {
           Login to create reviews
         </p>
         <Button
-          title="Login"
           type="button"
           onClick={() => navigate(PAGE_ROUTES.AUTH.LOGIN)}
-        />
+        >Login</Button>
       </div>
     </div>
   );

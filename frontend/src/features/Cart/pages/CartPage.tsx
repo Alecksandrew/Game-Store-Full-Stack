@@ -1,11 +1,11 @@
 import { useContext } from "react";
-import Header from "@/features/Home/components/Header";
+
 import { CartContext } from "../context/CartContext";
 import CartItem from "../components/CartItem";
 import OrderSummary from "../components/OrderSummary";
 import { Link, useNavigate } from "react-router";
 import { MdOutlineShoppingCart } from "react-icons/md";
-import Button from "@/global/components/Button/Button";
+import { Button } from "@/global/components/Button";
 
 export default function CartPage() {
   const { cartItems } = useContext(CartContext);
@@ -43,10 +43,9 @@ export default function CartPage() {
               <div className="lg:col-span-1">
                 <OrderSummary>
                   <Button
-                    title="Get your key(s)"
                     type="button"
                     onClick={() => navigate("/checkout")}
-                  />
+                  >Get your key(s)</Button>
                 </OrderSummary>
               </div>
             </div>

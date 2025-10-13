@@ -27,10 +27,9 @@ export function SearchForm({
       </Form.Body>
       <Form.Actions className="mt-0">
         <Button
-          title={buttonTitle}
           type="submit"
           className="whitespace-nowrap mt-0"
-        />
+        >{buttonTitle}</Button>
       </Form.Actions>
     </Form.Root>
   );

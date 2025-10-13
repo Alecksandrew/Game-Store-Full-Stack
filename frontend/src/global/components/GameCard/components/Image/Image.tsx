@@ -3,7 +3,7 @@ import { GameCardContext } from "../../context/GameCardContext";
 
 
 
-export default function GameCardImage() {
+export function Image() {
   const gameData = useContext(GameCardContext);
   if (!gameData) {
     throw new Error('Erro: This component need to be used inside a GameCard.Root');

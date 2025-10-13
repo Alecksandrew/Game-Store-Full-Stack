@@ -1,8 +1,8 @@
-import type { ButtonHTMLAttributes } from "react";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     type: "submit" | "button";
     className?: string;
-    title: string;
+    children: ReactNode;
   }
   

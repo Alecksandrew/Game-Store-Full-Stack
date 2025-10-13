@@ -1,4 +1,3 @@
-
 import { MdOutlineFavoriteBorder, MdOutlineFavorite } from "react-icons/md";
 import type { ToggleWishlistProps } from "./types";
 import { useToggleWishlist } from "./hooks/useToggleWishlist";
@@ -14,7 +13,6 @@ export function ToggleWishlist({
     gameId,
     initialIsWishlisted
   );
-
 
   if (type === ("icon" as const)) {
     return (
@@ -34,16 +32,20 @@ export function ToggleWishlist({
     );
   }
 
-
   if (type === ("text" as const)) {
     return (
-    <Button
-      type="button"
-      title={isWishlisted ? "Remove Wishlist" : "Add to Wishlist"}
-      className={`ring-2 ring-primary text-primary hover:bg-primary hover:text-text-primary ${isWishlisted ? "bg-primary text-text-primary" : ""}  ${className}`}
-      disabled={isDisabled}
-      onClick={handleToggle}
-    />
-  );
+      <Button
+        type="button"
+        className={`ring-2 ring-primary ${
+          isWishlisted
+            ? "bg-primary text-text-primary"
+            : "bg-transparent text-primary hover:bg-primary hover:text-text-primary"
+        }`}
+        disabled={isDisabled}
+        onClick={handleToggle}
+      >
+        {isWishlisted ? "Remove Wishlist" : "Add to Wishlist"}
+      </Button>
+    );
   }
 }

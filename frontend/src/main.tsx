@@ -21,6 +21,7 @@ import { MyAccountProvider } from "./features/myAccount/context/MyAccountProvide
 import CheckoutPage from "./features/Checkout/pages/CheckoutPage.tsx";
 import AdminPage from "./features/admin/pages/AdminPage.tsx";
 import MainLayout from "./global/components/MainLayout.tsx";
+import AuthPageLayout from "./features/auth/components/AuthPageLayout/AuthPageLayout.tsx";
 
 const router = createBrowserRouter([
   {
@@ -65,7 +66,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    element: <AuthLayout />,
+    element: <AuthPageLayout />,
     children: [
       {
         path: PAGE_ROUTES.AUTH.LOGIN,

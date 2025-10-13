@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import Button from "@/global/components/Button/Button";
-import FormHeader from "@/global/components/Form/components/FormHeader";
 import ConfirmationModal from "./ConfirmationModal";
 
 import { useDeleteAccount } from "../hooks/useDeleteAccount";
 import { PAGE_ROUTES } from "@/global/constants/FRONTEND_URL";
+import { Form } from "@/global/components/Form";
+import { Button } from "@/global/components/Button";
 
 export default function DeleteAccount() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -47,30 +47,31 @@ export default function DeleteAccount() {
 
       {warningComponent}
 
-      <div className="form h-[450px]">
-        <FormHeader
+      <Form.Root onSubmit={() => {}} className="h-[450px]">
+        <Form.Header
           title="Danger zone"
-          subTitle="Irreversible actions that permanently affect your account"
-          className="mb-0"
+          subtitle="Irreversible actions that permanently affect your account"
+          divClassName="mb-0"
         />
 
-        <div className="bg-bg-primary p-4 rounded-md border border-danger/50 w-full text-center">
-          <p className="text-text-secondary">
-            Please note: This action is permanent and cannot be undone. All your
-            data will be deleted, including purchases, wishlists, and history.
-          </p>
-        </div>
+        <Form.Body>
+          <div className="bg-bg-primary p-4 rounded-md border border-danger/50 w-full text-center">
+            <p className="text-text-secondary">
+              Please note: This action is permanent and cannot be undone. All your
+              data will be deleted, including purchases, wishlists, and history.
+            </p>
+          </div>
+        </Form.Body>
 
-        <div className="w-full mt-4">
+        <Form.Actions>
           <Button
-            title="Excluir Minha Conta"
             type="button"
             onClick={handleOpenModal}
             disabled={isLoading}
             className="bg-danger"
-          />
-        </div>
-      </div>
+          >Delete my account</Button>
+        </Form.Actions>
+      </Form.Root>
     </>
   );
 }
