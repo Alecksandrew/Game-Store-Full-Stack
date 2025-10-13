@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { GameCardContext } from "../../../context/GameCardContext";
+import { GameCardContext } from "../../../../features/Home/context/GameCardContext";
 
 
 

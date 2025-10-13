@@ -1,5 +1,5 @@
 import Button from "@/global/components/Button/Button";
-import { type GameCardProps } from "../../types/GameCardType";
+import { type GameCardProps } from "./types";
 import { GameCard } from "./GameCard";
 import { useNavigate } from "react-router";
 import { CartContext } from "@/features/Cart/context/CartContext";

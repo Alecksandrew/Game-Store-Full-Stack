@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
-import { GameCardWithPrice } from "@/features/Home/components/GameCard/GameCardPresets";
-import type { GameCardData } from "@/features/Home/types/GameCardType";
-import { useGetWishlist } from "@/features/Wishlist/hooks/useWishlist";
+import { GameCardWithPrice } from "@/global/components/GameCard/GameCardPresets";
+import type { GameCardData } from "@/global/components/GameCard/types";
+import { useGetWishlist } from "@/global/components/ToggleWishlist/hooks/useWishlist";
 import CircularProgress from "@mui/material/CircularProgress";
 import Header from "@/features/Home/components/Header";
 import isUserLogged from "@/global/utils/isUserLogged";

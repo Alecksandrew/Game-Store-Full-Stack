@@ -1,6 +1,6 @@
 import { type ReactNode, useState, useEffect } from "react";
 import { CartContext } from "./CartContext";
-import type { GameCardData } from "@/features/Home/types/GameCardType";
+import type { GameCardData } from "@/global/components/GameCard/types";
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
 // Persist cart in local storage

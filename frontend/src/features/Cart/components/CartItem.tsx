@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { type GameCardData } from '@/features/Home/types/GameCardType';
+import { type GameCardData } from '@/global/components/GameCard/types';
 import { CartContext } from '../context/CartContext';
 import { FaTrash } from 'react-icons/fa';
 import PriceContainer from '@/global/components/PriceContainer';

@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import type { GameCardData } from "../types/GameCardType";
+import type { GameCardData } from "../../../global/components/GameCard/types";
 import { apiClient } from "@/global/services/apiClient";
 import { useApi } from "@/global/hooks/useApi";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";

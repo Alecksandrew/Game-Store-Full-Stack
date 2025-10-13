@@ -1,18 +1,14 @@
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import type { PaginationProps } from "../types/paginationType";
+import type { PaginationRoundedProps } from "./types";
 
-// Adicione a nova prop 'theme'
-interface CustomPaginationProps extends PaginationProps {
-  theme?: 'dark' | 'light';
-}
 
 export default function PaginationRounded({
   count,
   page,
   onPageChange,
   theme = 'dark',
-}: CustomPaginationProps) {
+}: PaginationRoundedProps) {
 
 // Estilo para o tema escuro (fundo escuro, botões claros)
   const darkThemeSx = {

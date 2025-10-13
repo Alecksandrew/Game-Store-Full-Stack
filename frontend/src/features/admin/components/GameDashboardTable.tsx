@@ -8,7 +8,7 @@ import { GameDashboardTableHeader } from "./GameDashboardTable/GameDashboardTabl
 import { Table } from "@/global/components/Table/Table";
 import useGameDashboardTable from "../hooks/useGameDashboardTable";
 import { useState } from "react";
-import PaginationRounded from "@/global/components/PaginationRounded";
+import PaginationRounded from "@/global/components/PaginationRounded/PaginationRounded";
 import SectionHeader from "@/global/components/SectionHeader/SectionHeader";
 import KeysModal from "./KeysModal/KeysModal";
 

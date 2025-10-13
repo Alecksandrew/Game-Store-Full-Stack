@@ -4,7 +4,7 @@ import type { GamePurchasePanelProps } from "../types/GamePurchasePanel";
 import { useContext } from "react";
 import { GameDetailsDataContext } from "../contexts/GameDetailsDataContext";
 import BuyAndWishlistBtns from "@/global/components/BuyAndWishlistBtns";
-import PurchaseBenefitsCard from "@/global/components/PurchaseBenefitsCard.tsx";
+import PurchaseBenefitsCard from "@/features/Details/components/PurchaseBenefitsCard.tsx";
 
 export default function GamePurchasePanel({
   className,

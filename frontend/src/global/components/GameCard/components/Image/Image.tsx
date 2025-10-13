@@ -1,5 +1,6 @@
 import { useContext } from "react";
-import { GameCardContext } from "../../../context/GameCardContext";
+import { GameCardContext } from "../../context/GameCardContext";
+
 
 
 export default function GameCardImage() {

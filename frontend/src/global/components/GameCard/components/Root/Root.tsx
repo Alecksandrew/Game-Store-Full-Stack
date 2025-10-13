@@ -1,19 +1,14 @@
 import { twMerge } from "tailwind-merge";
-import type { GameCardData } from "../../../types/GameCardType";
-import { GameCardContext } from "../../../context/GameCardContext";
+import type { RootProps } from "./types";
+import { GameCardContext } from "../../context/GameCardContext";
 
 
 
-interface GameCardRootProps {
-  children: React.ReactNode;
-  className?: string;
-  gameCardData: GameCardData;
-}
 export default function GameCardRoot({
   gameCardData,
   children,
   className,
-}: GameCardRootProps) {
+}: RootProps) {
   return (
     <GameCardContext.Provider value={gameCardData}>
       <div

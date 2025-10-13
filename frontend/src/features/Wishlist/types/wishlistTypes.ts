@@ -1,4 +1,4 @@
-import type { GameCardData } from "@/features/Home/types/GameCardType";
+import type { GameCardData } from "@/global/components/GameCard/types";
 
 export type WishlistContextType = {
   wishlist: GameCardData[];

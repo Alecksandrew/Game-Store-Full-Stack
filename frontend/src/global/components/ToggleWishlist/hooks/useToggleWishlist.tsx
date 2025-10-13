@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { WishlistContext } from "../context/WishlistContext";
-import { useAddToWishlist, useRemoveFromWishlist } from "./useWishlist";
+
+import { useAddToWishlist, useRemoveFromWishlist } from "@/features/Wishlist/hooks/useWishlist";
+import { WishlistContext } from "@/features/Wishlist/context/WishlistContext";
 
 export function useToggleWishlist(gameId: number, initialIsWishlisted: boolean) {
   const [isWishlisted, setIsWishlisted] = useState<boolean>(initialIsWishlisted);

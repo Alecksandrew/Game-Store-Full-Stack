@@ -1,6 +1,6 @@
 import ToggleWishlist from "@/global/components/ToggleWishlist/ToggleWishlist";
 import { useContext } from "react";
-import { GameCardContext } from "../../../context/GameCardContext";
+import { GameCardContext } from "../../../../features/Home/context/GameCardContext";
 import { WishlistContext } from "@/features/Wishlist/context/WishlistContext";
 import isUserLogged from "@/global/utils/isUserLogged";
 

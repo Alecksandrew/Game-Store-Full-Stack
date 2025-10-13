@@ -3,7 +3,7 @@ import { useState } from "react";
 import BackgroundPage from "@/global/components/BackgroundPage";
 import RegisterForm from "../components/RegisterForm";
 import LoginForm from "../components/LoginForm";
-import Toggle from "../../../global/components/Toggle";
+import Toggle from "../../../global/components/Toggle/Toggle";
 import Card from "@/global/components/Card";
 
 export default function AuthPage() {

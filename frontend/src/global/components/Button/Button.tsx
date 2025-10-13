@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
 import type { ButtonProps } from "./types";
 
-export default function Button({
+export function Button({
   className,
   title,
   type,

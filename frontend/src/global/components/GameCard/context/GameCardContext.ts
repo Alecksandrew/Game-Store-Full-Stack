@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import type { GameCardData } from "../types/GameCardType";
+import type { GameCardData } from "../types";
 
 //Context
 const placeholderGameCardData = {

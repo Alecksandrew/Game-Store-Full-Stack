@@ -1,12 +1,12 @@
-import { GameCardWithPrice } from "../components/GameCard/GameCardPresets";
-import type { GameCardData } from "../types/GameCardType";
+import { GameCardWithPrice } from "../../../global/components/GameCard/GameCardPresets";
+import type { GameCardData } from "../../../global/components/GameCard/types";
 import CircularProgress from "@mui/material/CircularProgress";
 import { usePaginatedGames } from "../hooks/usePaginatedGames";
 import { useState } from "react";
 import MainSection from "../components/MainSection";
 import CategoryCard from "../components/CategoryCard";
 import Header from "../components/Header";
-import PaginationRounded from "@/global/components/PaginationRounded";
+import PaginationRounded from "@/global/components/PaginationRounded/PaginationRounded";
 import { SearchForm } from "@/global/components/SearchForm";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import type { SearchFormData } from "@/global/types/searchFormType";

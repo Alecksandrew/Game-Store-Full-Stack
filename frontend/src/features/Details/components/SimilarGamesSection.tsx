@@ -3,7 +3,7 @@ import { GameDetailsDataContext } from "../contexts/GameDetailsDataContext";
 import {
   GameCardNoPrice,
   GameCardSkeleton,
-} from "@/features/Home/components/GameCard/GameCardPresets";
+} from "@/global/components/GameCard/GameCardPresets";
 
 export default function SimilarGamesSection() {
   const { isLoading, gameDetails } = useContext(GameDetailsDataContext);
