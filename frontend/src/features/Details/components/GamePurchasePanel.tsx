@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { GameDetailsDataContext } from "../contexts/GameDetailsDataContext";
 import PurchaseBenefitsCard from "@/features/Details/components/PurchaseBenefitsCard.tsx";
 import { AddToCartButton } from "@/global/components/AddToCartButton";
-import { ToggleWishlist } from "@/global/components/ToggleWishlist";
+import { ToggleWishlistButton } from "@/global/components/ToggleWishlistButton";
 
 export default function GamePurchasePanel({
   className,
@@ -30,7 +30,7 @@ export default function GamePurchasePanel({
           />
         </span>
         <span className="w-5/10 sm:w-4/10">
-          <ToggleWishlist type="text" gameId={id} />
+          <ToggleWishlistButton type="text" gameId={id} />
         </span>
       </div>
       <PurchaseBenefitsCard heading={"h1"} className="mt-4" />

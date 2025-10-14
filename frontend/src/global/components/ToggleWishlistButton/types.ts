@@ -1,5 +1,5 @@
 
-export type ToggleWishlistProps = {
+export type ToggleWishlistButtonProps = {
     className?: string;
     gameId: number;
     type: "icon" | "text";

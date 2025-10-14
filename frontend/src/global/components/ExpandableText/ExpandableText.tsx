@@ -1,6 +1,17 @@
 import { useState } from "react";
 import type { ExpandableTextProps } from "./types";
+import { twMerge } from "tailwind-merge";
 
+const lineClampClasses = {
+  1: "line-clamp-1",
+  2: "line-clamp-2",
+  3: "line-clamp-3",
+  4: "line-clamp-4",
+  5: "line-clamp-5",
+  6: "line-clamp-6",
+};
+
+type LineClampValue = keyof typeof lineClampClasses;
 
 export default function ExpandableText({
   title = "About",
@@ -12,13 +23,17 @@ export default function ExpandableText({
 }: ExpandableTextProps) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const clampClass =
+    lineClampClasses[maxLines as LineClampValue] || "line-clamp-3";
+
   return (
     <div className={className}>
       {title && <h2 className="text-text-primary text-3xl">{title}</h2>}
       <p
-        className={`text-text-primary font-inter font-light text-justify ${
-          !isOpen ? `line-clamp-${maxLines}` : ""
-        }`}
+        className={twMerge(
+          "text-text-primary font-inter font-light text-justify",
+          !isOpen && clampClass
+        )}
       >
         {text}
       </p>

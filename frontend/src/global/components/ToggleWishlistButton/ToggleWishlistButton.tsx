@@ -1,15 +1,15 @@
 import { MdOutlineFavoriteBorder, MdOutlineFavorite } from "react-icons/md";
-import type { ToggleWishlistProps } from "./types";
+import type { ToggleWishlistButtonProps } from "./types";
 import { useToggleWishlist } from "./hooks/useToggleWishlist";
 import { Button } from "../Button";
 import { WishlistContext } from "@/features/Wishlist/context/WishlistContext";
 import { useContext } from "react";
 
-export function ToggleWishlist({
+export function ToggleWishlistButton({
   className,
   gameId,
   type,
-}: ToggleWishlistProps) {
+}: ToggleWishlistButtonProps) {
   const { wishlist } = useContext(WishlistContext);
   const isCurrentlyWishlisted = wishlist.some((game) => game.id === gameId);
 
