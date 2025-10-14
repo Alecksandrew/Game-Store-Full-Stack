@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Toggle from "@/global/components/Toggle/Toggle";
 import type { ToggleOption } from "@/global/components/Toggle";
-import Card from "@/global/components/Card";
 import RegisterForm from "../components/RegisterForm";
 import LoginForm from "../components/LoginForm";
+import { AuthCard } from "../components/AuthCard";
 
 type AuthMode = "login" | "register";
 
@@ -16,13 +16,13 @@ export default function AuthPage() {
   ];
 
   return (
-    <Card className="gap-6">
+    <AuthCard className="gap-6">
       <Toggle
         options={authOptions}
         activedOption={mode}
         onOptionChange={setMode}
       />
       {mode === "register" ? <RegisterForm /> : <LoginForm />}
-    </Card>
+    </AuthCard>
   );
 }

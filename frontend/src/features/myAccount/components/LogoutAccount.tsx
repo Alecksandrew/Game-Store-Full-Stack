@@ -6,7 +6,7 @@ import { useLogout } from "../../auth/hooks/useAuth";
 
 
 export default function LogoutAccount(){
-    const {execute} = useLogout();
+    const {execute: executeLogout} = useLogout();
 
     return(
         <div className="bg-bg-primary p-6 rounded-lg border border-border">
@@ -22,7 +22,7 @@ export default function LogoutAccount(){
         <div className="flex justify-center">
             <Button 
                 type="button" 
-                onClick={execute}
+                onClick={executeLogout}
                 className="bg-danger hover:bg-danger/80"
             >Logout from my account</Button>
         </div>

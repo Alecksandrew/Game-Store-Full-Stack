@@ -5,7 +5,7 @@ import { usePaginatedGames } from "../hooks/usePaginatedGames";
 import { useState } from "react";
 import MainSection from "../components/MainSection";
 import CategoryCard from "../components/CategoryCard";
-import Header from "../components/Header";
+import Header from "../../../global/components/Header/Header";
 import PaginationRounded from "@/global/components/PaginationRounded/PaginationRounded";
 import { SearchForm } from "@/global/components/SearchForm";
 import type { FieldValues, SubmitHandler } from "react-hook-form";

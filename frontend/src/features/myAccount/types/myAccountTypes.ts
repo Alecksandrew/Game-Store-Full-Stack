@@ -7,4 +7,7 @@ export type MyAccountData = {
 export type MyAccountContextType = {
   myAccountData: MyAccountData | null;
   isLoading: boolean;
+  isLoggedIn: boolean;
+  handleLogout: () => void;
+  handleLoginSuccess: (jwtToken: string, refreshToken: string) =>  Promise<void>;
 };

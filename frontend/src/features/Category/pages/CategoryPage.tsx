@@ -1,6 +1,6 @@
 // src/features/Category/pages/CategoryPage.tsx
 import { useState } from "react";
-import Header from "@/features/Home/components/Header";
+import Header from "@/global/components/Header/Header";
 import { usePaginatedGames } from "@/features/Home/hooks/usePaginatedGames";
 import CircularProgress from "@mui/material/CircularProgress";
 import Pagination from "@mui/material/Pagination";

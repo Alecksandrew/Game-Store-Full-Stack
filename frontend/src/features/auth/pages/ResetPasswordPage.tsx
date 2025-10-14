@@ -1,10 +1,11 @@
+import { AuthCard } from "../components/AuthCard"
 import ResetPasswordForm from "../components/ResetPasswordForm"
-import Card from "@/global/components/Card"
+
 
 export default function ResetPasswordPage(){
     return(
-        <Card>
+        <AuthCard>
             <ResetPasswordForm/>
-        </Card>  
+        </AuthCard>  
     )
 }
