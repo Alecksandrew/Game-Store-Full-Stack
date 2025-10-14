@@ -1,5 +1,4 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
 import { Link } from "react-router";
 
 type GenreCardProps = {

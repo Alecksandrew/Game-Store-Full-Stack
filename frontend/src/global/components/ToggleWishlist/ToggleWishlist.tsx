@@ -2,16 +2,20 @@ import { MdOutlineFavoriteBorder, MdOutlineFavorite } from "react-icons/md";
 import type { ToggleWishlistProps } from "./types";
 import { useToggleWishlist } from "./hooks/useToggleWishlist";
 import { Button } from "../Button";
+import { WishlistContext } from "@/features/Wishlist/context/WishlistContext";
+import { useContext } from "react";
 
 export function ToggleWishlist({
   className,
   gameId,
-  initialIsWishlisted,
   type,
 }: ToggleWishlistProps) {
+  const { wishlist } = useContext(WishlistContext);
+  const isCurrentlyWishlisted = wishlist.some((game) => game.id === gameId);
+
   const { isWishlisted, isDisabled, handleToggle } = useToggleWishlist(
     gameId,
-    initialIsWishlisted
+    isCurrentlyWishlisted
   );
 
   if (type === ("icon" as const)) {

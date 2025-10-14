@@ -1,5 +1,4 @@
 import isUserLogged from "@/global/utils/isUserLogged";
-
 import { useEffect, useState, type ReactNode } from "react";
 import { WishlistContext } from "./WishlistContext";
 import type { GameCardData } from "@/global/components/GameCard";

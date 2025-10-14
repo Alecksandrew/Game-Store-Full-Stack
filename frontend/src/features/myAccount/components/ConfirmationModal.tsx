@@ -1,6 +1,5 @@
 import { Button } from "@/global/components/Button";
 
-
 type ConfirmationModalProps = {
   title: string;
   message: string;
@@ -38,14 +37,18 @@ export default function ConfirmationModal({
             onClick={onCancel}
             disabled={isLoading}
             className="bg-danger"
-          >Cancel</Button>
+          >
+            Cancel
+          </Button>
           <Button
             title={isLoading ? "Wait..." : confirmButtonText}
             type="button"
             onClick={onConfirm}
             disabled={isLoading}
-            className="bg-danger" 
-            >Confirm</Button>
+            className="bg-danger"
+          >
+            Confirm
+          </Button>
         </div>
       </div>
     </div>

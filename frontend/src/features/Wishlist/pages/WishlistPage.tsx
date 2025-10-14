@@ -1,5 +1,4 @@
 import { useContext} from "react";
-
 import CircularProgress from "@mui/material/CircularProgress";
 import { WishlistContext } from "../context/WishlistContext";
 import { GameCardWithPrice, type GameCardData } from "@/global/components/GameCard";
