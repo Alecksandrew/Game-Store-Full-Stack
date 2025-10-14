@@ -1,7 +1,8 @@
+import type { GameCardData } from "../GameCard";
 
 export type ToggleWishlistButtonProps = {
     className?: string;
-    gameId: number;
+    gameData: GameCardData;
     type: "icon" | "text";
   };
   

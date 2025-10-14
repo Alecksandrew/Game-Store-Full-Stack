@@ -1,41 +1,75 @@
-import isUserLogged from "@/global/utils/isUserLogged";
-import { useEffect, useState, type ReactNode } from "react";
+import { useContext, useEffect, type ReactNode } from "react";
 import { WishlistContext } from "./WishlistContext";
+import {
+  useAddToWishlist,
+  useGetWishlist,
+  useRemoveFromWishlist,
+} from "../hooks/useWishlist";
+import { MyAccountContext } from "@/features/myAccount/context/MyAccountContext";
 import type { GameCardData } from "@/global/components/GameCard";
-import { useGetWishlist } from "../hooks/useWishlist";
-
 
 export const WishlistProvider = ({ children }: { children: ReactNode }) => {
-  const { data, execute, isLoading } = useGetWishlist();
-  const [wishlist, setWishlist] = useState<GameCardData[]>([]);
+  const { isLoggedIn } = useContext(MyAccountContext);
+  
+  const {
+    data: wishlist,
+    execute: fetchWishlist,
+    isLoading,
+    setData: setWishlist,
+  } = useGetWishlist();
+  const { execute: executeRemoveFromWishlist } = useRemoveFromWishlist();
+  const { execute: executeAddToWishlist } = useAddToWishlist();
 
-  const refetchWishlist = () => {
-      if (isUserLogged()) {
-          execute();
-      }
-  }
+  const removeGameFromWishlist = async (gameId: number) => {
+    // Storing the original state, because i will try optimistic UI technique
+    const originalWishlist = wishlist;
 
-  const removeGameFromWishlist = (gameId: number) => {
-      setWishlist((currentWishlist) =>
-        currentWishlist.filter((game) => game.id !== gameId)
-      );
-    };
+    //Optimistic UI update
+    setWishlist((current) =>
+      (current || []).filter((game) => game.id !== gameId)
+    );
 
+    try {
+      //Remove from database backend
+      await executeRemoveFromWishlist(gameId);
+    } catch (error) {
+      console.error("Failed to remove from wishlist, reverting UI", error);
+      setWishlist(originalWishlist);
+    }
+  };
+
+  const addToWishlist = async (gameData: GameCardData) => {
+    //Same logic as removeGame
+    const originalWishlist = wishlist;
+
+    setWishlist((current) => [...(current || []), gameData]);
+
+    try {
+      await executeAddToWishlist(gameData.id);
+    } catch (error) {
+      console.error("Failed to add to wishlist, reverting UI", error);
+      setWishlist(originalWishlist);
+    }
+  };
 
   useEffect(() => {
-    if (isUserLogged()) {
-      execute();
+    if (isLoggedIn) {
+      fetchWishlist();
+    } else {
+      setWishlist(null);
     }
-  }, [execute]);
-
-  useEffect(() => {
-    if (data) {
-        setWishlist(data);
-    }
-  }, [data]);
+  }, [isLoggedIn, fetchWishlist, setWishlist]);
 
   return (
-    <WishlistContext.Provider value={{ wishlist, isLoading, refetchWishlist, removeGameFromWishlist }}>
+    <WishlistContext.Provider
+      value={{
+        wishlist: wishlist || [],
+        isLoading,
+        fetchWishlist,
+        removeGameFromWishlist,
+        addToWishlist,
+      }}
+    >
       {children}
     </WishlistContext.Provider>
   );

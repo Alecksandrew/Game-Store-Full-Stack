@@ -1,34 +1,22 @@
-import { useContext, useEffect, useState } from "react";
-
-import { useAddToWishlist, useRemoveFromWishlist } from "@/features/Wishlist/hooks/useWishlist";
+import { useContext } from "react";
 import { WishlistContext } from "@/features/Wishlist/context/WishlistContext";
+import type { GameCardData } from "../../GameCard";
 
-export function useToggleWishlist(gameId: number, initialIsWishlisted: boolean) {
-  const [isWishlisted, setIsWishlisted] = useState<boolean>(initialIsWishlisted);
-  const { execute: addToWishlist, isLoading: isAdding } = useAddToWishlist();
-  const { execute: removeFromWishlist, isLoading: isRemoving } = useRemoveFromWishlist();
-  const { refetchWishlist, removeGameFromWishlist } = useContext(WishlistContext);
+export function useToggleWishlist(gameData: GameCardData) {
 
-  useEffect(() => {
-    setIsWishlisted(initialIsWishlisted);
-  }, [initialIsWishlisted]);
+  const { wishlist, removeGameFromWishlist, addToWishlist,  isLoading } = useContext(WishlistContext);
 
-  const isDisabled = isAdding || isRemoving;
-
+  const isWishlisted = wishlist.some(game => game.id === gameData.id);
+  
   const handleToggle = async () => {
-    if (isDisabled) return;
 
     if (isWishlisted) {
-      await removeFromWishlist(gameId);
-      removeGameFromWishlist(gameId);
+      await removeGameFromWishlist(gameData.id); 
     } else {
-      await addToWishlist(gameId);
-      refetchWishlist();
+      await addToWishlist(gameData); //Backend
     }
-    
-    setIsWishlisted(!isWishlisted);
     
   };
 
-  return { isWishlisted, isDisabled, handleToggle };
+  return { isWishlisted, handleToggle, isLoading };
 }

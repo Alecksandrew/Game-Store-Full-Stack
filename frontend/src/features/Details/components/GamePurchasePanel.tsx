@@ -11,7 +11,7 @@ export default function GamePurchasePanel({
   className,
 }: GamePurchasePanelProps) {
   const { gameDetails } = useContext(GameDetailsDataContext);
-  const { name, price, discountPrice, id } = gameDetails;
+  const { name, price, discountPrice } = gameDetails;
 
   return (
     <div className={`bg-bg-primary ${className}`}>
@@ -30,7 +30,7 @@ export default function GamePurchasePanel({
           />
         </span>
         <span className="w-5/10 sm:w-4/10">
-          <ToggleWishlistButton type="text" gameId={id} />
+          <ToggleWishlistButton type="text" gameData={gameDetails} />
         </span>
       </div>
       <PurchaseBenefitsCard heading={"h1"} className="mt-4" />

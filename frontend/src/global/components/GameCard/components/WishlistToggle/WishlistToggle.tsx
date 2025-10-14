@@ -1,12 +1,13 @@
 import { useContext } from "react";
-import isUserLogged from "@/global/utils/isUserLogged";
 import { GameCardContext } from "../../context/GameCardContext";
 import { ToggleWishlistButton } from "@/global/components/ToggleWishlistButton";
+import { MyAccountContext } from "@/features/myAccount/context/MyAccountContext";
 
 export function WishlistToggle() {
   const gameData = useContext(GameCardContext);
+  const {isLoggedIn} = useContext(MyAccountContext)
 
-  if (!isUserLogged()) {
+  if (!isLoggedIn) {
     return null;
   }
 
@@ -14,7 +15,7 @@ export function WishlistToggle() {
     <ToggleWishlistButton
       type="icon"
       className="absolute right-2/100 top-2/100"
-      gameId={gameData.id}
+      gameData={gameData}
     />
   );
 }

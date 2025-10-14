@@ -2,29 +2,20 @@ import { MdOutlineFavoriteBorder, MdOutlineFavorite } from "react-icons/md";
 import type { ToggleWishlistButtonProps } from "./types";
 import { useToggleWishlist } from "./hooks/useToggleWishlist";
 import { Button } from "../Button";
-import { WishlistContext } from "@/features/Wishlist/context/WishlistContext";
-import { useContext } from "react";
-
 export function ToggleWishlistButton({
   className,
-  gameId,
+  gameData,
   type,
 }: ToggleWishlistButtonProps) {
-  const { wishlist } = useContext(WishlistContext);
-  const isCurrentlyWishlisted = wishlist.some((game) => game.id === gameId);
-
-  const { isWishlisted, isDisabled, handleToggle } = useToggleWishlist(
-    gameId,
-    isCurrentlyWishlisted
-  );
+  const { isWishlisted, isLoading, handleToggle } = useToggleWishlist(gameData);
 
   if (type === ("icon" as const)) {
     return (
       <button
-        disabled={isDisabled}
+        disabled={isLoading}
         onClick={handleToggle}
         className={`p-1 rounded bg-text-primary aspect-square flex justify-center items-center text-2xl ${
-          isDisabled ? "opacity-50 cursor-not-allowed" : ""
+          isLoading ? "opacity-50 cursor-not-allowed" : ""
         } ${className}`}
       >
         {isWishlisted ? (
@@ -45,7 +36,7 @@ export function ToggleWishlistButton({
             ? "bg-primary text-text-primary"
             : "bg-transparent text-primary hover:bg-primary hover:text-text-primary"
         }`}
-        disabled={isDisabled}
+        disabled={isLoading}
         onClick={handleToggle}
       >
         {isWishlisted ? "Remove Wishlist" : "Add to Wishlist"}
