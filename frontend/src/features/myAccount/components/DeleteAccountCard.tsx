@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import ConfirmationModal from "./ConfirmationModal";
 
 import { useDeleteAccount } from "../hooks/useDeleteAccount";
 import { PAGE_ROUTES } from "@/global/constants/FRONTEND_URL";

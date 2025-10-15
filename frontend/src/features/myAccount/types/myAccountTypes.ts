@@ -2,6 +2,7 @@
 export type MyAccountData = {
   userName: string;
   email: string;
+  role:string,
 };
 
 export type MyAccountContextType = {
