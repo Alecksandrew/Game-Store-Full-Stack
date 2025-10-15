@@ -1,9 +1,19 @@
+import type { GameCardData } from "@/global/components/GameCard";
 import { createContext } from "react";
-import type { WishlistContextType } from "../types/wishlistTypes";
+
+type WishlistContextType = {
+  wishlist: GameCardData[];
+  isLoading: boolean;
+  fetchWishlist: () => void;
+  removeGameFromWishlist:(gameId: number) => Promise<void>;
+  addToWishlist: (gameData: GameCardData) => Promise<void>;
+};
+
 
 export const WishlistContext = createContext<WishlistContextType>({
   wishlist: [],
   isLoading: true,
-  refetchWishlist: () => {},
-  removeGameFromWishlist: () => {},
+  fetchWishlist: () => {},
+  removeGameFromWishlist: async () => {},
+  addToWishlist: async () => {}
 });

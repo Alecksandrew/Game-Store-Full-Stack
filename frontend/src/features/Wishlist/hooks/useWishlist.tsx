@@ -1,7 +1,7 @@
+import type { GameCardData } from "@/global/components/GameCard";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 import { useApi } from "@/global/hooks/useApi";
 import { apiClient } from "@/global/services/apiClient";
-import type { GameCardData } from "@/features/Home/types/GameCardType";
 import { useCallback } from "react";
 
 export function useAddToWishlist() {

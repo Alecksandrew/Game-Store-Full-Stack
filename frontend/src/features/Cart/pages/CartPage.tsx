@@ -1,11 +1,11 @@
 import { useContext } from "react";
-import Header from "@/features/Home/components/Header";
+
 import { CartContext } from "../context/CartContext";
 import CartItem from "../components/CartItem";
 import OrderSummary from "../components/OrderSummary";
 import { Link, useNavigate } from "react-router";
 import { MdOutlineShoppingCart } from "react-icons/md";
-import Button from "@/global/components/Button";
+import { Button } from "@/global/components/Button";
 
 export default function CartPage() {
   const { cartItems } = useContext(CartContext);
@@ -13,7 +13,6 @@ export default function CartPage() {
 
   return (
     <>
-      <Header />
       <div className="bg-bg-primary min-h-screen py-10">
         <div className="w-9/10 max-w-[1200px] mx-auto">
           <h1 className="text-4xl text-text-primary font-orbitron mb-6">
@@ -44,10 +43,9 @@ export default function CartPage() {
               <div className="lg:col-span-1">
                 <OrderSummary>
                   <Button
-                    title="Get your key(s)"
                     type="button"
                     onClick={() => navigate("/checkout")}
-                  />
+                  >Get your key(s)</Button>
                 </OrderSummary>
               </div>
             </div>

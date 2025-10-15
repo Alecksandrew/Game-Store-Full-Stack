@@ -1,13 +1,7 @@
-import { useContext, useEffect } from "react";
-import { GameCardWithPrice } from "@/features/Home/components/GameCard/GameCardPresets";
-import type { GameCardData } from "@/features/Home/types/GameCardType";
-import { useGetWishlist } from "@/features/Wishlist/hooks/useWishlist";
+import { useContext} from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import Header from "@/features/Home/components/Header";
-import isUserLogged from "@/global/utils/isUserLogged";
 import { WishlistContext } from "../context/WishlistContext";
-import { useNavigate } from "react-router";
-import { PAGE_ROUTES } from "@/global/constants/FRONTEND_URL";
+import { GameCardWithPrice, type GameCardData } from "@/global/components/GameCard";
 
 export default function WishlistPage() {
 
@@ -50,7 +44,6 @@ const { wishlist, isLoading } = useContext(WishlistContext);
 
   return (
     <>
-      <Header />
       <div className="bg-bg-primary min-h-screen py-10">
         <div className="w-9/10 max-w-[1200px] mx-auto">
           <h1 className="text-4xl text-text-primary">Your wishlist</h1>

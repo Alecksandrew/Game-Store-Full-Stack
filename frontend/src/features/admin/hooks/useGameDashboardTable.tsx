@@ -3,8 +3,10 @@ import { useApi } from "@/global/hooks/useApi";
 import { apiClient } from "@/global/services/apiClient";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 import type { AdminGame, PaginatedResponse } from "../types/gameDashboardTypes";
+import type { FieldValues, SubmitHandler } from "react-hook-form";
 
 export default function useGameDashboardTable() {
+  const [version, setVersion] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("igdbId");
@@ -38,8 +40,9 @@ export default function useGameDashboardTable() {
 
   useEffect(() => {
     execute();
-  }, [execute]);
+  }, [execute, version]);
 
+  const refetch = () => setVersion((v) => v + 1);
 
 
   //Component which is using the hook can handle internal state
@@ -47,8 +50,9 @@ export default function useGameDashboardTable() {
     setCurrentPage(newPage);
   };
 
-  const handleSearch = (term: string) => {
-    setSearchTerm(term);
+  const handleSearch: SubmitHandler<FieldValues> = (data) => {
+    console.log(data)
+    setSearchTerm(data.gameName ?? "");
     setCurrentPage(1); 
   };
 
@@ -74,5 +78,6 @@ export default function useGameDashboardTable() {
     handleSort,
     sortBy,
     isAscending,
+    refetch
   };
 }

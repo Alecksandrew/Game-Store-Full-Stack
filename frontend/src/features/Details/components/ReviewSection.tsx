@@ -5,14 +5,15 @@ import {
   ReviewCardStandard,
 } from "./ReviewCard/ReviewCard.presets";
 import { useNavigate } from "react-router";
-import Button from "@/global/components/Button";
+
 import { PAGE_ROUTES } from "@/global/constants/FRONTEND_URL";
 import { useCreateReviewByGame } from "../hooks/useCreateReviewByGame";
 import { useUpdateReviewByGame } from "../hooks/useUpdateReviewByGame";
 import useDeleteReviewByGame from "../hooks/useDeleteReviewByGame";
 import { useContext, useState } from "react";
 import { GameDetailsDataContext } from "../contexts/GameDetailsDataContext";
-import isUserLogged from "@/global/utils/isUserLogged";
+import { Button } from "@/global/components/Button";
+import { MyAccountContext } from "@/features/myAccount/context/MyAccountContext";
 
 function LoginPrompt() {
   const navigate = useNavigate();
@@ -23,10 +24,9 @@ function LoginPrompt() {
           Login to create reviews
         </p>
         <Button
-          title="Login"
           type="button"
           onClick={() => navigate(PAGE_ROUTES.AUTH.LOGIN)}
-        />
+        >Login</Button>
       </div>
     </div>
   );
@@ -35,6 +35,7 @@ function LoginPrompt() {
 export default function ReviewSection({ className }: { className?: string }) {
   const { handleReviewSuccess, reviewData, myReviewData } =
     useReviewManagement();
+    const { isLoggedIn} = useContext(MyAccountContext);
 
   const { gameDetails } = useContext(GameDetailsDataContext);
   const [editingReviewId, setEditingReviewId] = useState<number | null>(null);
@@ -108,7 +109,7 @@ export default function ReviewSection({ className }: { className?: string }) {
   return (
     <section className={className}>
       <h2 className="text-text-primary text-3xl mb-3">Reviews</h2>
-      {isUserLogged() ? (
+      {isLoggedIn ? (
         <ReviewForm
           onSubmit={handleCreate}
           isLoading={isCreating}

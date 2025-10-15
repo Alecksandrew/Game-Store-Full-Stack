@@ -1,11 +1,11 @@
 // src/features/Category/pages/CategoryPage.tsx
 import { useState } from "react";
-import Header from "@/features/Home/components/Header";
+import Header from "@/global/components/Header/Header";
 import { usePaginatedGames } from "@/features/Home/hooks/usePaginatedGames";
 import CircularProgress from "@mui/material/CircularProgress";
 import Pagination from "@mui/material/Pagination";
-import type { GameCardData } from "@/features/Home/types/GameCardType";
-import { GameCardWithPrice } from "@/features/Home/components/GameCard/GameCardPresets";
+import type { GameCardData } from "@/global/components/GameCard/types";
+import { GameCardWithPrice } from "@/global/components/GameCard/GameCard.presets";
 import { useParams } from "react-router";
 
 export default function CategoryPage() {
@@ -38,7 +38,6 @@ export default function CategoryPage() {
   return (
     <>
       {warningType === "error" && warningComponent}
-      <Header />
       <div className="bg-bg-primary min-h-screen py-10">
         <div className="w-9/10 max-w-[1200px] mx-auto">
           <h1 className="text-4xl text-text-primary capitalize">

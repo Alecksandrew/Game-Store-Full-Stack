@@ -155,6 +155,7 @@ namespace GameStoreAPI.Features.Admin.AdminService
             _dbContext.GamesInventory.Remove(gameInventory);
             await _dbContext.SaveChangesAsync();
 
+
             return Result<object>.Ok(null);
         }
     }

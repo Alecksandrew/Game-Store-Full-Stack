@@ -1,12 +1,13 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import { useApi } from "@/global/hooks/useApi";
 import { apiClient } from "@/global/services/apiClient";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 import type { MyReviewApiResponseType } from "../types/ReviewApiResponseType";
-import isUserLogged from "@/global/utils/isUserLogged";
+import { MyAccountContext } from "@/features/myAccount/context/MyAccountContext";
+
 
 export function useGetMyReviewsByGame(gameId: number, version?: number) {
-   
+  const {isLoggedIn} = useContext(MyAccountContext)
   
   const getReviewsRequest = useCallback(() => {
     if (!gameId) {
@@ -31,10 +32,10 @@ export function useGetMyReviewsByGame(gameId: number, version?: number) {
   >(getReviewsRequest);
 
   useEffect(() => {
-    if (gameId && isUserLogged()) {
+    if (gameId && isLoggedIn) {
       execute();
     }
-  }, [gameId, execute, version]);
+  }, [gameId, execute, version, isLoggedIn]);
 
   return { data, isLoading, warningComponent, warningType };
 }

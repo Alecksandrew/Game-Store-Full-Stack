@@ -1,133 +1,126 @@
-import { Table } from "@/global/components/Table/index";
+// src/features/admin/components/GameDashboardTable.tsx
+// ... existing imports ...
+
+import { SearchForm } from "@/global/components/SearchForm";
+import GameDashboardHeader from "./GameDashboardTable/GameDashboardHeader";
+import { GameDashboardTableBody } from "./GameDashboardTable/GameDashboardTableBody";
+import { GameDashboardTableHeader } from "./GameDashboardTable/GameDashboardTableHeader";
+import { Table } from "@/global/components/Table/Table";
 import useGameDashboardTable from "../hooks/useGameDashboardTable";
-import GameTableRow from "./GameTableRow";
-import PaginationRounded from "@/global/components/PaginationRounded"; // Verifique se o caminho está correto
-import CircularProgress from "@mui/material/CircularProgress";
-import { Skeleton } from "@/global/components/Skeleton";
-
-
-function GameTableRowSkeleton() {
-  return (
-    <Table.Row className="border-t py-10  border-blue-gray">
-      <Table.Td><Skeleton className="h-6 w-full" /></Table.Td>
-      <Table.Td><Skeleton className="h-6 w-full" /></Table.Td>
-      <Table.Td><Skeleton className="h-6 w-full" /></Table.Td>
-      <Table.Td><Skeleton className="h-6 w-full" /></Table.Td>
-      <Table.Td><Skeleton className="h-6 w-full" /></Table.Td>
-      <Table.Td><Skeleton className="h-6 w-full" /></Table.Td>
-    </Table.Row>
-  );
-}
-
+import { useState } from "react";
+import PaginationRounded from "@/global/components/PaginationRounded/PaginationRounded";
+import SectionHeader from "@/global/components/SectionHeader/SectionHeader";
+import KeysModal from "./KeysModal/KeysModal";
 
 export function GameDashboardTable() {
   const {
-    gamesData, // Renomeado de gamesData para games para corresponder ao hook
+    gamesData,
     totalCount,
     isLoading,
     warningType,
     warningComponent,
     currentPage,
     handlePageChange,
-    handleSearch, // Função para a barra de busca
+    handleSearch,
     handleSort,
     sortBy,
     isAscending,
+    refetch
   } = useGameDashboardTable();
 
-  const pageSize = 10;
-  const totalPages = Math.ceil(totalCount / 10);
+  const [editingGameId, setEditingGameId] = useState<number | null>(null);
 
-  const renderTableBody = () => {
-    // ESTADO DE CARREGAMENTO
-    if (isLoading) {
-      // Renderiza 10 linhas de esqueleto para manter a altura
-      return Array.from({ length: pageSize }).map((_, index) => (
-        <GameTableRowSkeleton key={`skeleton-${index}`} />
-      ));
-    }
+  const [keysModal, setKeysModal] = useState<{
+    isOpen: boolean;
+    gameId: number;
+    gameName: string;
+  }>({
+    isOpen: false,
+    gameId: 0,
+    gameName: ''
+  });
 
-    // ESTADO SEM DADOS
-    if (gamesData.length === 0) {
-      return (
-        <>
-          <Table.Row>
-            <Table.Td colSpan={6} className="text-center py-10 italic">
-              Nenhum jogo encontrado.
-            </Table.Td>
-          </Table.Row>
-          {/* Preenche o resto do espaço com linhas vazias para manter a altura */}
-          {Array.from({ length: pageSize - 1 }).map((_, index) => (
-            <Table.Row key={`empty-${index}`}>
-              <Table.Td colSpan={6}>&nbsp;</Table.Td>
-            </Table.Row>
-          ))}
-        </>
-      );
-    }
-
-    // ESTADO COM DADOS
-    const emptyRowsCount = pageSize - gamesData.length;
-    return (
-      <>
-        {gamesData.map((game) => (
-          <GameTableRow key={game.igdbId} gameInfo={game} />
-        ))}
-        {emptyRowsCount > 0 && Array.from({ length: emptyRowsCount }).map((_, index) => (
-          <Table.Row key={`empty-${index}`} className="border-t border-gray-700">
-            <Table.Td colSpan={6}>&nbsp;</Table.Td>
-          </Table.Row>
-        ))}
-      </>
-    );
+  const handleCancel = (gameId: number) => {
+    setEditingGameId(null);
   };
 
-  return (
-    <div className="p-4 bg-bg-secondary rounded-lg border-blue-gray w-fit min-h-[762px]">
-      {warningType === "error" && warningComponent}
-      <h1 className="text-2xl text-text-primary ">Games Management</h1>
-      <p className="text-blue-gray mb-6">Manage your game catalog and inventory</p>
-      
-    
-      {/* <SearchBar onSearch={handleSearch} /> */}
+  const handleSaveSuccess = () => {
+    // Recarrega os dados da tabela após salvar
+    refetch();
+  };
 
-      <Table.Root className="text-text-primary">
-        <Table.Head>
-          <Table.Row className="text-blue-gray">
-            {/* Adiciona evento de clique para ordenação e um indicador visual */}
-            <Table.Th onClick={() => handleSort("igdbId")} className="cursor-pointer">
-              ID {sortBy === 'igdbId' && (isAscending ? '🔼' : '🔽')}
-            </Table.Th>
-            <Table.Th onClick={() => handleSort("name")} className="cursor-pointer">
-              Name {sortBy === 'name' && (isAscending ? '🔼' : '🔽')}
-            </Table.Th>
-            <Table.Th onClick={() => handleSort("price")} className="cursor-pointer">
-              Price ($){sortBy === 'price' && (isAscending ? '🔼' : '🔽')}
-            </Table.Th>
-            <Table.Th onClick={() => handleSort("discountPrice")} className="cursor-pointer">
-              Price with Discount ($) {sortBy === 'discountPrice' && (isAscending ? '🔼' : '🔽')}
-            </Table.Th>
-            <Table.Th onClick={() => handleSort("availableKeys")} className="cursor-pointer">
-              Keys available {sortBy === 'availableKeys' && (isAscending ? '🔼' : '🔽')}
-            </Table.Th>
-            <Table.Th>Actions</Table.Th>
-          </Table.Row>
-        </Table.Head>
-        <Table.Body className="">
-          {renderTableBody()}
-        </Table.Body>
+  const handleOpenKeysModal = (gameId: number, gameName: string) => {
+    setKeysModal({
+      isOpen: true,
+      gameId,
+      gameName
+    });
+  };
+
+  // Função para fechar o modal de chaves
+  const handleCloseKeysModal = () => {
+    setKeysModal({
+      isOpen: false,
+      gameId: 0,
+      gameName: ''
+    });
+  };
+
+  const handleKeysSuccess = () => {
+    handleCloseKeysModal();
+    refetch(); // Atualiza a tabela
+  };
+
+  const totalPages = Math.ceil(totalCount / 10);
+
+  return (
+    <>
+    <KeysModal
+        isOpen={keysModal.isOpen}
+        gameId={keysModal.gameId}
+        gameName={keysModal.gameName}
+        onClose={handleCloseKeysModal}
+        onSuccess={handleKeysSuccess}
+      />
+    <div className="p-4 bg-bg-secondary rounded-lg border-blue-gray w-fit min-h-[762px] ring-2 ring-primary">
+      {warningType === "error" && warningComponent}
+      <GameDashboardHeader />
+
+      <SearchForm
+        onSubmit={handleSearch}
+        placeholder="Search in admin panel..."
+      />
+
+      <Table.Root className="text-text-primary table-fixed">
+        <GameDashboardTableHeader
+          onSort={handleSort}
+          sortBy={sortBy}
+          isAscending={isAscending}
+        />
+        <GameDashboardTableBody
+          gamesData={gamesData}
+          isLoading={isLoading}
+          pageSize={10}
+          editingGameId={editingGameId}
+          onEdit={setEditingGameId}
+    
+          onCancel={handleCancel}
+          onSaveSuccess={handleSaveSuccess}
+          onOpenKeysModal={handleOpenKeysModal}
+        />
       </Table.Root>
 
-     {totalPages > 1 && (
-  <div className="mt-4 flex justify-center  rounded w-fit p-2 mx-auto">
-    <PaginationRounded
-      count={totalPages}
-      page={currentPage}
-      onPageChange={(e, value) => handlePageChange(value)}
-    />
-  </div>
-)}
-
+      {totalPages > 1 && (
+        <div className="mt-4 flex justify-center rounded w-fit p-2 mx-auto">
+          <PaginationRounded
+            count={totalPages}
+            page={currentPage}
+            onPageChange={(e, value) => handlePageChange(value)}
+          />
+        </div>
+      )}
     </div>
+    </>
+    
   );
 }

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import Button from "@/global/components/Button";
-import FormHeader from "@/global/components/FormHeader";
-import ConfirmationModal from "./ConfirmationModal";
 
 import { useDeleteAccount } from "../hooks/useDeleteAccount";
 import { PAGE_ROUTES } from "@/global/constants/FRONTEND_URL";
+import { Form } from "@/global/components/Form";
+import { Button } from "@/global/components/Button";
+import { Modal } from "@/global/components/Modal";
 
 export default function DeleteAccount() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,43 +34,44 @@ export default function DeleteAccount() {
 
   return (
     <>
-      {isModalOpen && (
-        <ConfirmationModal
-          title="Delete account"
-          message="Are you sure you want to delete your account? All your data will be permanently lost. This action cannot be undone."
-          onConfirm={handleConfirmDelete}
-          onCancel={handleCloseModal}
-          isLoading={isLoading}
-          confirmButtonText={isLoading ? "Deleting..." : "Yes, Delete account"}
-        />
-      )}
+       <Modal.Preset.Confirmation
+        isOpen={isModalOpen}
+        title="Delete account"
+        message="Are you sure you want to delete your account? All your data will be permanently lost. This action cannot be undone."
+        onConfirm={handleConfirmDelete}
+        onClose={handleCloseModal}
+        isLoading={isLoading}
+        confirmButtonText={isLoading ? "Deleting..." : "Yes, Delete account"}
+      />
+
 
       {warningComponent}
 
-      <div className="form h-[450px]">
-        <FormHeader
+      <Form.Root onSubmit={() => {}} className="h-[450px]">
+        <Form.Header
           title="Danger zone"
-          subTitle="Irreversible actions that permanently affect your account"
-          className="mb-0"
+          subtitle="Irreversible actions that permanently affect your account"
+          divClassName="mb-0"
         />
 
-        <div className="bg-bg-primary p-4 rounded-md border border-danger/50 w-full text-center">
-          <p className="text-text-secondary">
-            Please note: This action is permanent and cannot be undone. All your
-            data will be deleted, including purchases, wishlists, and history.
-          </p>
-        </div>
+        <Form.Body>
+          <div className="bg-bg-primary p-4 rounded-md border border-danger/50 w-full text-center">
+            <p className="text-text-secondary">
+              Please note: This action is permanent and cannot be undone. All your
+              data will be deleted, including purchases, wishlists, and history.
+            </p>
+          </div>
+        </Form.Body>
 
-        <div className="w-full mt-4">
+        <Form.Actions>
           <Button
-            title="Excluir Minha Conta"
             type="button"
             onClick={handleOpenModal}
             disabled={isLoading}
             className="bg-danger"
-          />
-        </div>
-      </div>
+          >Delete my account</Button>
+        </Form.Actions>
+      </Form.Root>
     </>
   );
 }

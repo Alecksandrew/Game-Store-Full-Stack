@@ -1,13 +1,15 @@
-import { GameCardWithPrice } from "../components/GameCard/GameCardPresets";
-import SearchGameForm from "../components/SearchGameForm";
-import type { GameCardData } from "../types/GameCardType";
+import { GameCardWithPrice } from "../../../global/components/GameCard/GameCard.presets";
+import type { GameCardData } from "../../../global/components/GameCard/types";
 import CircularProgress from "@mui/material/CircularProgress";
 import { usePaginatedGames } from "../hooks/usePaginatedGames";
 import { useState } from "react";
 import MainSection from "../components/MainSection";
 import CategoryCard from "../components/CategoryCard";
-import Header from "../components/Header";
-import PaginationRounded from "@/global/components/PaginationRounded";
+import Header from "../../../global/components/Header/Header";
+import PaginationRounded from "@/global/components/PaginationRounded/PaginationRounded";
+import { SearchForm } from "@/global/components/SearchForm";
+import type { FieldValues, SubmitHandler } from "react-hook-form";
+import type { SearchFormData } from "@/global/types/searchFormType";
 
 export default function HomePage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,7 +20,7 @@ export default function HomePage() {
     searchTerm,
   });
 
-  const handleSearchSubmit = (data: { gameName: string }) => {
+  const handleSearchSubmit: SubmitHandler<FieldValues> = (data) => {
     setSearchTerm(data.gameName);
     setCurrentPage(1);
   };
@@ -46,12 +48,12 @@ export default function HomePage() {
   return (
     <>
       {warningType == "error" ? warningComponent : null}
-      <Header />
       <div className="bg-bg-primary min-h-screen py-4">
         <div className="w-8/10 max-w-[1000px] mx-auto">
           <MainSection />
           <CategoryCard />
-          <SearchGameForm onSubmit={handleSearchSubmit} />
+          <SearchForm onSubmit={handleSearchSubmit} />
+
           {isLoading ? (
             <div className="flex justify-center items-center min-h-100">
               <CircularProgress size="4rem" className="mx-auto" />

@@ -1,10 +1,12 @@
-import FormHeader from "@/global/components/FormHeader";
-import { Input } from "@/global/components/Input";
+
+import { Input } from "@/global/components/Input/Input";
 import { useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { useResetPassword } from "../hooks/useAuth";
-import Form from "@/global/components/Form";
+
 import { useFormContext } from "react-hook-form";
+import { Form } from "@/global/components/Form";
+import { Button } from "@/global/components/Button";
 
 export default function ResetPasswordForm() {
   const { execute, isLoading, warningComponent, data } = useResetPassword();
@@ -70,32 +72,40 @@ export default function ResetPasswordForm() {
   return (
     <>
       {warningComponent}
-      <Form
+      <Form.Root
         onSubmit={execute}
-        submitText="Reset password"
-        isLoading={isLoading}
         defaultValues={defaultValues}
       >
-        <FormHeader
+        <Form.Header
           title="Update your password"
-          subTitle="Set a new password and get back to enjoy daily game deals"
+          subtitle="Set a new password and get back to enjoy daily game deals"
         />
-        <HiddenFields />
-        <Input
-          label="New password"
-          name="newPassword"
-          type="password"
-          placeholder="Create a password"
-          rules={{
-            required: "Password is required",
-            minLength: {
-              value: 8,
-              message: "Password must be at least 8 characters long",
-            },
-          }}
-        />
-        <ConfirmNewPasswordInput />
-      </Form>
+        
+        <Form.Body>
+          <HiddenFields />
+          <Input
+            label="New password"
+            name="newPassword"
+            type="password"
+            placeholder="Create a password"
+            rules={{
+              required: "Password is required",
+              minLength: {
+                value: 8,
+                message: "Password must be at least 8 characters long",
+              },
+            }}
+          />
+          <ConfirmNewPasswordInput />
+        </Form.Body>
+
+        <Form.Actions>
+          <Button
+            type="submit"
+            disabled={isLoading}
+          >Reset password</Button>
+        </Form.Actions>
+      </Form.Root>
     </>
   );
 }

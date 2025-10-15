@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
-import { type warningState } from "../types/warningType";
 import { type ApiResponse } from "../types/responseApiType";
-import { Warning } from "@/global/components/Warning";
+import { Modal } from "../components/Modal";
 
 const emptyWarningState: warningState = {
   message: "",
@@ -23,7 +22,11 @@ export function useApi<TData, TResponse>(
 
       try {
         const response = await apiRequest(requestData);
-  console.log("%cAPI Call Succeeded:", "color: green; font-weight: bold;", response);
+        console.log(
+          "%cAPI Call Succeeded:",
+          "color: green; font-weight: bold;",
+          response
+        );
         setData(response);
 
         const successMessage =
@@ -45,15 +48,14 @@ export function useApi<TData, TResponse>(
     [apiRequest]
   );
 
-  const warningComponent =
-    warning.message !== "" ? (
-      <Warning
-        message={warning.message}
-        type={warning.type}
-        onClose={() => setWarning(emptyWarningState)}
-      />
-    ) : null;
-
+  const warningComponent = (
+    <Modal.Preset.Notification
+      isOpen={warning.message !== ""}
+      message={warning.message}
+      type={warning.type}
+      onClose={() => setWarning(emptyWarningState)}
+    />
+  );
   return {
     data,
     isLoading,

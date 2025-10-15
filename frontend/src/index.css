@@ -23,6 +23,60 @@
   /* fonts */
   --font-orbitron: "Orbitron", sans-serif;
   --font-inter: "Inter", sans-serif;
+
+
+
+  /* Animations */
+   --animation-duration-modal: 500ms;
+
+  --animate-fade-in: fade-in var(--animation-duration-modal) ease-in-out forwards;
+  --animate-scale-in: scale-in var(--animation-duration-modal) ease-in-out forwards;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.90);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  --animate-fade-out: fade-out var(--animation-duration-modal) ease-in-out forwards;
+  --animate-scale-out: scale-out var(--animation-duration-modal) ease-in-out forwards;
+
+   @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes scale-out {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.90);
+    }
+  }
+
+
+  
 };
 
 @layer base {

@@ -20,34 +20,53 @@ import CartPage from "./features/Cart/pages/CartPage.tsx";
 import { MyAccountProvider } from "./features/myAccount/context/MyAccountProvider.tsx";
 import CheckoutPage from "./features/Checkout/pages/CheckoutPage.tsx";
 import AdminPage from "./features/admin/pages/AdminPage.tsx";
+import MainLayout from "./global/components/MainLayout.tsx";
+import AuthPageLayout from "./features/auth/components/AuthPageLayout/AuthPageLayout.tsx";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <HomePage />,
+    element: <MainLayout />,
+    children: [
+      {
+        path: PAGE_ROUTES.STORE.HOME,
+        element: <HomePage />,
+      },
+      {
+        path: "/games/:id",
+        element: <GameDetailsPage />,
+      },
+      {
+        path: PAGE_ROUTES.STORE.WISHLIST,
+        element: <WishlistPage />,
+      },
+      {
+        path: PAGE_ROUTES.STORE.CART,
+        element: <CartPage />,
+      },
+      {
+        path: PAGE_ROUTES.STORE.CHECKOUT,
+        element: <CheckoutPage />,
+      },
+      {
+        path: PAGE_ROUTES.STORE.GENRES,
+        element: <CategoryPage />,
+      },
+      {
+        path: PAGE_ROUTES.ACCOUNT,
+        element: (
+          <ProtectedRoute>
+            <MyAccountPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: PAGE_ROUTES.ADMIN.DASHBOARD,
+        element: <AdminPage />,
+      },
+    ],
   },
   {
-    path: "/games/:id",
-    element: <GameDetailsPage />,
-  },
-  {
-    path: "/wishlist",
-    element: <WishlistPage />,
-  },
-  {
-    path: "/cart",
-    element: <CartPage />,
-  },
-  {
-    path: "/checkout",
-    element: <CheckoutPage />,
-  },
-  {
-    path: PAGE_ROUTES.STORE.GENRES,
-    element: <CategoryPage />,
-  },
-  {
-    element: <AuthLayout />,
+    element: <AuthPageLayout />,
     children: [
       {
         path: PAGE_ROUTES.AUTH.LOGIN,
@@ -67,18 +86,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: "/my-account",
-    element: (
-      <ProtectedRoute>
-        <MyAccountPage />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path:"/admin",
-    element: <AdminPage/>
-  }
 ]);
 
 createRoot(document.getElementById("root")!).render(

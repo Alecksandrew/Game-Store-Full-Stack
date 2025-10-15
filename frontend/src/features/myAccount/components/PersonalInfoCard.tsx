@@ -1,9 +1,6 @@
 import { useContext } from "react";
-import FormHeader from "@/global/components/FormHeader";
-import InputOnlyDisplayInfo from "@/global/components/InputOnlyDisplayInfo";
-
 import { MyAccountContext } from "../context/MyAccountContext";
-
+import { DisplayField } from "@/global/components/DisplayField";
 
 export default function PersonalnfoCard() {
   const { myAccountData, isLoading } = useContext(MyAccountContext);
@@ -14,21 +11,26 @@ export default function PersonalnfoCard() {
   }
 
   return (
-    <form className="form h-[400px] max-h-fit">
-      <FormHeader
-        title="Profile informations"
-        subTitle="Your basic personal informations"
-      />
-      <InputOnlyDisplayInfo
+    <div className="bg-bg-primary p-6 rounded-lg border border-border">
+    <div className="text-center mb-6">
+      <h2 className="font-orbitron font-semibold text-2xl text-text-primary mb-2">
+        Profile informations
+      </h2>
+      <p className="font-inter font-light text-text-secondary">
+        Your basic personal informations
+      </p>
+    </div>
+    
+    <div className="space-y-4">
+      <DisplayField
         title="User name"
-        inputValue={myAccountData?.userName ?? "Not found"}
-        disabled={true}
+        value={myAccountData?.userName ?? "Not found"}
       />
-      <InputOnlyDisplayInfo
+      <DisplayField
         title="E-mail"
-        inputValue={myAccountData?.email ?? "Not found"}
-        disabled={true}
+        value={myAccountData?.email ?? "Not found"}
       />
-    </form>
+    </div>
+  </div>
   );
 }

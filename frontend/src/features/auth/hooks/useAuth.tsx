@@ -14,11 +14,13 @@ import type { ResetPasswordFormData } from "../types/ResetPasswordFormType";
 import { apiClient } from "@/global/services/apiClient";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 import { REDIRECT_DELAY_MS } from "@/global/constants/appConfig";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { PAGE_ROUTES } from "@/global/constants/FRONTEND_URL";
+import { MyAccountContext } from "@/features/myAccount/context/MyAccountContext";
 
 export function useLogin() {
   const navigate = useNavigate();
+  const { handleLoginSuccess } = useContext(MyAccountContext);
 
   const response = useApi<LoginFormData, LoginResponse>(
     (data: LoginFormData) => {
@@ -31,18 +33,20 @@ export function useLogin() {
   );
 
   useEffect(() => {
-    const { data } = response;
 
-    if (data?.jwtTokenRes && data?.refreshTokenRes) {
-      localStorage.setItem("jwtToken", data.jwtTokenRes);
-      localStorage.setItem("refreshToken", data.refreshTokenRes);
+    const performLogin = async () => {
+      if (response.data?.jwtTokenRes && response.data?.refreshTokenRes) {
+        await handleLoginSuccess(response.data.jwtTokenRes, response.data.refreshTokenRes);
 
-      const timeout = setTimeout(
-        () => navigate(PAGE_ROUTES.STORE.HOME),
-        REDIRECT_DELAY_MS
-      );
-      return () => clearTimeout(timeout);
-    }
+        const timeout = setTimeout(() => {
+          navigate(PAGE_ROUTES.STORE.HOME);
+        }, REDIRECT_DELAY_MS);
+        
+        return () => clearTimeout(timeout);
+      }
+    };
+
+    performLogin()
   }, [response, navigate]);
 
   return response;
@@ -50,6 +54,7 @@ export function useLogin() {
 
 export function useLogout() {
   const navigate = useNavigate();
+  const { handleLogout } = useContext(MyAccountContext);
 
   const response = useApi<void, LogoutResponse>(() => {
     const options = {
@@ -60,8 +65,7 @@ export function useLogout() {
 
   useEffect(() => {
     if (response.data) {
-      localStorage.removeItem("jwtToken");
-      localStorage.removeItem("refreshToken");
+      handleLogout();
 
       const timeout = setTimeout(() => navigate(PAGE_ROUTES.AUTH.LOGIN), REDIRECT_DELAY_MS);
       return () => clearTimeout(timeout);

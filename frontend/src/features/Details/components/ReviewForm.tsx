@@ -1,8 +1,8 @@
 
-import Form from "@/global/components/Form";
+import { Button } from "@/global/components/Button";
 import RatingStars from "./RatingStars";
-import { TextArea } from "@/global/components/TextArea";
-import Button from "@/global/components/Button";
+import { TextArea } from "@/global/components/TextArea/TextArea";
+import { Form } from "@/global/components/Form";
 
 export interface ReviewFormData {
   rating: number;
@@ -32,15 +32,19 @@ export default function ReviewForm({
 
 
   return (
-    <div className={`bg-bg-secondary rounded ring-2 ring-primary p-4 ${className}`}>
-      <Form<ReviewFormData>
-        submitText={submitButtonText}
-        onSubmit={onSubmit}
-        isLoading={isLoading}
-        defaultValues={initialData}
-      >
-        <h2 className="text-2xl text-text-primary">{title}</h2>
+    <Form.Root<ReviewFormData>
+      // As classes de estilo do container são passadas aqui
+      className={`bg-bg-secondary rounded ring-2 ring-primary p-4 ${className}`}
+      // As props do formulário são centralizadas no Root
+      onSubmit={onSubmit}
+      defaultValues={initialData}
+    >
+      {/* 2. O título agora vive dentro de uma peça semântica: Form.Header */}
+      <Form.Header title={title}/>
+  
 
+      {/* 3. Os campos do formulário são agrupados dentro do Form.Body */}
+      <Form.Body>
         <label className="font-inter font-bold text-text-primary md:text-lg block mb-3">
           Rating
           <RatingStars
@@ -60,15 +64,27 @@ export default function ReviewForm({
           }}
           placeholder="What did you think of the game?"
         />
-      </Form>
-      {onCancel && (
-        <Button
-          title="Cancel"
-          type="button"
-          onClick={onCancel}
-          className="text-white bg-red-500 hover:bg-red-600 mt-2 w-full"
-        />
-      )}
-    </div>
+      </Form.Body>
+
+      {/* 4. Todas as ações, incluindo o botão Cancelar, ficam juntas no Form.Actions */}
+      <Form.Actions>
+        <Button 
+          type="submit" 
+          disabled={isLoading}
+        >
+          {submitButtonText}
+        </Button>
+
+        {onCancel && (
+          <Button
+            type="button"
+            onClick={onCancel}
+            className="text-white bg-red-500 hover:bg-red-600" // A margem 'mt-2' pode ser removida se o Form.Actions já tiver um 'gap'.
+          >
+            Cancel
+          </Button>
+        )}
+      </Form.Actions>
+    </Form.Root>
   );
 }

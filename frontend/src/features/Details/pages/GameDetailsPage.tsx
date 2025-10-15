@@ -6,9 +6,8 @@ import {
 import ColumnInfo from "../components/ColumnInfo";
 import SimilarGamesSection from "../components/SimilarGamesSection";
 import ReviewSection from "../components/ReviewSection";
-import Header from "@/features/Home/components/Header";
 import { useGameDetails } from "../hooks/useGameDetails";
-import ExpandableText from "@/global/components/ExpandableText";
+import ExpandableText from "@/global/components/ExpandableText/ExpandableText";
 
 export default function GameDetailsPage() {
    const { gameDetails, isLoading, warningType, warningComponent } = useGameDetails();
@@ -20,7 +19,6 @@ export default function GameDetailsPage() {
 
   return (
     <>
-      <Header />
       <div className="min-h-screen bg-bg-primary py-15">
         <div className="w-9/10 max-w-[1100px] mx-auto">
           {warningType == "error" && warningComponent}

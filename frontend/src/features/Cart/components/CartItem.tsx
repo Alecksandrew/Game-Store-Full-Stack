@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import { type GameCardData } from '@/features/Home/types/GameCardType';
+import { type GameCardData } from '@/global/components/GameCard/types';
 import { CartContext } from '../context/CartContext';
 import { FaTrash } from 'react-icons/fa';
-import PriceContainer from '@/global/components/PriceContainer';
+import { DisplayPrice } from '@/global/components/DisplayPrice';
 
 type CartItemProps = {
   game: GameCardData;
@@ -17,7 +17,7 @@ export default function CartItem({ game }: CartItemProps) {
       <div className="flex-grow">
         <h3 className="text-lg font-bold text-text-primary">{game.name}</h3>
         <p className="text-sm text-text-secondary">PC Digital Key</p>
-         <PriceContainer 
+         <DisplayPrice
           price={game.price} 
           discountPrice={game.discountPrice} 
         />

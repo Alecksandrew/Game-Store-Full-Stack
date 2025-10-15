@@ -1,4 +1,4 @@
-import Header from "@/features/Home/components/Header";
+
 import OrderSummary from "@/features/Cart/components/OrderSummary";
 import { type CreditCardFormData } from "../types/CreditCardFormType";
 import { useContext } from "react";
@@ -6,7 +6,7 @@ import { CartContext } from "@/features/Cart/context/CartContext";
 import { Navigate } from "react-router";
 import { useCheckout } from "@/features/Cart/hooks/useCheckout";
 import CreditCardForm from "../components/CreditCardForm";
-import Button from "@/global/components/Button";
+import { Button } from "@/global/components/Button";
 
 export default function CheckoutPage() {
   const { execute, isLoading, warningComponent } = useCheckout();
@@ -23,7 +23,6 @@ export default function CheckoutPage() {
 
   return (
     <>
-      <Header />
       {warningComponent}
       <div className="bg-bg-primary min-h-screen py-10">
         <div className="w-9/10 max-w-[1200px] mx-auto">
@@ -41,11 +40,10 @@ export default function CheckoutPage() {
             <div className="lg:col-span-1">
               <OrderSummary>
                  <Button
-                  title={isLoading ? "Processing..." : "Complete Payment"}
                   type="submit" 
                   form="credit-card-form"
                   disabled={isLoading}
-                />
+                >{isLoading ? "Processing..." : "Complete Payment"}</Button>
               </OrderSummary>
             </div>
           </div>
