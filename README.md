@@ -93,9 +93,8 @@ Este projeto foi uma oportunidade para aplicar conceitos cruciais de desenvolvim
 - [X] Funcionalidade de Wishlist
 - [X] Funcionalidade de Carrinho
 - [X] Funcionalidade de Checkout Simulado
-- [ ] Página de Histórico de Compras
-- [ ] Painel de Administração (CRUD de Inventário)
-- [ ] Deploy da aplicação na Azure
+- [X] Painel de Administração
+- [ ] Deploy
 
 ## 📚 Créditos
 
