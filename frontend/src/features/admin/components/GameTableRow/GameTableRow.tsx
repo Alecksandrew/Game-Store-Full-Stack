@@ -1,13 +1,13 @@
 // src/features/admin/components/GameTableRow/GameTableRow.tsx
 import { Table } from "@/global/components/Table/Table";
 import type { gameTableRowProps } from "../../types/gameTableRowType";
-import { FaEdit, FaKey, FaTrashAlt, FaSave, FaTimes } from "react-icons/fa";
+import { FaEdit, FaKey, FaSave, FaTimes } from "react-icons/fa";
 
 import { useState } from "react";
 
 import { useUpdateGame } from "../../hooks/useAdminGameActions";
 import { SimpleInput } from "@/global/components/SimpleInput/SimpleInput";
-import KeysModal from "../KeysModal/KeysModal";
+
 import { Button } from "@/global/components/Button";
 
 type GameTableRowComponentProps = {
@@ -32,13 +32,12 @@ export default function GameTableRow({
   // Estado local para os valores sendo editados
   const [editPrice, setEditPrice] = useState(price);
   const [editDiscountPrice, setEditDiscountPrice] = useState(discountPrice);
-  const [isKeysModalOpen, setIsKeysModalOpen] = useState(false);
+ 
 
   // Hook para fazer a requisição de update
   const {
     execute: updateGame,
     isLoading: isSaving,
-    warningComponent,
   } = useUpdateGame(igdbId);
 
   const handleSave = async () => {
@@ -96,6 +95,7 @@ export default function GameTableRow({
             <SimpleInput
               type="number"
               step="0.01"
+              name="discountPrice"
               value={editDiscountPrice}
               onChange={(e) => setEditDiscountPrice(Number(e.target.value))}
               className="p-1 rounded bg-bg-primary w-20"

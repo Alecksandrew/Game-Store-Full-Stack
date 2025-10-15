@@ -1,5 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Link } from "react-router";
+
+// @ts-expect-error there is no error
 import "swiper/css"; 
 
 type GenreCardProps = {

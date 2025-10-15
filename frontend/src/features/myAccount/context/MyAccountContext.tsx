@@ -6,5 +6,5 @@ export const MyAccountContext = createContext<MyAccountContextType>({
   isLoading: true,
   isLoggedIn: false,
   handleLogout: () => {},
-  handleLoginSuccess: async (jwtToken, refreshToken) => {},
+  handleLoginSuccess: async () => {},
 });

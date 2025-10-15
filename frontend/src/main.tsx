@@ -8,7 +8,6 @@ import ResetPasswordPage from "./features/auth/pages/ResetPasswordPage.tsx";
 import EmailConfirmationPage from "./features/auth/pages/EmailConfirmationPage.tsx";
 import MyAccountPage from "./features/myAccount/pages/MyAccountPage.tsx";
 import ProtectedRoute from "./global/routes/ProtectedRoutes.tsx";
-import AuthLayout from "./features/auth/pages/AuthLayout.tsx";
 import { PAGE_ROUTES } from "./global/constants/FRONTEND_URL.ts";
 import HomePage from "./features/Home/page/HomePage.tsx";
 import GameDetailsPage from "./features/Details/pages/GameDetailsPage.tsx";

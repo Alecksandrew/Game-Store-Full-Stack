@@ -22,7 +22,7 @@ export default function LogoutAccount(){
         <div className="flex justify-center">
             <Button 
                 type="button" 
-                onClick={executeLogout}
+                onClick={() => executeLogout()}
                 className="bg-danger hover:bg-danger/80"
             >Logout from my account</Button>
         </div>

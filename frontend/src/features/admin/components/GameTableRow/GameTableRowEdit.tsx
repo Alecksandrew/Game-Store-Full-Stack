@@ -3,6 +3,7 @@ import { Input } from "@/global/components/Input/Input";
 import { Table } from "@/global/components/Table/Table";
 import type { AdminGame } from "../../types/gameDashboardTypes";
 import { FaSave, FaTimes } from "react-icons/fa";
+import { Button } from "@/global/components/Button";
 
 type GameTableRowEditProps = {
   gameInfo: AdminGame;
@@ -38,22 +39,22 @@ export default function GameTableRowEdit({ gameInfo, onSave, onCancel, isLoading
         <Table.Td>{gameInfo.availableKeys}</Table.Td>
         <Table.Td>
           <Form.Actions className="flex gap-4 mt-0">
-            <Form.Button
+            <Button
               title={isLoading ? "Saving..." : "Save"}
               type="submit"
               disabled={isLoading}
               className="flex items-center gap-2"
             >
               <FaSave />
-            </Form.Button>
-            <Form.Button
+            </Button>
+            <Button
               title="Cancel"
               type="button"
               onClick={onCancel}
               className="bg-danger flex items-center gap-2"
             >
               <FaTimes />
-            </Form.Button>
+            </Button>
           </Form.Actions>
         </Table.Td>
       </Table.Row>

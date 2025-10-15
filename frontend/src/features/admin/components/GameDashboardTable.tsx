@@ -1,6 +1,3 @@
-// src/features/admin/components/GameDashboardTable.tsx
-// ... existing imports ...
-
 import { SearchForm } from "@/global/components/SearchForm";
 import GameDashboardHeader from "./GameDashboardTable/GameDashboardHeader";
 import { GameDashboardTableBody } from "./GameDashboardTable/GameDashboardTableBody";
@@ -9,7 +6,6 @@ import { Table } from "@/global/components/Table/Table";
 import useGameDashboardTable from "../hooks/useGameDashboardTable";
 import { useState } from "react";
 import PaginationRounded from "@/global/components/PaginationRounded/PaginationRounded";
-import SectionHeader from "@/global/components/SectionHeader/SectionHeader";
 import KeysModal from "./KeysModal/KeysModal";
 
 export function GameDashboardTable() {
@@ -40,7 +36,7 @@ export function GameDashboardTable() {
     gameName: ''
   });
 
-  const handleCancel = (gameId: number) => {
+  const handleCancel = () => {
     setEditingGameId(null);
   };
 
@@ -115,7 +111,7 @@ export function GameDashboardTable() {
           <PaginationRounded
             count={totalPages}
             page={currentPage}
-            onPageChange={(e, value) => handlePageChange(value)}
+            onPageChange={(_event, value) => handlePageChange(value)}
           />
         </div>
       )}

@@ -27,6 +27,7 @@ export default function GameMediaGallery({className}: {className?:string}) {
           {
             "--swiper-navigation-color": "#FFFFFF",
             "--swiper-pagination-color": "#FFFFFF",
+            padding: "3px"
           } as React.CSSProperties
         }
         loop={false}
@@ -37,7 +38,6 @@ export default function GameMediaGallery({className}: {className?:string}) {
         }}
         modules={[FreeMode, Navigation, Thumbs, Autoplay]}
         className="mySwiperMain rounded-lg mb-4"
-        style={{padding: "3px"}}
         autoplay={{ delay: 4000, disableOnInteraction: false }}
       >
         {screenshotsUrls.map((url, index) => (

@@ -13,7 +13,6 @@ export default defineConfig({
     tsconfigPaths()
   ],
   server: {
-    https: true,
     host: true,
     port: 5173,
     strictPort: true,

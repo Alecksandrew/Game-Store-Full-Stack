@@ -1,6 +1,5 @@
-// src/features/Category/pages/CategoryPage.tsx
+
 import { useState } from "react";
-import Header from "@/global/components/Header/Header";
 import { usePaginatedGames } from "@/features/Home/hooks/usePaginatedGames";
 import CircularProgress from "@mui/material/CircularProgress";
 import Pagination from "@mui/material/Pagination";
@@ -19,7 +18,7 @@ export default function CategoryPage() {
   });
 
   const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
+    _event: React.ChangeEvent<unknown>,
     value: number
   ) => {
     setCurrentPage(value);
@@ -65,7 +64,7 @@ export default function CategoryPage() {
                   color="standard"
                   count={10}
                   page={currentPage}
-                  onChange={handlePageChange}
+                  onChange={(_event, value) => handlePageChange(_event, value)}
                    sx={{
                     ".MuiPagination-ul": {
                       "& .MuiPaginationItem-root": {

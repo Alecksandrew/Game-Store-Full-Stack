@@ -3,11 +3,6 @@ import { MyAccountContext } from "./MyAccountContext";
 import type { MyAccountData } from "../types/myAccountTypes";
 import { useGetMyAccountData } from "../hooks/useGetMyAccountData";
 
-function isUserLogged() {
-  const jwtToken = localStorage.getItem("jwtToken");
-
-  return jwtToken !== "" && jwtToken != null ? true : false;
-}
 
 export const MyAccountProvider = ({ children }: { children: ReactNode }) => {
   const [myAccountData, setMyAccountData] = useState<MyAccountData | null>(

@@ -1,7 +1,7 @@
 import { useApi } from "@/global/hooks/useApi";
 import { apiClient } from "@/global/services/apiClient";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
-import type { CreateReviewResponseType } from "../types/ReviewApiResponseType";
+import type { ReviewApiResponseType } from "../types/ReviewApiResponseType";
 
 
 interface ReviewFormData {
@@ -11,7 +11,7 @@ interface ReviewFormData {
 
 export function useCreateReviewByGame(gameId: number) {
   
-  return useApi<ReviewFormData, CreateReviewResponseType>(
+  return useApi<ReviewFormData, ReviewApiResponseType>(
     
     (formData: ReviewFormData) => {
 

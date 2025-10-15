@@ -59,7 +59,7 @@ export default function RatingStars({ name, rules }: RatingStarsProps) {
               {...field}
               precision={0.5}
               getLabelText={getLabelText}
-              onChangeActive={(event, newHover) => {
+              onChangeActive={(_event, newHover) => {
                 setHover(newHover);
               }}
               emptyIcon={

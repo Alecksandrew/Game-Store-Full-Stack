@@ -1,8 +1,6 @@
-import { useState } from "react";
+
 import { ReviewCard } from ".";
-import ReviewForm from "../ReviewForm";
 import type { ReviewCardContextType } from "./ReviewCardContext";
-import useDeleteReviewByGame from "../../hooks/useDeleteReviewByGame";
 
 export function ReviewCardStandard({ data }: { data: ReviewCardContextType }) {
   return (

@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { CartContext } from "@/features/Cart/context/CartContext";
 import { Button } from "@/global/components/Button";
+import type { AddToCartButtonProps } from "./types";
 
 export function AddToCartButton({ gameData, className }: AddToCartButtonProps) {
   const { addToCart } = useContext(CartContext);

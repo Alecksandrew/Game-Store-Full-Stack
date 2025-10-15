@@ -7,7 +7,7 @@ import type { AuthButtonProps } from "./types";
 import { MyAccountContext } from "@/features/myAccount/context/MyAccountContext";
 import { useContext } from "react";
 
-export function AuthButton({ linkClass, buttonClass }:AuthButtonProps) {
+export function AuthButton({ buttonClass }:AuthButtonProps) {
   const { execute: executeLogout } = useLogout();
   const { isLoggedIn } = useContext(MyAccountContext)
   const btnClass = " text-center rounded flex items-center justify-center p-1.5"

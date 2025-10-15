@@ -2,7 +2,12 @@ import { useCallback, useState } from "react";
 import { type ApiResponse } from "../types/responseApiType";
 import { Modal } from "../components/Modal";
 
-const emptyWarningState: warningState = {
+export type NotificationState = {
+  message: string;
+  type: "success" | "error";
+};
+
+const emptyWarningState: NotificationState = {
   message: "",
   type: "success",
 };
@@ -11,7 +16,7 @@ const emptyWarningState: warningState = {
 export function useApi<TData, TResponse>(
   apiRequest: (data: TData) => Promise<TResponse>
 ) {
-  const [warning, setWarning] = useState<warningState>(emptyWarningState);
+  const [warning, setWarning] = useState<NotificationState>(emptyWarningState);
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<TResponse | null>(null);
 

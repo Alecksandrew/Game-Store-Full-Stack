@@ -5,11 +5,10 @@ import { usePaginatedGames } from "../hooks/usePaginatedGames";
 import { useState } from "react";
 import MainSection from "../components/MainSection";
 import CategoryCard from "../components/CategoryCard";
-import Header from "../../../global/components/Header/Header";
 import PaginationRounded from "@/global/components/PaginationRounded/PaginationRounded";
 import { SearchForm } from "@/global/components/SearchForm";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
-import type { SearchFormData } from "@/global/types/searchFormType";
+
 
 export default function HomePage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,7 +25,7 @@ export default function HomePage() {
   };
 
   const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
+    _event: React.ChangeEvent<unknown>,
     value: number
   ) => {
     setCurrentPage(value);
@@ -71,7 +70,7 @@ export default function HomePage() {
                 <PaginationRounded
                   count={10}
                   page={currentPage}
-                  onChange={handlePageChange}
+                  onPageChange={handlePageChange}
                   theme="light"
                 />
               </div>
