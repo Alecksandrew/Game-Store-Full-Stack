@@ -1,4 +1,6 @@
+import { Modal } from "@/global/components/Modal";
 import KeysForm from "../KeysForm/KeysForm";
+import { useEffect, useRef } from "react";
 
 
 type KeysModalProps = {
@@ -16,18 +18,29 @@ export default function KeysModal({
   onClose, 
   onSuccess 
 }: KeysModalProps) {
-  if (!isOpen) return null;
+
+  //Logic to keep showing the name of the game when modal is fading out
+  const gameNameRef = useRef(gameName);
+  
+  useEffect(() => {
+    if (gameName) {
+      gameNameRef.current = gameName;
+    }
+  }, [gameName]);
+
+  const displayName = gameName || gameNameRef.current;
 
   return (
-    <div className="fixed inset-0 z-50 bg-text-secondary/40 flex items-center justify-center backdrop-blur-[2px]">
-      <div className="bg-bg-secondary border-t-4 border-primary p-6 rounded-lg font-inter text-text-primary min-w-[400px] w-1/2 max-w-2xl">
+   <Modal.Root isOpen={isOpen} onClose={onClose}>
+      <Modal.Content className="border-t-4 border-primary p-6 text-left">
+        
         <KeysForm 
           gameId={gameId}
-          gameName={gameName}
+          gameName={displayName}
           onSuccess={onSuccess}
           onCancel={onClose}
         />
-      </div>
-    </div>
+      </Modal.Content>
+    </Modal.Root>
   );
 }
