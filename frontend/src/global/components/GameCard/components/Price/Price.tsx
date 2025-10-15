@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import PriceContainer from "@/global/components/PriceContainer";
+import { DisplayPrice } from "@/global/components/DisplayPrice"
 import { GameCardContext } from "../../context/GameCardContext";
 
 
@@ -8,7 +8,7 @@ export function Price() {
   const gameData = useContext(GameCardContext);
 
   return (
-    <PriceContainer 
+    <DisplayPrice
       price={gameData.price} 
       discountPrice={gameData.discountPrice} 
     />

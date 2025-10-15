@@ -1,11 +1,7 @@
+import type { DisplayPriceProps } from "./types";
 
-interface PriceContainerProps {
-  className?: string | undefined
-  price?: number;
-  discountPrice?: number | null;
-}
 
-export default function PriceContainer({ className, price, discountPrice }: PriceContainerProps) {
+export function DisplayPrice({ className, price, discountPrice }: DisplayPriceProps) {
 
   function displayPrice() {
     if (discountPrice != null && discountPrice > 0) {

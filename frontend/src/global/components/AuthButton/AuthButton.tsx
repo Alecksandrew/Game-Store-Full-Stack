@@ -10,17 +10,18 @@ import { useContext } from "react";
 export function AuthButton({ linkClass, buttonClass }:AuthButtonProps) {
   const { execute: executeLogout } = useLogout();
   const { isLoggedIn } = useContext(MyAccountContext)
+  const btnClass = " text-center rounded flex items-center justify-center p-1.5"
   
   if (isLoggedIn) {
     return (
-      <button onClick={() => executeLogout()} className={twMerge(` bg-danger`, buttonClass)}>
+      <button onClick={() => executeLogout()} className={twMerge(` bg-danger ${btnClass}`, buttonClass )}>
         Logout
       </button>
     );
   }
 
   return (
-    <Link className={linkClass} to={PAGE_ROUTES.AUTH.LOGIN}>
+    <Link className={`hover:bg-bg-secondary hover:text-text-primary ${btnClass}`} to={PAGE_ROUTES.AUTH.LOGIN}>
       <button className={buttonClass}>Login</button>
     </Link>
   );

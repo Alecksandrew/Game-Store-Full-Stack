@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-export type CardProps = {
+export type FooterProps = {
   children: ReactNode;
   className?: string;
-};
+}

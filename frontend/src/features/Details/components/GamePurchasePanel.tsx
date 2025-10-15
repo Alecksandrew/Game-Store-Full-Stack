@@ -1,4 +1,4 @@
-import PriceContainer from "@/global/components/PriceContainer";
+import  { DisplayPrice } from "@/global/components/DisplayPrice/DisplayPrice";
 import Platforms from "./Platforms";
 import type { GamePurchasePanelProps } from "../types/GamePurchasePanel";
 import { useContext } from "react";
@@ -17,7 +17,7 @@ export default function GamePurchasePanel({
     <div className={`bg-bg-primary ${className}`}>
       <h1 className="text-4xl font-bold text-primary mt-2">{name}</h1>
       <Platforms heading="h3" className="mt-3" />
-      <PriceContainer
+      <DisplayPrice
         className="mt-8"
         price={price}
         discountPrice={discountPrice}

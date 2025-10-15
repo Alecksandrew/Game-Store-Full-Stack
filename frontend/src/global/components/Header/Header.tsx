@@ -8,7 +8,7 @@ export default function Header() {
   const isMobile = useMediaQuery("(max-width: 768px)");
   
   return (
-    <header className="sticky top-0 z-20 max-w-screen bg-primary border-b-2 border-text-primary">
+    <header className="sticky top-0 z-20 h-16 max-w-screen bg-primary border-b-2 border-text-primary">
       {isMobile ? <MobileNav /> : <DesktopNav />}
     </header>
   );
