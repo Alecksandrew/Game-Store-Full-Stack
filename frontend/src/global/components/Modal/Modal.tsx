@@ -3,6 +3,7 @@ import { Content } from "./components/Content";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { Root } from "./components/Root";
+import { ConfirmationModal, NotificationModal } from "./Modal.presets";
 
 export const Modal = {
   Root: Root,
@@ -10,4 +11,8 @@ export const Modal = {
   Header: Header,
   Body: Body,
   Footer: Footer,
+  Preset:{
+    Confirmation:ConfirmationModal,
+    Notification:NotificationModal
+  }
 };

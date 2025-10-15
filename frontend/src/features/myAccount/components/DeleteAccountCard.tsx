@@ -5,6 +5,7 @@ import { useDeleteAccount } from "../hooks/useDeleteAccount";
 import { PAGE_ROUTES } from "@/global/constants/FRONTEND_URL";
 import { Form } from "@/global/components/Form";
 import { Button } from "@/global/components/Button";
+import { Modal } from "@/global/components/Modal";
 
 export default function DeleteAccount() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,16 +35,16 @@ export default function DeleteAccount() {
 
   return (
     <>
-      {isModalOpen && (
-        <ConfirmationModal
-          title="Delete account"
-          message="Are you sure you want to delete your account? All your data will be permanently lost. This action cannot be undone."
-          onConfirm={handleConfirmDelete}
-          onCancel={handleCloseModal}
-          isLoading={isLoading}
-          confirmButtonText={isLoading ? "Deleting..." : "Yes, Delete account"}
-        />
-      )}
+       <Modal.Preset.Confirmation
+        isOpen={isModalOpen}
+        title="Delete account"
+        message="Are you sure you want to delete your account? All your data will be permanently lost. This action cannot be undone."
+        onConfirm={handleConfirmDelete}
+        onClose={handleCloseModal}
+        isLoading={isLoading}
+        confirmButtonText={isLoading ? "Deleting..." : "Yes, Delete account"}
+      />
+
 
       {warningComponent}
 
