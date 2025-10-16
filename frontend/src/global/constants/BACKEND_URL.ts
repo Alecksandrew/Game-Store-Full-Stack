@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://localhost:7205";
+const API_BASE_URL = "https://game-store-api-hkesgmaaeesecbjcz.brazilsouth-01.azurewebsites.net";
 
 const API_PATHS = {
   AUTH: "/api/Auth",
