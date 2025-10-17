@@ -2,6 +2,8 @@
 
 Projeto full-stack de um e-commerce de jogos digitais, desenvolvido para aplicar e aprofundar conhecimentos na construção de aplicações web modernas com .NET e React.
 
+[DEPLOY](https://game-store-full-stack.vercel.app/)
+
 ## 🚀 Sobre o Projeto
 
 Este projeto é uma simulação completa de uma loja de chaves de jogos digitais, inspirada em plataformas como G2A, Nuuvem e Steam. A aplicação permite que usuários se cadastrem, naveguem por um catálogo de jogos consumido da API da IGDB, gerenciem listas de desejos, realizem "compras" (simuladas) e acessem suas chaves digitais em uma área de cliente.
@@ -94,7 +96,7 @@ Este projeto foi uma oportunidade para aplicar conceitos cruciais de desenvolvim
 - [X] Funcionalidade de Carrinho
 - [X] Funcionalidade de Checkout Simulado
 - [X] Painel de Administração
-- [ ] Deploy
+- [X] Deploy
 
 ## 📚 Créditos
 
