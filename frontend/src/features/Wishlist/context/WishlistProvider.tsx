@@ -13,12 +13,12 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
   
   const {
     data: wishlist,
-    execute: fetchWishlist,
+    handleGetWishlist,
     isLoading,
     setData: setWishlist,
   } = useGetWishlist();
-  const { execute: executeRemoveFromWishlist } = useRemoveFromWishlist();
-  const { execute: executeAddToWishlist } = useAddToWishlist();
+  const { handleRemoveFromWishlist } = useRemoveFromWishlist();
+  const { handleAddToWishlist } = useAddToWishlist();
 
   const removeGameFromWishlist = async (gameId: number) => {
     // Storing the original state, because i will try optimistic UI technique
@@ -31,7 +31,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
 
     try {
       //Remove from database backend
-      await executeRemoveFromWishlist(gameId);
+      await handleRemoveFromWishlist(gameId);
     } catch (error) {
       console.error("Failed to remove from wishlist, reverting UI", error);
       setWishlist(originalWishlist);
@@ -45,7 +45,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
     setWishlist((current) => [...(current || []), gameData]);
 
     try {
-      await executeAddToWishlist(gameData.id);
+      await handleAddToWishlist(gameData.id);
     } catch (error) {
       console.error("Failed to add to wishlist, reverting UI", error);
       setWishlist(originalWishlist);
@@ -54,18 +54,18 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      fetchWishlist();
+      handleGetWishlist();
     } else {
       setWishlist(null);
     }
-  }, [isLoggedIn, fetchWishlist, setWishlist]);
+  }, [isLoggedIn, handleGetWishlist, setWishlist]);
 
   return (
     <WishlistContext.Provider
       value={{
         wishlist: wishlist || [],
         isLoading,
-        fetchWishlist,
+        handleGetWishlist,
         removeGameFromWishlist,
         addToWishlist,
       }}
