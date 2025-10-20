@@ -64,7 +64,7 @@ export function useRequestHandler<TData, TResponse>(
   return {
     data,
     isLoading,
-    execute: executeRequest,
+    executeRequest,
     warningComponent,
     warningType: warning.type,
     setData,
