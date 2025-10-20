@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://game-store-api-hkesgmaaexecbjcz.brazilsouth-01.azurewebsites.net";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const API_PATHS = {
   AUTH: "/api/Auth",
