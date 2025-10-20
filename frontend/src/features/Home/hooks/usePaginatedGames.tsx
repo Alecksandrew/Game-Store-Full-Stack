@@ -1,54 +1,39 @@
 import { useCallback, useEffect } from "react";
-import type { GameCardData } from "../../../global/components/GameCard/types";
-import { apiClient } from "@/global/services/apiClient";
 import { useRequestHandler } from "@/global/hooks/useRequestHandler";
-import { API_ROUTES } from "@/global/constants/BACKEND_URL";
+import type {
+  GetGamesRequest,
+  GetGamesResponse,
+} from "@/global/services/games/types";
+import { gameService } from "@/global/services/games/gamesService";
 
-export function usePaginatedGames({
-
-  currentPage,
-  searchTerm,
-  genre
-}: {
+export function usePaginatedGames(request: {
   searchTerm?: string;
   currentPage: number;
-  genre?:string;
+  genre?: string;
 }) {
 
-  const fetchGamesForPage = useCallback(() => {
-    const params = new URLSearchParams({
-      page: String(currentPage),
-      pageSize: "12",
-    });
+  const { currentPage, searchTerm, genre } = request;
 
-    if (genre) {
-      params.append("genre", genre);
-      params.append("rating", "80");
-      params.append("yearFrom", "2014");
-    } else if (searchTerm?.trim()) {
-      params.append("search", searchTerm);
-    } else {
-      params.append("yearFrom", "2018");
-      params.append("rating", "88");
-    }
+  const { executeRequest, data, isLoading, ...rest } = useRequestHandler<
+    GetGamesRequest,
+    GetGamesResponse
+  >(gameService.getGames);
 
-    const url = `${API_ROUTES.GAMES.GET}?${params.toString()}`;
+  // it is needed in order to stop infinity loops
+  const handleGetGames = useCallback(() => {
+    executeRequest({ currentPage, searchTerm, genre });
+  }, [executeRequest, currentPage, searchTerm, genre]);
 
-    return apiClient<GameCardData[]>(url);
-  }, [currentPage, searchTerm, genre]);
 
-  const { data, isLoading, executeRequest, warningComponent, warningType } =
-    useRequestHandler<void, GameCardData[]>(fetchGamesForPage);
-
+  
   useEffect(() => {
-    executeRequest();
-  }, [executeRequest]);
+    handleGetGames();
+  }, [handleGetGames]);
 
   return {
     data,
     isLoading,
-    warningComponent,
-    warningType,
-    currentPage,
+    handleGetGames,
+    ...rest,
   };
 }
