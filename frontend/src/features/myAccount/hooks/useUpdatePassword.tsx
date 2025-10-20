@@ -1,5 +1,5 @@
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
-import { useApi } from "@/global/hooks/useApi";
+import { useRequestHandler } from "@/global/hooks/useRequestHandler";
 import type {
   UpdatePasswordFormData,
   UpdatePasswordResponse,
@@ -7,7 +7,7 @@ import type {
 import { apiClient } from "@/global/services/apiClient";
 
 export function useUpdatePassword() {
-  return useApi<UpdatePasswordFormData, UpdatePasswordResponse>(
+  return useRequestHandler<UpdatePasswordFormData, UpdatePasswordResponse>(
     (data: UpdatePasswordFormData) => {
       const options = {
         method: "PATCH" as const,

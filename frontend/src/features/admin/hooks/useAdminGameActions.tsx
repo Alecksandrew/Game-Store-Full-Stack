@@ -1,4 +1,4 @@
-import { useApi } from "@/global/hooks/useApi";
+import { useRequestHandler } from "@/global/hooks/useRequestHandler";
 import { apiClient } from "@/global/services/apiClient";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 
@@ -9,7 +9,7 @@ type UpdateGameData = {
 };
 
 export function useUpdateGame(gameId: number) {
-  return useApi<UpdateGameData, void>((data) => {
+  return useRequestHandler<UpdateGameData, void>((data) => {
     const options = {
       method: "PATCH" as const, 
       body: data,
@@ -26,7 +26,7 @@ type AddKeysData = {
 };
 
 export function useAddKeys(gameId: number) {
-  return useApi<AddKeysData, void>((data) => {
+  return useRequestHandler<AddKeysData, void>((data) => {
     const options = {
       method: "POST" as const,
       body: data,

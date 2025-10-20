@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { useApi } from "@/global/hooks/useApi";
+import { useRequestHandler } from "@/global/hooks/useRequestHandler";
 import { apiClient } from "@/global/services/apiClient";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 import type { AdminGame, PaginatedResponse } from "../types/gameDashboardTypes";
@@ -33,7 +33,7 @@ export default function useGameDashboardTable() {
     );
   }, [currentPage, searchTerm, sortBy, isAscending]);
 
-  const { data, isLoading, execute, warningComponent, warningType } = useApi<
+  const { data, isLoading, execute, warningComponent, warningType } = useRequestHandler<
     void,
     PaginatedResponse<AdminGame>
   >(fetchDashboardGames);

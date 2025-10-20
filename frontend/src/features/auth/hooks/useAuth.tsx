@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { useApi } from "@/global/hooks/useApi";
+import { useRequestHandler } from "@/global/hooks/useRequestHandler";
 import {
   type ForgotPasswordResponse,
   type LoginResponse,
@@ -17,46 +17,39 @@ import { REDIRECT_DELAY_MS } from "@/global/constants/appConfig";
 import { useContext, useEffect } from "react";
 import { PAGE_ROUTES } from "@/global/constants/FRONTEND_URL";
 import { MyAccountContext } from "@/features/myAccount/context/MyAccountContext";
+import type { LoginRequest } from "@/global/services/auth/types";
+import { authService } from "@/global/services/auth/authService";
 
 export function useLogin() {
   const navigate = useNavigate();
   const { handleLoginSuccess } = useContext(MyAccountContext);
 
-  const response = useApi<LoginFormData, LoginResponse>(
-    (data: LoginFormData) => {
-      const options = {
-        method: "POST" as const,
-        body: data
-      };
-      return apiClient(API_ROUTES.AUTH.LOGIN, options, false);
-    }
-  );
+  const { data, ...rest } = useRequestHandler<LoginRequest, LoginResponse>(authService.login);
 
   useEffect(() => {
-
     const performLogin = async () => {
-      if (response.data?.jwtTokenRes && response.data?.refreshTokenRes) {
-        await handleLoginSuccess(response.data.jwtTokenRes, response.data.refreshTokenRes);
+      if (data && data?.jwtTokenRes && data?.refreshTokenRes) {
+        await handleLoginSuccess(data.jwtTokenRes, data.refreshTokenRes);
 
         const timeout = setTimeout(() => {
           navigate(PAGE_ROUTES.STORE.HOME);
         }, REDIRECT_DELAY_MS);
-        
+
         return () => clearTimeout(timeout);
       }
     };
 
-    performLogin()
-  }, [response, navigate]);
+    performLogin();
+  }, [data, navigate, handleLoginSuccess]);
 
-  return response;
+  return { ...rest };
 }
 
 export function useLogout() {
   const navigate = useNavigate();
   const { handleLogout } = useContext(MyAccountContext);
 
-  const response = useApi<void, LogoutResponse>(() => {
+  const response = useRequestHandler<void, LogoutResponse>(() => {
     const options = {
       method: "POST" as const,
     };
@@ -67,7 +60,10 @@ export function useLogout() {
     if (response.data) {
       handleLogout();
 
-      const timeout = setTimeout(() => navigate(PAGE_ROUTES.AUTH.LOGIN), REDIRECT_DELAY_MS);
+      const timeout = setTimeout(
+        () => navigate(PAGE_ROUTES.AUTH.LOGIN),
+        REDIRECT_DELAY_MS
+      );
       return () => clearTimeout(timeout);
     }
   }, [response.data, navigate]);
@@ -76,7 +72,7 @@ export function useLogout() {
 }
 
 export function useRegister() {
-  return useApi<RegisterFormData, RegisterResponse>(
+  return useRequestHandler<RegisterFormData, RegisterResponse>(
     (data: RegisterFormData) => {
       const options = {
         method: "POST" as const,
@@ -88,7 +84,7 @@ export function useRegister() {
 }
 
 export function useForgotPassword() {
-  return useApi<ForgotPassswordFormData, ForgotPasswordResponse>(
+  return useRequestHandler<ForgotPassswordFormData, ForgotPasswordResponse>(
     (data: ForgotPassswordFormData) => {
       const options = {
         method: "POST" as const,
@@ -100,7 +96,7 @@ export function useForgotPassword() {
 }
 
 export function useResetPassword() {
-  return useApi<ResetPasswordFormData, ResetPasswordResponse>(
+  return useRequestHandler<ResetPasswordFormData, ResetPasswordResponse>(
     (data: ResetPasswordFormData) => {
       const options = {
         method: "POST" as const,

@@ -1,5 +1,5 @@
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
-import { useApi } from "@/global/hooks/useApi";
+import { useRequestHandler } from "@/global/hooks/useRequestHandler";
 import { apiClient } from "@/global/services/apiClient";
 import { useCallback } from "react";
 
@@ -14,7 +14,7 @@ export default function useDeleteReviewByGame() {
     );
   }, []);
 
-  const { execute, isLoading, warningComponent, warningType } = useApi<
+  const { execute, isLoading, warningComponent, warningType } = useRequestHandler<
     number,
     null
   >(deleteReview);

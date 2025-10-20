@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect } from "react";
-import { useApi } from "@/global/hooks/useApi";
+import { useRequestHandler } from "@/global/hooks/useRequestHandler";
 import { apiClient } from "@/global/services/apiClient";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 import type { MyReviewApiResponseType } from "../types/ReviewApiResponseType";
@@ -26,7 +26,7 @@ export function useGetMyReviewsByGame(gameId: number, version?: number) {
   }, [gameId]); //Avoid renders loops
 
   
-  const { data, isLoading, execute, warningComponent, warningType } = useApi<
+  const { data, isLoading, execute, warningComponent, warningType } = useRequestHandler<
     void,
     MyReviewApiResponseType
   >(getReviewsRequest);

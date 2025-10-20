@@ -13,14 +13,14 @@ const emptyWarningState: NotificationState = {
 };
 
 //Fetch general api -> this custom hook controls loading, data and warning states
-export function useApi<TData, TResponse>(
+export function useRequestHandler<TData, TResponse>(
   apiRequest: (data: TData) => Promise<TResponse>
 ) {
   const [warning, setWarning] = useState<NotificationState>(emptyWarningState);
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<TResponse | null>(null);
 
-  const execute = useCallback(
+  const executeRequest = useCallback(
     async (requestData: TData) => {
       setIsLoading(true);
       setWarning(emptyWarningState);
@@ -64,7 +64,7 @@ export function useApi<TData, TResponse>(
   return {
     data,
     isLoading,
-    execute,
+    execute: executeRequest,
     warningComponent,
     warningType: warning.type,
     setData,

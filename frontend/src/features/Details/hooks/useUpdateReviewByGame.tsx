@@ -1,4 +1,4 @@
-import { useApi } from "@/global/hooks/useApi";
+import { useRequestHandler } from "@/global/hooks/useRequestHandler";
 import { apiClient } from "@/global/services/apiClient";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL"
 
@@ -9,7 +9,7 @@ interface ReviewFormData {
 
 export function useUpdateReviewByGame(reviewId: number) {
   
-  return useApi<ReviewFormData, null>(
+  return useRequestHandler<ReviewFormData, null>(
     
     (formData: ReviewFormData) => {
       

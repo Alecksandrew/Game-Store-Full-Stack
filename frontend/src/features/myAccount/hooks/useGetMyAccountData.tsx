@@ -1,5 +1,5 @@
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
-import { useApi } from "@/global/hooks/useApi";
+import { useRequestHandler } from "@/global/hooks/useRequestHandler";
 import { apiClient } from "@/global/services/apiClient";
 import type { MyAccountData } from "../types/myAccountTypes";
 import { jwtDecode } from "jwt-decode";
@@ -21,7 +21,7 @@ export function useGetMyAccountData() {
     isLoading,
     warningComponent,
     warningType,
-  } = useApi<void, MyAccountData>(apiRequest);
+  } = useRequestHandler<void, MyAccountData>(apiRequest);
 
   function decodeJwtToken() {
     const token = localStorage.getItem("jwtToken");

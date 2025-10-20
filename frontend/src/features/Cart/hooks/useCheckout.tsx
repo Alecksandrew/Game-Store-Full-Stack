@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
-import { useApi } from '@/global/hooks/useApi';
+import { useRequestHandler } from '@/global/hooks/useRequestHandler';
 import { apiClient } from '@/global/services/apiClient';
 import { API_ROUTES } from '@/global/constants/BACKEND_URL';
 import { CartContext } from '@/features/Cart/context/CartContext';
@@ -16,7 +16,7 @@ export function useCheckout() {
   const { cartItems, clearCart } = useContext(CartContext);
   const navigate = useNavigate();
 
-  const checkoutApi = useApi<CheckoutRequestData, { message: string }>(
+  const checkoutApi = useRequestHandler<CheckoutRequestData, { message: string }>(
     (data) => {
       const options = {
         method: 'POST' as const,

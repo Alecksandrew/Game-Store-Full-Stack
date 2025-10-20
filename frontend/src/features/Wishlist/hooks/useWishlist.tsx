@@ -1,6 +1,6 @@
 import type { GameCardData } from "@/global/components/GameCard";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
-import { useApi } from "@/global/hooks/useApi";
+import { useRequestHandler } from "@/global/hooks/useRequestHandler";
 import { apiClient } from "@/global/services/apiClient";
 import { useCallback } from "react";
 
@@ -13,7 +13,7 @@ export function useAddToWishlist() {
     return apiClient(API_ROUTES.WISHLIST.ADD_FUNCTION(gameId), options, true);
   }, []);
 
-  return useApi<number, unknown>(addToWishlistRequest);
+  return useRequestHandler<number, unknown>(addToWishlistRequest);
 }
 
 export function useRemoveFromWishlist() {
@@ -25,7 +25,7 @@ export function useRemoveFromWishlist() {
     return apiClient(API_ROUTES.WISHLIST.REMOVE_FUNCTION(gameId), options, true);
   }, []); 
 
-  return useApi<number, unknown>(removeFromWishlistRequest);
+  return useRequestHandler<number, unknown>(removeFromWishlistRequest);
 }
 
 export function useGetWishlist() {
@@ -37,5 +37,5 @@ export function useGetWishlist() {
     return apiClient<GameCardData[]>(API_ROUTES.WISHLIST.GET, options, true);
   }, []); 
 
-  return useApi<void, GameCardData[]>(getWishlistRequest);
+  return useRequestHandler<void, GameCardData[]>(getWishlistRequest);
 }

@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 import type { GameCardData } from "../../../global/components/GameCard/types";
 import { apiClient } from "@/global/services/apiClient";
-import { useApi } from "@/global/hooks/useApi";
+import { useRequestHandler } from "@/global/hooks/useRequestHandler";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 
 export function usePaginatedGames({
@@ -38,7 +38,7 @@ export function usePaginatedGames({
   }, [currentPage, searchTerm, genre]);
 
   const { data, isLoading, execute, warningComponent, warningType } =
-    useApi<void, GameCardData[]>(fetchGamesForPage);
+    useRequestHandler<void, GameCardData[]>(fetchGamesForPage);
 
   useEffect(() => {
     execute();

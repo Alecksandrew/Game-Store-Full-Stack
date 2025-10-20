@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import { useApi } from "@/global/hooks/useApi";
+import { useRequestHandler } from "@/global/hooks/useRequestHandler";
 import { apiClient } from "@/global/services/apiClient";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 import type { ReviewApiResponseType } from "../types/ReviewApiResponseType";
@@ -26,7 +26,7 @@ export function useGetReviewsByGame(
     // or all reviews without review of the user logged
   }, [gameId]); //Avoid renders loops
 
-  const { data, isLoading, execute, warningComponent, warningType } = useApi<
+  const { data, isLoading, execute, warningComponent, warningType } = useRequestHandler<
     void,
     ReviewApiResponseType
   >(getReviewsRequest);

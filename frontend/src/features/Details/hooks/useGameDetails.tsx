@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 import { useParams } from "react-router";
-import { useApi } from "@/global/hooks/useApi";
+import { useRequestHandler } from "@/global/hooks/useRequestHandler";
 import { apiClient } from "@/global/services/apiClient";
 import { API_ROUTES } from "@/global/constants/BACKEND_URL";
 import type { GameDetailsApiResponse } from "../types/GameDetailsType";
@@ -17,7 +17,7 @@ export function useGameDetails() {
     );
   }, [id]);
 
-  const { data, isLoading, execute, warningComponent, warningType } = useApi<
+  const { data, isLoading, execute, warningComponent, warningType } = useRequestHandler<
     null,
     GameDetailsApiResponse
   >(getGameDetails);
