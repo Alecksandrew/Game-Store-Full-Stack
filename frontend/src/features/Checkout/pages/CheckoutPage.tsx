@@ -1,15 +1,14 @@
-
 import OrderSummary from "@/features/Cart/components/OrderSummary";
 import { type CreditCardFormData } from "../types/CreditCardFormType";
 import { useContext } from "react";
 import { CartContext } from "@/features/Cart/context/CartContext";
 import { Navigate } from "react-router";
-import { useCheckout } from "@/features/Cart/hooks/useCheckout";
+import { useCheckout } from "@/features/Checkout/hooks/useCheckout";
 import CreditCardForm from "../components/CreditCardForm";
 import { Button } from "@/global/components/Button";
 
 export default function CheckoutPage() {
-  const { execute, isLoading, warningComponent } = useCheckout();
+  const { handleCheckout, isLoading, warningComponent } = useCheckout();
   const { cartItems } = useContext(CartContext);
 
   if (cartItems.length === 0) {
@@ -17,8 +16,8 @@ export default function CheckoutPage() {
   }
 
   const handleCheckoutSubmit = (data: CreditCardFormData) => {
-    console.log(data)
-    execute(data);
+    console.log(data);
+    handleCheckout(data);
   };
 
   return (
@@ -39,11 +38,13 @@ export default function CheckoutPage() {
 
             <div className="lg:col-span-1">
               <OrderSummary>
-                 <Button
-                  type="submit" 
+                <Button
+                  type="submit"
                   form="credit-card-form"
                   disabled={isLoading}
-                >{isLoading ? "Processing..." : "Complete Payment"}</Button>
+                >
+                  {isLoading ? "Processing..." : "Complete Payment"}
+                </Button>
               </OrderSummary>
             </div>
           </div>
