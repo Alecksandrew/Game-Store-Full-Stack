@@ -1,5 +1,5 @@
 import ReviewForm, { type ReviewFormData } from "./ReviewForm";
-import useReviewManagement from "../hooks/useReviewManagement";
+
 import {
   ReviewCardEditable,
   ReviewCardStandard,
@@ -7,13 +7,16 @@ import {
 import { useNavigate } from "react-router";
 
 import { PAGE_ROUTES } from "@/global/constants/FRONTEND_URL";
-import { useCreateReviewByGame } from "../hooks/useCreateReviewByGame";
-import { useUpdateReviewByGame } from "../hooks/useUpdateReviewByGame";
-import useDeleteReviewByGame from "../hooks/useDeleteReviewByGame";
 import { useContext, useState } from "react";
 import { GameDetailsDataContext } from "../contexts/GameDetailsDataContext";
 import { Button } from "@/global/components/Button";
 import { MyAccountContext } from "@/features/myAccount/context/MyAccountContext";
+import {
+  useCreateReview,
+  useDeleteReview,
+  useReviewManagement,
+  useUpdateReview,
+} from "../hooks/useReview";
 
 function LoginPrompt() {
   const navigate = useNavigate();
@@ -23,10 +26,9 @@ function LoginPrompt() {
         <p className="font-orbitron text-2xl font-bold">
           Login to create reviews
         </p>
-        <Button
-          type="button"
-          onClick={() => navigate(PAGE_ROUTES.AUTH.LOGIN)}
-        >Login</Button>
+        <Button type="button" onClick={() => navigate(PAGE_ROUTES.AUTH.LOGIN)}>
+          Login
+        </Button>
       </div>
     </div>
   );
@@ -35,34 +37,33 @@ function LoginPrompt() {
 export default function ReviewSection({ className }: { className?: string }) {
   const { handleReviewSuccess, reviewData, myReviewData } =
     useReviewManagement();
-    const { isLoggedIn} = useContext(MyAccountContext);
-
   const { gameDetails } = useContext(GameDetailsDataContext);
+  const { isLoggedIn } = useContext(MyAccountContext);
   const [editingReviewId, setEditingReviewId] = useState<number | null>(null);
 
-  const { execute: createReview, isLoading: isCreating } =
-    useCreateReviewByGame(gameDetails.id);
-  const { execute: updateReview, isLoading: isUpdating } =
-    useUpdateReviewByGame(editingReviewId || 0);
-  const { execute: deleteReview, isLoading: isDeleting } =
-    useDeleteReviewByGame();
+  // 2. Usar os hooks de ação refatorados e obter suas funções com nomes claros
+  const { handleCreateReview, isLoading: isCreating } = useCreateReview();
+  const { handleUpdateReview, isLoading: isUpdating } = useUpdateReview();
+  const { handleDeleteReview, isLoading: isDeleting } = useDeleteReview();
 
   async function handleCreate(data: ReviewFormData) {
-    await createReview(data);
+    await handleCreateReview({ gameId: gameDetails.id, data });
     handleReviewSuccess();
   }
 
   async function handleUpdate(data: ReviewFormData) {
-    await updateReview(data);
-    setEditingReviewId(null);
-    handleReviewSuccess();
+    if (editingReviewId) {
+      await handleUpdateReview({ reviewId: editingReviewId, data });
+      setEditingReviewId(null);
+      handleReviewSuccess();
+    }
   }
 
   async function handleDelete(reviewId: number) {
-    await deleteReview(reviewId);
+    // 5. Chamar a função do hook com o parâmetro esperado
+    await handleDeleteReview(reviewId);
     handleReviewSuccess();
   }
-
   function listMyReviewCards() {
     return myReviewData?.map((review) => {
       const isCurrentlyEditing = editingReviewId === review.id;
