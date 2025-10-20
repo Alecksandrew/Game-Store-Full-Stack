@@ -1,14 +1,14 @@
 import { useState, useEffect, type ReactNode, useCallback } from "react";
 import { MyAccountContext } from "./MyAccountContext";
 import type { MyAccountData } from "../types/myAccountTypes";
-import { useGetMyAccountData } from "../hooks/useGetMyAccountData";
+import { useGetMyAccountData } from "../hooks/useMyAccount";
 
 
 export const MyAccountProvider = ({ children }: { children: ReactNode }) => {
   const [myAccountData, setMyAccountData] = useState<MyAccountData | null>(
     null
   );
-  const { execute, isLoading } = useGetMyAccountData();
+  const { handleGetMyAccount, isLoading } = useGetMyAccountData();
 
   const handleLoginSuccess = async (jwtToken: string, refreshToken: string) => {
     localStorage.setItem("jwtToken", jwtToken);
@@ -26,15 +26,16 @@ export const MyAccountProvider = ({ children }: { children: ReactNode }) => {
     if (!localStorage.getItem("jwtToken")) {
       return;
     }
-    const enrichedUserData = await execute();
+    const enrichedUserData = await handleGetMyAccount();
     console.log(enrichedUserData)
     if (enrichedUserData) {
-      setMyAccountData(enrichedUserData);
+      // Ensure 'role' is always a string to satisfy MyAccountData type
+      setMyAccountData({ ...enrichedUserData, role: enrichedUserData.role ?? "user" });
     } else {
 
       handleLogout();
     }
-  }, [execute, handleLogout]);
+  }, [handleGetMyAccount, handleLogout]);
 
   useEffect(() => {
     fetchAndSetUserData();

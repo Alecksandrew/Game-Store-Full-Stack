@@ -37,12 +37,12 @@ export function usePaginatedGames({
     return apiClient<GameCardData[]>(url);
   }, [currentPage, searchTerm, genre]);
 
-  const { data, isLoading, execute, warningComponent, warningType } =
+  const { data, isLoading, executeRequest, warningComponent, warningType } =
     useRequestHandler<void, GameCardData[]>(fetchGamesForPage);
 
   useEffect(() => {
-    execute();
-  }, [execute]);
+    executeRequest();
+  }, [executeRequest]);
 
   return {
     data,

@@ -6,7 +6,7 @@ import { useLogout } from "../../auth/hooks/useAuth";
 
 
 export default function LogoutAccount(){
-    const {execute: executeLogout} = useLogout();
+    const {executeRequest: executeLogout} = useLogout();
 
     return(
         <div className="bg-bg-primary p-6 rounded-lg border border-border">
