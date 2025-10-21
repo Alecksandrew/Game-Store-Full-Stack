@@ -1,41 +1,35 @@
-import type { GameCardData } from "@/global/components/GameCard";
-import { API_ROUTES } from "@/global/constants/BACKEND_URL";
-import { useApi } from "@/global/hooks/useApi";
-import { apiClient } from "@/global/services/apiClient";
-import { useCallback } from "react";
+import { useRequestHandler } from "@/global/hooks/useRequestHandler";
+
+import type {
+  AddToWishlistResponse,
+  GetWishlistResponse,
+  RemoveFromWishlistResponse,
+} from "@/global/services/wishlist/types";
+import { wishlistService } from "@/global/services/wishlist/wishlistService";
 
 export function useAddToWishlist() {
+  const { executeRequest, ...rest } = useRequestHandler<
+    number,
+    AddToWishlistResponse
+  >(wishlistService.addToWishlist);
 
-  const addToWishlistRequest = useCallback((gameId: number) => {
-    const options = {
-      method: "POST" as const,
-    };
-    return apiClient(API_ROUTES.WISHLIST.ADD_FUNCTION(gameId), options, true);
-  }, []);
-
-  return useApi<number, unknown>(addToWishlistRequest);
+  return { handleAddToWishlist: executeRequest, ...rest };
 }
 
 export function useRemoveFromWishlist() {
- 
-  const removeFromWishlistRequest = useCallback((gameId: number) => {
-    const options = {
-      method: "DELETE" as const,
-    };
-    return apiClient(API_ROUTES.WISHLIST.REMOVE_FUNCTION(gameId), options, true);
-  }, []); 
+  const { executeRequest, ...rest } = useRequestHandler<
+    number,
+    RemoveFromWishlistResponse
+  >(wishlistService.removeFromWishlist);
 
-  return useApi<number, unknown>(removeFromWishlistRequest);
+  return { handleRemoveFromWishlist: executeRequest, ...rest };
 }
 
 export function useGetWishlist() {
-  
-  const getWishlistRequest = useCallback(() => {
-    const options = {
-      method: "GET" as const,
-    };
-    return apiClient<GameCardData[]>(API_ROUTES.WISHLIST.GET, options, true);
-  }, []); 
+  const { executeRequest, ...rest } = useRequestHandler<
+    void,
+    GetWishlistResponse
+  >(wishlistService.getWishlist);
 
-  return useApi<void, GameCardData[]>(getWishlistRequest);
+  return { handleGetWishlist: executeRequest, ...rest };
 }

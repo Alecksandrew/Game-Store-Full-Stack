@@ -8,13 +8,13 @@ import { Form } from "@/global/components/Form";
 
 
 export default function LoginForm() {
-  const { execute, isLoading, warningComponent } = useLogin();
+  const { executeRequest, isLoading, warningComponent } = useLogin();
 
   return (
     <>
       {warningComponent}
       <Form.Root<LoginFormData>
-        onSubmit={execute}
+        onSubmit={executeRequest}
       >
         <Form.Header
           title="Login"

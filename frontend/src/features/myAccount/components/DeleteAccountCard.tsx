@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
-
-import { useDeleteAccount } from "../hooks/useDeleteAccount";
 import { PAGE_ROUTES } from "@/global/constants/FRONTEND_URL";
 import { Form } from "@/global/components/Form";
 import { Button } from "@/global/components/Button";
 import { Modal } from "@/global/components/Modal";
+import { useDeleteAccount } from "../hooks/useMyAccount";
 
 export default function DeleteAccount() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
-    execute: deleteAccount,
+    handleDeleteAccount,
     warningComponent,
     isLoading,
     data,
@@ -20,7 +19,7 @@ export default function DeleteAccount() {
   const handleCloseModal = () => setIsModalOpen(false);
 
   const handleConfirmDelete = () => {
-    deleteAccount();
+    handleDeleteAccount();
   };
 
   useEffect(() => {

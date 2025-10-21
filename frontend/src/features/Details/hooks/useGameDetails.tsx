@@ -1,36 +1,31 @@
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router";
-import { useApi } from "@/global/hooks/useApi";
-import { apiClient } from "@/global/services/apiClient";
-import { API_ROUTES } from "@/global/constants/BACKEND_URL";
-import type { GameDetailsApiResponse } from "../types/GameDetailsType";
+import { useRequestHandler } from "@/global/hooks/useRequestHandler";
+
 import { placeholderGameData } from "../contexts/GameDetailsDataContext";
+import type { GetGameDetailsResponse } from "@/global/services/games/types";
+import { gameService } from "@/global/services/games/gamesService";
 
 export function useGameDetails() {
   const { id } = useParams<{ id: string }>();
 
-    //This callback is being used in order to avoid fetch loops within the useApi hook and apiClient service
-  const getGameDetails = useCallback(() => {
-    if (!id) return Promise.reject(new Error("Game ID is missing."));
-    return apiClient<GameDetailsApiResponse>(
-      API_ROUTES.GAMES.GET_BY_ID + `/${id}`
-    );
-  }, [id]);
-
-  const { data, isLoading, execute, warningComponent, warningType } = useApi<
-    null,
-    GameDetailsApiResponse
-  >(getGameDetails);
+  const {
+    executeRequest: handleGetGameDetails,
+    data,
+    isLoading,
+    ...rest
+  } = useRequestHandler<string, GetGameDetailsResponse>(
+    gameService.getGameDetails
+  );
 
   useEffect(() => {
-    execute(null);
-  }, [execute]);
+    if (id) handleGetGameDetails(id);
+  }, [handleGetGameDetails, id]);
 
   return {
     gameDetails: data ?? placeholderGameData,
     isLoading,
-    warningType,
-    warningComponent,
+    ...rest,
     gameId: id,
   };
 }

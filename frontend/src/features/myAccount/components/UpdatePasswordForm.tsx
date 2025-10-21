@@ -1,13 +1,13 @@
 import { useFormContext } from "react-hook-form";
 import { Input } from "@/global/components/Input/Input";
-import { useUpdatePassword } from "../hooks/useUpdatePassword";
 import { type UpdatePasswordFormData } from "../types/UpdatePasswordFormType";
 import { Button } from "@/global/components/Button";
 import { Form } from "@/global/components/Form";
+import { useUpdatePassword } from "../hooks/useMyAccount";
 
 export default function UpdatePasswordForm() {
 
-  const { execute, isLoading, warningComponent } = useUpdatePassword();
+  const { handleUpdatePassword, isLoading, warningComponent } = useUpdatePassword();
 
   const ConfirmNewPasswordField = () => {
     const { getValues } = useFormContext();
@@ -30,7 +30,7 @@ export default function UpdatePasswordForm() {
     <>
       {warningComponent}
       <Form.Root<UpdatePasswordFormData>
-        onSubmit={execute}
+        onSubmit={handleUpdatePassword}
       >
         <Form.Header 
           title="Update Password" 

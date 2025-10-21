@@ -3,10 +3,11 @@ import GameDashboardHeader from "./GameDashboardTable/GameDashboardHeader";
 import { GameDashboardTableBody } from "./GameDashboardTable/GameDashboardTableBody";
 import { GameDashboardTableHeader } from "./GameDashboardTable/GameDashboardTableHeader";
 import { Table } from "@/global/components/Table/Table";
-import useGameDashboardTable from "../hooks/useGameDashboardTable";
+
 import { useState } from "react";
 import PaginationRounded from "@/global/components/PaginationRounded/PaginationRounded";
 import KeysModal from "./KeysModal/KeysModal";
+import { useGameDashboardTable } from "../hooks/useAdmin";
 
 export function GameDashboardTable() {
   const {
@@ -21,7 +22,7 @@ export function GameDashboardTable() {
     handleSort,
     sortBy,
     isAscending,
-    refetch
+    handleGetInventory
   } = useGameDashboardTable();
 
   const [editingGameId, setEditingGameId] = useState<number | null>(null);
@@ -42,7 +43,7 @@ export function GameDashboardTable() {
 
   const handleSaveSuccess = () => {
     // Recarrega os dados da tabela após salvar
-    refetch();
+    handleGetInventory();
   };
 
   const handleOpenKeysModal = (gameId: number, gameName: string) => {
@@ -64,7 +65,7 @@ export function GameDashboardTable() {
 
   const handleKeysSuccess = () => {
     handleCloseKeysModal();
-    refetch(); // Atualiza a tabela
+    handleGetInventory(); // Atualiza a tabela
   };
 
   const totalPages = Math.ceil(totalCount / 10);

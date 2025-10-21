@@ -4,7 +4,7 @@ import { createContext } from "react";
 type WishlistContextType = {
   wishlist: GameCardData[];
   isLoading: boolean;
-  fetchWishlist: () => void;
+  handleGetWishlist: () => void;
   removeGameFromWishlist:(gameId: number) => Promise<void>;
   addToWishlist: (gameData: GameCardData) => Promise<void>;
 };
@@ -13,7 +13,7 @@ type WishlistContextType = {
 export const WishlistContext = createContext<WishlistContextType>({
   wishlist: [],
   isLoading: true,
-  fetchWishlist: () => {},
+  handleGetWishlist: () => {},
   removeGameFromWishlist: async () => {},
   addToWishlist: async () => {}
 });

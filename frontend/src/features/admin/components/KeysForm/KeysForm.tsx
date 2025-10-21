@@ -1,8 +1,9 @@
 
 import { Form } from "@/global/components/Form/Form";
 import { TextArea } from "@/global/components/TextArea/TextArea";
-import { useAddKeys } from "../../hooks/useAdminGameActions";
+
 import { Button } from "@/global/components/Button";
+import { useAddKeys } from "../../hooks/useAdmin";
 
 type KeysFormProps = {
   gameId: number;
@@ -12,7 +13,7 @@ type KeysFormProps = {
 };
 
 export default function KeysForm({ gameId, gameName, onSuccess, onCancel }: KeysFormProps) {
-  const { execute: addKeys, isLoading, warningComponent } = useAddKeys(gameId);
+  const { handleAddKeys, isLoading, warningComponent } = useAddKeys();
 
   const handleSubmit = async (data: { Keys: string }) => {
     try {
@@ -27,7 +28,9 @@ export default function KeysForm({ gameId, gameName, onSuccess, onCancel }: Keys
         return;
       }
 
-      await addKeys({ keys: keysArray });
+      await handleAddKeys({
+        gameId: gameId,
+        data:{ keys: keysArray }});
       onSuccess();
     } catch (error) {
       console.error("Erro ao adicionar chaves:", error);
