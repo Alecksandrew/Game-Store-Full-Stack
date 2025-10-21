@@ -4,11 +4,10 @@ import type { gameTableRowProps } from "../../types/gameTableRowType";
 import { FaEdit, FaKey, FaSave, FaTimes } from "react-icons/fa";
 
 import { useState } from "react";
-
-import { useUpdateGame } from "../../hooks/useAdminGameActions";
 import { SimpleInput } from "@/global/components/SimpleInput/SimpleInput";
 
 import { Button } from "@/global/components/Button";
+import { useUpdateGamePrice } from "../../hooks/useAdmin";
 
 type GameTableRowComponentProps = {
   gameInfo: gameTableRowProps;
@@ -32,25 +31,23 @@ export default function GameTableRow({
   // Estado local para os valores sendo editados
   const [editPrice, setEditPrice] = useState(price);
   const [editDiscountPrice, setEditDiscountPrice] = useState(discountPrice);
- 
 
   // Hook para fazer a requisição de update
-  const {
-    execute: updateGame,
-    isLoading: isSaving,
-  } = useUpdateGame(igdbId);
-
+  const { handleUpdatePrice, isLoading: isSaving } = useUpdateGamePrice();
   const handleSave = async () => {
     try {
-      // Chama a API com os novos valores
-      await updateGame({
-        price: Number(editPrice),
-        discountPrice: Number(editDiscountPrice),
+
+      await handleUpdatePrice({
+        gameId: igdbId,
+        data: {
+          price: Number(editPrice),
+          discountPrice: Number(editDiscountPrice),
+        },
       });
 
-      // Se chegou até aqui, foi sucesso
-      onSaveSuccess?.(); // Callback para atualizar a tabela
-      onCancel(igdbId); // Sai do modo de edição
+      
+      onSaveSuccess?.();
+      onCancel(igdbId);
     } catch (error) {
       // O erro já é tratado pelo useApi hook
       console.error("Erro ao salvar:", error);
@@ -63,7 +60,6 @@ export default function GameTableRow({
     setEditDiscountPrice(discountPrice);
     onCancel(igdbId);
   };
-
 
   const actionClass = "cursor-pointer  flex justify-center";
   return (
@@ -78,7 +74,7 @@ export default function GameTableRow({
             <SimpleInput
               type="number"
               name="price"
-              step="0.01"
+              step="0.5"
               value={editPrice}
               onChange={(e) => setEditPrice(Number(e.target.value))}
               className="p-1 rounded bg-bg-primary w-20"
