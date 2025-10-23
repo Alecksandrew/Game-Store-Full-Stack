@@ -1,11 +1,9 @@
 import { useCallback, useState } from "react";
-import { type ApiResponse } from "../types/responseApiType";
-import { Modal } from "../components/Modal";
+import type { NotificationState } from "./types";
+import type { ApiResponse } from "@/global/types/responseApiType";
+import { Modal } from "@/global/components/Modal";
 
-export type NotificationState = {
-  message: string;
-  type: "success" | "error";
-};
+
 
 const emptyWarningState: NotificationState = {
   message: "",
