@@ -1,6 +1,6 @@
 import { useState, useEffect, type ReactNode, useCallback } from "react";
 import { MyAccountContext } from "./MyAccountContext";
-import type { MyAccountData } from "../types/myAccountTypes";
+import type { MyAccountData } from "./types";
 import { useGetMyAccountData } from "../hooks/useMyAccount";
 
 
