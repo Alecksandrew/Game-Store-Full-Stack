@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import { useParams } from "react-router";
 import { useRequestHandler } from "@/global/hooks/useRequestHandler";
-
-import { placeholderGameData } from "../contexts/GameDetailsDataContext";
 import type { GetGameDetailsResponse } from "@/global/services/games/types";
 import { gameService } from "@/global/services/games/gamesService";
+import { placeholderGameData } from "../../contexts/GameDetailsDataContext";
 
 export function useGameDetails() {
   const { id } = useParams<{ id: string }>();
