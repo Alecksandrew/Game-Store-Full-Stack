@@ -1,7 +1,7 @@
 import { Table } from "@/global/components/Table/Table";
 import GameTableRowDisplay from "../GameTableRowDisplay";
 import GameTableRowEdit from "../GameTableRowEdit";
-import GameTableRowSkeleton from "../GameTableRow/GameTableRowSkeleton";
+import GameTableRowSkeleton from "../GameTableRowSkeleton";
 import type { AdminGame } from "../../types/gameDashboardTypes";
 import { useUpdateGamePrice } from "../../hooks/useAdmin";
 
