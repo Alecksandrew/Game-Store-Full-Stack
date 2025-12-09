@@ -1,20 +1,22 @@
-import { Form } from "@/global/components/Form/Form";
 import { Input } from "@/global/components/Input/Input";
 import { Table } from "@/global/components/Table/Table";
-import type { AdminGame } from "../../types/gameDashboardTypes";
 import { FaSave, FaTimes } from "react-icons/fa";
 import { Button } from "@/global/components/Button";
+import { useForm, FormProvider } from "react-hook-form";
+import type { GameTableRowEditProps } from "./types";
 
-type GameTableRowEditProps = {
-  gameInfo: AdminGame;
-  onSave: (data: any) => void;
-  onCancel: () => void;
-  isLoading: boolean;
-};
+export default function GameTableRowEdit({
+  gameInfo,
+  onSave,
+  onCancel,
+  isLoading,
+}: GameTableRowEditProps) {
+  const methods = useForm({
+    defaultValues: gameInfo,
+  });
 
-export default function GameTableRowEdit({ gameInfo, onSave, onCancel, isLoading }: GameTableRowEditProps) {
   return (
-    <Form.Root onSubmit={onSave} defaultValues={gameInfo}>
+    <FormProvider {...methods}>
       <Table.Row className="bg-primary/10">
         <Table.Td>{gameInfo.igdbId}</Table.Td>
         <Table.Td>{gameInfo.name}</Table.Td>
@@ -38,10 +40,11 @@ export default function GameTableRowEdit({ gameInfo, onSave, onCancel, isLoading
         </Table.Td>
         <Table.Td>{gameInfo.availableKeys}</Table.Td>
         <Table.Td>
-          <Form.Actions className="flex gap-4 mt-0">
+          <div className="flex gap-4 mt-0">
             <Button
               title={isLoading ? "Saving..." : "Save"}
-              type="submit"
+              type="button"
+              onClick={methods.handleSubmit(onSave)}
               disabled={isLoading}
               className="flex items-center gap-2"
             >
@@ -51,13 +54,14 @@ export default function GameTableRowEdit({ gameInfo, onSave, onCancel, isLoading
               title="Cancel"
               type="button"
               onClick={onCancel}
+              disabled={isLoading}
               className="bg-danger flex items-center gap-2"
             >
               <FaTimes />
             </Button>
-          </Form.Actions>
+          </div>
         </Table.Td>
       </Table.Row>
-    </Form.Root>
+    </FormProvider>
   );
 }

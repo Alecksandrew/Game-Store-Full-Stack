@@ -1,8 +1,9 @@
-// src/features/admin/components/GameDashboardTable/GameDashboardTableBody.tsx
 import { Table } from "@/global/components/Table/Table";
-import GameTableRow from "../GameTableRow/GameTableRow";
+import GameTableRowDisplay from "../GameTableRowDisplay";
+import GameTableRowEdit from "../GameTableRowEdit";
 import GameTableRowSkeleton from "../GameTableRow/GameTableRowSkeleton";
 import type { AdminGame } from "../../types/gameDashboardTypes";
+import { useUpdateGamePrice } from "../../hooks/useAdmin";
 
 type GameDashboardTableBodyProps = {
   gamesData: AdminGame[];
@@ -11,7 +12,7 @@ type GameDashboardTableBodyProps = {
   editingGameId: number | null;
   onEdit: (id: number) => void;
   onCancel: (id: number) => void;
-  onSaveSuccess: () => void; // Callback para quando salvar com sucesso
+  onSaveSuccess: () => void;
   onOpenKeysModal: (gameId: number, gameName: string) => void;
 };
 
@@ -23,18 +24,37 @@ export function GameDashboardTableBody({
   onEdit,
   onCancel,
   onSaveSuccess,
-  onOpenKeysModal
+  onOpenKeysModal,
 }: GameDashboardTableBodyProps) {
-  
+  const { handleUpdatePrice, isLoading: isSaving } = useUpdateGamePrice();
+
+  const handleSave = async (data: any) => {
+    if (!editingGameId) return;
+
+    try {
+      await handleUpdatePrice({
+        gameId: editingGameId,
+        data: {
+          price: Number(data.price),
+          discountPrice: Number(data.discountPrice),
+        },
+      });
+      onSaveSuccess();
+      onCancel(editingGameId);
+    } catch (error) {
+      console.error("Error saving game:", error);
+    }
+  };
+
   const renderTableContent = () => {
-    // ESTADO DE CARREGAMENTO
+    // LOADING STATE
     if (isLoading) {
       return Array.from({ length: pageSize }).map((_, index) => (
         <GameTableRowSkeleton key={`skeleton-${index}`} />
       ));
     }
 
-    // ESTADO SEM DADOS
+    // EMPTY STATE
     if (gamesData.length === 0) {
       return (
         <Table.Row>
@@ -45,18 +65,28 @@ export function GameDashboardTableBody({
       );
     }
 
-    // ESTADO COM DADOS
-    return gamesData.map((game) => (
-      <GameTableRow
-        key={game.igdbId}
-        gameInfo={game}
-        onEdit={onEdit}
-        onCancel={onCancel}
-        isEditing={editingGameId === game.igdbId}
-        onSaveSuccess={onSaveSuccess}
-        onOpenKeysModal={onOpenKeysModal} 
-      />
-    ));
+    // DATA STATE
+    return gamesData.map((game) => {
+      if (game.igdbId === editingGameId) {
+        return (
+          <GameTableRowEdit
+            key={game.igdbId}
+            gameInfo={game}
+            onSave={handleSave}
+            onCancel={() => onCancel(game.igdbId)}
+            isLoading={isSaving}
+          />
+        );
+      }
+      return (
+        <GameTableRowDisplay
+          key={game.igdbId}
+          gameInfo={game}
+          onEdit={onEdit}
+          onOpenKeysModal={onOpenKeysModal}
+        />
+      );
+    });
   };
 
   return <Table.Body>{renderTableContent()}</Table.Body>;
