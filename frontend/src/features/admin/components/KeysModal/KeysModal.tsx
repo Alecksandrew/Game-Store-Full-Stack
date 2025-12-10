@@ -2,14 +2,7 @@ import { Modal } from "@/global/components/Modal";
 import KeysForm from "../KeysForm";
 import { useEffect, useRef } from "react";
 import { useAddKeys } from "../../hooks/useAdmin";
-
-type KeysModalProps = {
-  isOpen: boolean;
-  gameId: number;
-  gameName: string;
-  onClose: () => void;
-  onSuccess: () => void;
-};
+import type { KeysModalProps } from "./types";
 
 export default function KeysModal({
   isOpen,
