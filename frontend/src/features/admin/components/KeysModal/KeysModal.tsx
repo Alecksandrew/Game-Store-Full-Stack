@@ -1,7 +1,7 @@
 import { Modal } from "@/global/components/Modal";
-import KeysForm from "../KeysForm/KeysForm";
+import KeysForm from "../KeysForm";
 import { useEffect, useRef } from "react";
-
+import { useAddKeys } from "../../hooks/useAdmin";
 
 type KeysModalProps = {
   isOpen: boolean;
@@ -11,17 +11,18 @@ type KeysModalProps = {
   onSuccess: () => void;
 };
 
-export default function KeysModal({ 
-  isOpen, 
-  gameId, 
-  gameName, 
-  onClose, 
-  onSuccess 
+export default function KeysModal({
+  isOpen,
+  gameId,
+  gameName,
+  onClose,
+  onSuccess,
 }: KeysModalProps) {
+  const { handleAddKeys, isLoading, warningComponent } = useAddKeys();
 
   //Logic to keep showing the name of the game when modal is fading out
   const gameNameRef = useRef(gameName);
-  
+
   useEffect(() => {
     if (gameName) {
       gameNameRef.current = gameName;
@@ -30,14 +31,26 @@ export default function KeysModal({
 
   const displayName = gameName || gameNameRef.current;
 
+  const handleFormSubmit = async (keys: string[]) => {
+    try {
+      await handleAddKeys({
+        gameId: gameId,
+        data: { keys },
+      });
+      onSuccess();
+    } catch (error) {
+      console.error("Failed to add keys:", error);
+    }
+  };
+
   return (
-   <Modal.Root isOpen={isOpen} onClose={onClose}>
+    <Modal.Root isOpen={isOpen} onClose={onClose}>
       <Modal.Content className="border-t-4 border-primary p-6 text-left">
-        
-        <KeysForm 
-          gameId={gameId}
+        <KeysForm
           gameName={displayName}
-          onSuccess={onSuccess}
+          isLoading={isLoading}
+          warningComponent={warningComponent}
+          onSubmit={handleFormSubmit}
           onCancel={onClose}
         />
       </Modal.Content>
