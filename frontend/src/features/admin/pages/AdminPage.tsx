@@ -1,14 +1,32 @@
 import SectionHeader from "@/global/components/SectionHeader/SectionHeader";
-import { GameDashboardTable } from "../components/GameDashboardTable";
+import { GameDashboard } from "../components/GameDashboard";
+import { GameTable } from "../components/GameTable";
 
-export default function AdminPage(){
-    return(
-    <>
+export default function AdminPage() {
+  return (
     <div className="w-full h-full bg-bg-primary flex flex-col justify-center items-center py-10">
-    <div>
-        <SectionHeader title="Admin dashboard"/>
-        <GameDashboardTable/>
+      <div>
+        <GameDashboard.Root>
+          <GameDashboard.Header>
+            <SectionHeader title="Admin dashboard" />
+            <GameDashboard.Search />
+          </GameDashboard.Header>
+
+          <GameDashboard.Body>
+            <GameTable.Root>
+              <GameTable.Header />
+              <GameTable.Body />
+            </GameTable.Root>
+          </GameDashboard.Body>
+
+          <GameDashboard.Footer>
+            <GameDashboard.Pagination />
+          </GameDashboard.Footer>
+
+          <GameDashboard.Modals />
+          <GameDashboard.Feedback />
+        </GameDashboard.Root>
+      </div>
     </div>
-    </div>
-    </>);
+  );
 }
