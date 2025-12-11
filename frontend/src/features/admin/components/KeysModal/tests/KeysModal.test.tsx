@@ -1,10 +1,10 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import KeysModal from "../KeysModal";
-import * as useAdminHooks from "../../../hooks/useAdmin";
+import * as useAddKeysHook from "../../../hooks/useAddKeys";
 
 // Mock the hook
-vi.mock("../../../hooks/useAdmin", () => ({
+vi.mock("../../../hooks/useAddKeys", () => ({
   useAddKeys: vi.fn(),
 }));
 
@@ -35,7 +35,7 @@ describe("KeysModal", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (useAdminHooks.useAddKeys as any).mockReturnValue({
+    (useAddKeysHook.useAddKeys as any).mockReturnValue({
       handleAddKeys: mockHandleAddKeys,
       isLoading: false,
       warningComponent: null,

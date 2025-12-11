@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
-import { useGameDashboardTable } from "../../../hooks/useAdmin";
+import { useGameDashboardTable } from "../../../hooks/useGameDashboardTable";
 import type { AdminGame } from "../../../types/gameDashboardTypes";
 
 // ============ TIPOS ============

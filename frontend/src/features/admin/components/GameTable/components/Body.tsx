@@ -1,6 +1,6 @@
 import { Table as TableComponent } from "@/global/components/Table/Table";
 import { useGameDashboardContext } from "../../GameDashboard/context";
-import { useUpdateGamePrice } from "../../../hooks/useAdmin";
+import { useUpdateGamePrice } from "../../../hooks/useUpdateGamePrice";
 import GameTableRowDisplay from "./Rows/RowDisplay";
 import GameTableRowEdit from "./Rows/RowEdit";
 import GameTableRowSkeleton from "./Rows/RowSkeleton";

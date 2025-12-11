@@ -12,13 +12,18 @@ export function useGameDashboardTable() {
     handleSort,
   } = useGameFilters();
 
-  const { gamesData, totalCount, isLoading, handleGetInventory, ...rest } =
-    useGameInventory({
-      currentPage,
-      searchTerm,
-      sortBy,
-      isAscending,
-    });
+  const {
+    gamesData,
+    totalCount,
+    isLoading,
+    handleGetInventory,
+    ...rest
+  } = useGameInventory({
+    currentPage,
+    searchTerm,
+    sortBy,
+    isAscending,
+  });
 
   return {
     gamesData,
@@ -34,3 +39,4 @@ export function useGameDashboardTable() {
     ...rest,
   };
 }
+

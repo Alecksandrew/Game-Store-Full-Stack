@@ -1,7 +1,7 @@
 import { Modal } from "@/global/components/Modal";
 import KeysForm from "../KeysForm";
 import { useEffect, useRef } from "react";
-import { useAddKeys } from "../../hooks/useAdmin";
+import { useAddKeys } from "../../hooks/useAddKeys";
 import type { KeysModalProps } from "./types";
 
 export default function KeysModal({
