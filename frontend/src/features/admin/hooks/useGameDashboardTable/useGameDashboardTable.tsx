@@ -1,5 +1,5 @@
-import { useGameFilters } from "./useGameFilters";
-import { useGameInventory } from "./useGameInventory";
+import { useGameFilters } from "../useGameFilters";
+import { useGameInventory } from "../useGameInventory";
 
 export function useGameDashboardTable() {
   const {

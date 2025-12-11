@@ -5,13 +5,7 @@ import type {
   GetInventoryResponse,
 } from "@/global/services/admin/types";
 import { useCallback, useEffect, useMemo } from "react";
-
-interface UseGameInventoryProps {
-  currentPage: number;
-  searchTerm: string;
-  sortBy: string;
-  isAscending: boolean;
-}
+import type { UseGameInventoryProps } from "./types";
 
 export function useGameInventory({
   currentPage,
