@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import type { UseGameFiltersReturn } from "./types";
 
+
 export function useGameFilters(): UseGameFiltersReturn {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");

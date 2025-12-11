@@ -1,6 +1,6 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 import { useGameDashboardTable } from "../../../hooks/useGameDashboardTable";
-import type { GameDashboardContextType, KeysModalState } from "./types";
+import type { GameDashboardContextType } from "./types";
 
 // ============ CONTEXT ============
 const GameDashboardContext = createContext<GameDashboardContextType | null>(
@@ -9,7 +9,7 @@ const GameDashboardContext = createContext<GameDashboardContextType | null>(
 
 // ============ PROVIDER ============
 export function GameDashboardProvider({ children }: { children: ReactNode }) {
-  // Hook existente com lógica de API
+  // Hook existente com lógica de API e UI
   const {
     gamesData,
     totalCount,
@@ -23,28 +23,13 @@ export function GameDashboardProvider({ children }: { children: ReactNode }) {
     sortBy,
     isAscending,
     handleGetInventory,
+    editingGameId,
+    setEditingGameId,
+    cancelEditing,
+    keysModal,
+    openKeysModal,
+    closeKeysModal,
   } = useGameDashboardTable();
-
-  // Estado de edição
-  const [editingGameId, setEditingGameId] = useState<number | null>(null);
-
-  // Estado do modal
-  const [keysModal, setKeysModal] = useState<KeysModalState>({
-    isOpen: false,
-    gameId: 0,
-    gameName: "",
-  });
-
-  // ============ HANDLERS ============
-  const cancelEditing = () => setEditingGameId(null);
-
-  const openKeysModal = (gameId: number, gameName: string) => {
-    setKeysModal({ isOpen: true, gameId, gameName });
-  };
-
-  const closeKeysModal = () => {
-    setKeysModal({ isOpen: false, gameId: 0, gameName: "" });
-  };
 
   const refreshData = () => {
     handleGetInventory();

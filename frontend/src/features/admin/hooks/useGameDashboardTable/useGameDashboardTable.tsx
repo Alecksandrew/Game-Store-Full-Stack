@@ -1,5 +1,6 @@
 import { useGameFilters } from "../useGameFilters";
 import { useGameInventory } from "../useGameInventory";
+import { useGameDashboardUI } from "../useGameDashboardUI";
 
 export function useGameDashboardTable() {
   const {
@@ -20,6 +21,15 @@ export function useGameDashboardTable() {
       isAscending,
     });
 
+  const {
+    editingGameId,
+    keysModal,
+    setEditingGameId,
+    cancelEditing,
+    openKeysModal,
+    closeKeysModal,
+  } = useGameDashboardUI();
+
   return {
     gamesData,
     totalCount,
@@ -31,6 +41,12 @@ export function useGameDashboardTable() {
     handleSort,
     sortBy,
     isAscending,
+    editingGameId,
+    keysModal,
+    setEditingGameId,
+    cancelEditing,
+    openKeysModal,
+    closeKeysModal,
     ...rest,
   };
 }
