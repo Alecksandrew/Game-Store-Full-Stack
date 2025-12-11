@@ -16,6 +16,10 @@ describe("GameDashboardContext", () => {
   const mockHandlePageChange = vi.fn();
   const mockHandleSearch = vi.fn();
   const mockHandleSort = vi.fn();
+  const mockSetEditingGameId = vi.fn();
+  const mockCancelEditing = vi.fn();
+  const mockOpenKeysModal = vi.fn();
+  const mockCloseKeysModal = vi.fn();
 
   const defaultHookValues = {
     gamesData: [],
@@ -30,6 +34,12 @@ describe("GameDashboardContext", () => {
     handlePageChange: mockHandlePageChange,
     handleSearch: mockHandleSearch,
     handleSort: mockHandleSort,
+    editingGameId: null,
+    keysModal: { isOpen: false, gameId: 0, gameName: "" },
+    setEditingGameId: mockSetEditingGameId,
+    cancelEditing: mockCancelEditing,
+    openKeysModal: mockOpenKeysModal,
+    closeKeysModal: mockCloseKeysModal,
   };
 
   beforeEach(() => {
@@ -51,44 +61,44 @@ describe("GameDashboardContext", () => {
     expect(result.current.isLoading).toBe(false);
   });
 
-  it("should manage keys modal state", () => {
+  it("should call openKeysModal from hook", () => {
     const { result } = renderHook(() => useGameDashboardContext(), { wrapper });
-
-    expect(result.current.keysModal.isOpen).toBe(false);
 
     act(() => {
       result.current.openKeysModal(1, "Test Game");
     });
 
-    expect(result.current.keysModal.isOpen).toBe(true);
-    expect(result.current.keysModal.gameId).toBe(1);
-    expect(result.current.keysModal.gameName).toBe("Test Game");
+    expect(mockOpenKeysModal).toHaveBeenCalledWith(1, "Test Game");
+  });
+
+  it("should call closeKeysModal from hook", () => {
+    const { result } = renderHook(() => useGameDashboardContext(), { wrapper });
 
     act(() => {
       result.current.closeKeysModal();
     });
 
-    expect(result.current.keysModal.isOpen).toBe(false);
-    expect(result.current.keysModal.gameId).toBe(0);
-    expect(result.current.keysModal.gameName).toBe("");
+    expect(mockCloseKeysModal).toHaveBeenCalled();
   });
 
-  it("should manage editing game id state", () => {
+  it("should call setEditingGameId from hook", () => {
     const { result } = renderHook(() => useGameDashboardContext(), { wrapper });
-
-    expect(result.current.editingGameId).toBeNull();
 
     act(() => {
       result.current.setEditingGameId(123);
     });
 
-    expect(result.current.editingGameId).toBe(123);
+    expect(mockSetEditingGameId).toHaveBeenCalledWith(123);
+  });
+
+  it("should call cancelEditing from hook", () => {
+    const { result } = renderHook(() => useGameDashboardContext(), { wrapper });
 
     act(() => {
       result.current.cancelEditing();
     });
 
-    expect(result.current.editingGameId).toBeNull();
+    expect(mockCancelEditing).toHaveBeenCalled();
   });
 
   it("should call handleGetInventory when refreshData is called", () => {
