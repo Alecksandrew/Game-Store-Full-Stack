@@ -1,5 +1,4 @@
 import { useContext } from "react";
-
 import { CartContext } from "../context/CartContext";
 import CartItem from "../components/CartItem";
 import OrderSummary from "../components/OrderSummary";
@@ -8,7 +7,7 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import { Button } from "@/global/components/Button";
 
 export default function CartPage() {
-  const { cartItems } = useContext(CartContext);
+  const { cartItems, removeFromCart, total } = useContext(CartContext);
   const navigate = useNavigate();
 
   return (
@@ -35,17 +34,20 @@ export default function CartPage() {
               <div className="lg:col-span-2">
                 <ul className="space-y-4">
                   {cartItems.map((game) => (
-                    <CartItem key={game.id} game={game} />
+                    <CartItem
+                      key={game.id}
+                      game={game}
+                      onRemove={removeFromCart}
+                    />
                   ))}
                 </ul>
               </div>
 
               <div className="lg:col-span-1">
-                <OrderSummary>
-                  <Button
-                    type="button"
-                    onClick={() => navigate("/checkout")}
-                  >Get your key(s)</Button>
+                <OrderSummary total={total}>
+                  <Button type="button" onClick={() => navigate("/checkout")}>
+                    Get your key(s)
+                  </Button>
                 </OrderSummary>
               </div>
             </div>

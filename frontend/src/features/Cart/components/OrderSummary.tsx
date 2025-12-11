@@ -1,13 +1,17 @@
-import { useContext, type ReactNode } from 'react';
-import { CartContext } from '../context/CartContext';
+import { type ReactNode } from "react";
 
-export default function OrderSummary({children}: {children:ReactNode}) {
-  const { total } = useContext(CartContext);
-
-
+export default function OrderSummary({
+  children,
+  total,
+}: {
+  children: ReactNode;
+  total: number;
+}) {
   return (
     <div className="bg-bg-secondary p-6 rounded-lg ring-1 ring-primary/50 h-fit sticky top-24">
-      <h2 className="text-2xl font-bold text-text-primary mb-4 font-orbitron">Order Summary</h2>
+      <h2 className="text-2xl font-bold text-text-primary mb-4 font-orbitron">
+        Order Summary
+      </h2>
       <div className="flex justify-between text-text-secondary mb-2">
         <span>Subtotal</span>
         <span>${total.toFixed(2)}</span>
